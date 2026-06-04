@@ -1,0 +1,40 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout
+  title="Integritetspolicy | Klocka.com"
+  description="Klocka.coms integritetspolicy — vi samlar minimal data och lagrar allt lokalt."
+>
+  <div class="page-prose prose">
+    <h1>Integritetspolicy</h1>
+    <p><strong>Senast uppdaterad:</strong> 2026</p>
+    <h2>Vad vi samlar in</h2>
+    <p>
+      Klocka.com använder Google Analytics 4 (GA4) för att förstå trafikmönster i aggregerad form.
+      Vi lagrar inga personuppgifter. Dina timer-inställningar lagras i din webbläsares
+      <code>localStorage</code> — de lämnar aldrig din enhet.
+    </p>
+    <h2>Cookies</h2>
+    <p>
+      GA4 sätter en analytics-cookie <strong>endast om du aktivt accepterar cookies</strong> via
+      samtyckesbannern. Inga tredjepartsannonscookies används.
+    </p>
+    <h2>Dina rättigheter</h2>
+    <p>
+      Du kan när som helst återkalla ditt samtycke genom att rensa nyckeln <code>klocka_consent</code>
+      i din webbläsares <code>localStorage</code> (eller rensa all webbplatsdata via
+      webbläsarinställningarna). Sidan visar då bannern igen vid nästa besök.
+    </p>
+    <h2>Kontakt</h2>
+    <p>Frågor? Mejla <a href="mailto:hej@klocka.com">hej@klocka.com</a>.</p>
+  </div>
+</Layout>
+
+<style>
+  .page-prose {
+    max-width: var(--max-w-prose);
+    margin-inline: auto;
+    padding: var(--space-12) var(--space-4);
+  }
+</style>
