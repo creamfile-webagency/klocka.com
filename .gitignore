@@ -4,4 +4,6 @@ dist/
 .env
 .env.*
 !.env.example
+.klocka.env
+*.klocka.env
 *.tsbuildinfo
