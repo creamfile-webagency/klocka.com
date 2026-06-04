@@ -1,0 +1,27 @@
+wp_url,astro_url,type,notes
+https://klocka.com/schackklocka/,https://klocka.com/schackklocka/,301-same,30 clicks — reference implementation ported
+https://klocka.com/stoppur/,https://klocka.com/stoppur/,301-same,26 clicks
+https://klocka.com/presentation/,https://klocka.com/presentation/,301-same,23 clicks — best CTR on site 19.5%
+https://klocka.com/interval/,https://klocka.com/interval/,301-same,22 clicks
+https://klocka.com/pomodoro/,https://klocka.com/pomodoro/,301-same,21 clicks
+https://klocka.com/nedrakning/,https://klocka.com/nedrakning/,301-same,8 clicks
+https://klocka.com/aggklocka/,https://klocka.com/aggklocka/,301-same,4 clicks
+https://klocka.com/,https://klocka.com/,301-same,homepage
+https://klocka.com/marke/omega/,https://klocka.com/klockmarken/omega/,301-new,4589 impr 0 clicks — Bucket A buying guide
+https://klocka.com/marke/rolex/,https://klocka.com/klockmarken/rolex/,301-new,Bucket A
+https://klocka.com/marke/breitling/,https://klocka.com/klockmarken/breitling/,301-new,Bucket A
+https://klocka.com/marke/certina/,https://klocka.com/klockmarken/certina/,301-new,2916 impr — Bucket A
+https://klocka.com/marke/michael-kors/,https://klocka.com/klockmarken/michael-kors/,301-new,2731 impr — Bucket A
+https://klocka.com/marke/triwa/,https://klocka.com/klockmarken/triwa/,301-new,2390 impr — Bucket B
+https://klocka.com/marke/longines/,https://klocka.com/klockmarken/longines/,301-new,Bucket A
+https://klocka.com/marke/casio/,https://klocka.com/klockmarken/casio/,301-new,Bucket B — Klockrummet stocks
+https://klocka.com/marke/daniel-wellington/,https://klocka.com/klockmarken/daniel-wellington/,301-new,Bucket B
+https://klocka.com/marke/seiko/,https://klocka.com/klockmarken/seiko/,301-new,Bucket A
+https://klocka.com/marke/tag-heuer/,https://klocka.com/klockmarken/tag-heuer/,301-new,Bucket A
+https://klocka.com/marke/hugo-boss/,https://klocka.com/klockmarken/hugo-boss/,301-new,Bucket A
+https://klocka.com/k/damklockor/,https://klocka.com/klockor/,301-new,8259 impr 0 clicks — fold into klockor index
+https://klocka.com/k/herrklockor/,https://klocka.com/klockor/,301-new,Bucket C — fold into index
+https://klocka.com/k/barnklockor/,https://klocka.com/klockor/,301-new,Bucket C
+https://klocka.com/k/smartwatch/,https://klocka.com/klockor/,301-new,Bucket C
+https://klocka.com/appar/,https://klocka.com/verktyg/,301-new,old tools nav
+https://klocka.com/tools/,https://klocka.com/verktyg/,301-new,alias

@@ -1,0 +1,40 @@
+---
+import ToolLayout from '@/layouts/ToolLayout.astro';
+
+const howToSteps = [
+  { name: 'Starta', text: 'Klicka på Starta eller tryck Space för att börja mäta tid.' },
+  { name: 'Pausa', text: 'Klicka på Pausa för att tillfälligt stoppa klockan utan att nollställa.' },
+  { name: 'Varv', text: 'Klicka på Varv för att spara mellantider — klockan fortsätter löpa.' },
+  { name: 'Återställ', text: 'Klicka på Återställ för att nollställa och radera alla varvtider.' },
+];
+---
+<ToolLayout
+  slug="stoppur"
+  title="Stoppur online — Tidtagning i webbläsaren | Klocka.com"
+  description="Gratis online stoppur med varvtider. Starta, pausa och återställ — fungerar direkt i webbläsaren."
+  howToSteps={howToSteps}
+>
+  <p slot="intro">Mät tid exakt — starta, pausa, ta varvtider och återställ med ett klick.</p>
+
+  <div slot="tool">
+    <p style="text-align:center;color:var(--color-ink-muted);padding:2rem 0">Stoppur — kommer snart</p>
+  </div>
+
+  <Fragment slot="content">
+    <h2>Om stoppuret</h2>
+    <p>
+      Ett stoppur är det enklaste och mest direkta sättet att mäta förfluten tid. Det används överallt — från
+      idrottsevenemang och kökstidurar till produktivitetstester och vetenskapliga experiment. Med Klocka.coms
+      onlinestoppur behöver du inte ladda ner någon app. Öppna sidan, tryck på Starta och mätningen börjar direkt.
+    </p>
+    <p>
+      Varvtidsfunktionen gör det möjligt att notera delsträckor utan att stoppa klockan. Det är praktiskt om du
+      springer ett lopp och vill jämföra hur lång tid varje kilometerpassage tog, eller om du arbetar med ett projekt
+      och vill bryta ner det i mätbara etapper.
+    </p>
+    <p>
+      Stoppuret fungerar i alla moderna webbläsare på dator och mobil. Tidmätningen sker med
+      <code>performance.now()</code> för hög precision, och sidan kräver ingen inloggning eller kontoregistrering.
+    </p>
+  </Fragment>
+</ToolLayout>

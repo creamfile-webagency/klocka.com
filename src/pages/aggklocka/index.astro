@@ -1,0 +1,43 @@
+---
+import ToolLayout from '@/layouts/ToolLayout.astro';
+
+const howToSteps = [
+  { name: 'Välj tillagningstid', text: 'Välj ett förinställt alternativ — löskokt, medium eller hårdkokt — eller ange din egen tid.' },
+  { name: 'Starta', text: 'Klicka på Starta direkt när du lägger ner ägget i vattnet.' },
+  { name: 'Vänta på larmet', text: 'Klockan larmar när tiden är ute — ta upp ägget och lägg det i kallt vatten om du vill stoppa tillagningen.' },
+];
+---
+<ToolLayout
+  slug="aggklocka"
+  title="Äggklocka online — Gratis kökstimer | Klocka.com"
+  description="Gratis äggklocka och kökstimer online. Ange tid och starta — fungerar direkt i webbläsaren."
+  howToSteps={howToSteps}
+>
+  <p slot="intro">Välj koktid för ditt ägg eller ange en egen tid — klockan larmar när det är klart.</p>
+
+  <div slot="tool">
+    <p style="text-align:center;color:var(--color-ink-muted);padding:2rem 0">Äggklocka — kommer snart</p>
+  </div>
+
+  <Fragment slot="content">
+    <h2>Om äggklockan</h2>
+    <p>
+      Äggklockan är kanske det mest klassiska exemplet på en nedräkningstimer — enkel, konkret och omedelbart
+      användbar. Skillnaden mellan ett perfekt löskokt ägg och ett hårdkokt handlar om bara några minuter,
+      och det är precis den typen av precision en bra kökstimer ger dig. Klocka.coms äggklocka erbjuder
+      snabbval för de vanligaste koktiderna men låter dig också ange exakt hur många minuter och sekunder
+      du vill ha.
+    </p>
+    <p>
+      Som tumregel gäller för ägg (medelstora, rakt ur kylen, lagda i redan kokande vatten): löskokt
+      ca 6 minuter, medium ca 8 minuter och hårdkokt ca 10–11 minuter. Vill du ha ett mjukkokt ägg med
+      fast vit men flytande gula, sikta på 7 minuter. Kom ihåg att lägga ner ägget försiktigt med en sked
+      för att undvika sprickor.
+    </p>
+    <p>
+      Äggklockan fungerar lika bra som en generell kökstimer. Pasta, ris, grönsaker i ångkorg eller
+      kaffebryggning — ange önskad tid och starta. Larmet aktiveras via webbläsarens ljudsystem, utan
+      att du behöver ladda ner en app eller skapa ett konto.
+    </p>
+  </Fragment>
+</ToolLayout>

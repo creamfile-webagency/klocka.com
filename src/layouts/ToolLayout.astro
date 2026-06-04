@@ -1,0 +1,103 @@
+---
+/**
+ * ToolLayout — template for all 7 V1 tool pages.
+ * Usage: import ToolLayout, pass tool metadata; put the interactive island in <slot name="tool">
+ * and the prose explanation in <slot name="content">.
+ *
+ * Schema (SoftwareApplication + HowTo) is assembled here from props.
+ */
+import Layout from '@/layouts/Layout.astro';
+
+export interface ToolMeta {
+  /** Tool slug, e.g. "stoppur" */
+  slug: string;
+  /** Page title */
+  title: string;
+  /** Meta description */
+  description: string;
+  /** HowTo steps for JSON-LD */
+  howToSteps?: { name: string; text: string }[];
+  /** Optional OG image override */
+  ogImage?: string;
+}
+
+interface Props extends ToolMeta {}
+
+const { title, description, howToSteps, ogImage } = Astro.props;
+
+const schemas: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: title.split('|')[0]?.trim() ?? title,
+    url: `https://klocka.com${Astro.url.pathname}`,
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'SEK' },
+    description,
+    inLanguage: 'sv-SE',
+    provider: { '@type': 'Organization', name: 'Klocka.com', url: 'https://klocka.com' },
+  },
+];
+
+if (howToSteps?.length) {
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `Så använder du ${title.split('|')[0]?.trim() ?? title}`,
+    step: howToSteps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  });
+}
+---
+
+<Layout {title} {description} ogType="website" schema={schemas} ogImage={ogImage}>
+  <div class="page-tool">
+    <div class="tool-header">
+      <h1 set:html={title.split('|')[0]?.trim() ?? title} />
+      <slot name="intro" />
+    </div>
+
+    <!-- Interactive island -->
+    <div class="tool-card">
+      <slot name="tool" />
+    </div>
+
+    <!-- Prose explanation -->
+    <article class="tool-content prose">
+      <slot name="content" />
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .page-tool {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+  }
+  .tool-header {
+    text-align: center;
+    max-width: 44rem;
+  }
+  .tool-header h1 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-3);
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+  }
+  @media (min-width: 640px) { .tool-header h1 { font-size: var(--text-4xl); } }
+  .tool-content {
+    width: 100%;
+    max-width: var(--max-w-prose);
+  }
+</style>

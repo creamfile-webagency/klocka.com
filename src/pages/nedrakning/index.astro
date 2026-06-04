@@ -1,0 +1,41 @@
+---
+import ToolLayout from '@/layouts/ToolLayout.astro';
+
+const howToSteps = [
+  { name: 'Ange tid', text: 'Skriv in det antal minuter och sekunder du vill räkna ner från.' },
+  { name: 'Starta', text: 'Klicka på Starta eller tryck Enter för att sätta igång nedräkningen.' },
+  { name: 'Pausa', text: 'Klicka på Pausa om du behöver hålla kvar återstående tid.' },
+  { name: 'Larm', text: 'När timern når noll spelas ett larm och en notis visas i webbläsaren.' },
+];
+---
+<ToolLayout
+  slug="nedrakning"
+  title="Nedräkningstimer online — Räkna ner tid | Klocka.com"
+  description="Gratis nedräkningstimer med larm. Ange din tid och starta räkna-ner klockan."
+  howToSteps={howToSteps}
+>
+  <p slot="intro">Ange önskad tid, tryck Starta — timern räknar ner och larmar när det är klart.</p>
+
+  <div slot="tool">
+    <p style="text-align:center;color:var(--color-ink-muted);padding:2rem 0">Nedräkningstimer — kommer snart</p>
+  </div>
+
+  <Fragment slot="content">
+    <h2>Om nedräkningstimern</h2>
+    <p>
+      En nedräkningstimer räknar bakåt från ett valfritt startvärde och larmar när noll nås. Det är ett
+      oumbärligt verktyg i köket — för pasta, ägg eller ugnsrätter — men används lika mycket i klassrum,
+      på gymmet och vid workshops där talartider behöver hållas.
+    </p>
+    <p>
+      Till skillnad från ett stoppur vet du hela tiden exakt hur lång tid du har kvar, inte hur lång tid som
+      gått. Det gör nedräkningstimern idealisk i situationer där slutpunkten är det viktiga: när ska
+      brödet ut ur ugnen, hur länge är det kvar av lektionen, hur mycket tid återstår av presentationen?
+    </p>
+    <p>
+      Klocka.coms nedräkningstimer kräver ingen app och inget konto. Ange minuter och sekunder, tryck
+      Starta och timern sköter resten. Larmet aktiveras med webbläsarens Web Audio API — inget ljud
+      laddas ner från servern.
+    </p>
+  </Fragment>
+</ToolLayout>

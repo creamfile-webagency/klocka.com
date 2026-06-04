@@ -1,0 +1,44 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+// Buying guides organized by category — V2 content coming
+const categories = [
+  { label: 'Herrur', desc: 'Klassiska och sportiga herrur i alla prisklasser', slug: 'herrur' },
+  { label: 'Damur', desc: 'Eleganta och moderna damur', slug: 'damur' },
+  { label: 'Sportwatch', desc: 'Robusta klockor för träning och utomhus', slug: 'sportwatch' },
+  { label: 'Smartwatch', desc: 'Smarta klockor med app-stöd och hälsofunktioner', slug: 'smartwatch' },
+];
+---
+
+<Layout
+  title="Klockor — Köpguide för klockor i alla prisklasser | Klocka.com"
+  description="Köpguider för klockor — herrur, damur, sportwatch och smartwatch. Hitta rätt klocka för din stil och budget."
+>
+  <div class="page-index">
+    <header class="index-header">
+      <h1>Klockor</h1>
+      <p>Köpguider för klockor i alla prisklasser — hitta rätt klocka för dig.</p>
+    </header>
+    <p class="coming-soon">
+      Fördjupade köpguider per kategori kommer snart. Under tiden, se våra
+      <a href="/klockmarken/">märkesguider</a>.
+    </p>
+  </div>
+</Layout>
+
+<style>
+  .page-index {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4);
+  }
+  .index-header h1 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-3);
+    letter-spacing: -0.02em;
+  }
+  .index-header p { font-size: var(--text-lg); color: var(--color-ink-muted); margin: 0 0 var(--space-6); }
+  .coming-soon { font-size: var(--text-base); color: var(--color-ink-muted); }
+  .coming-soon a { color: var(--color-accent); }
+</style>

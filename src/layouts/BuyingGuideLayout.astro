@@ -1,0 +1,283 @@
+---
+/**
+ * BuyingGuideLayout — template for brand/klockmärken buying-guide pages.
+ *
+ * Two variants, selected via `variant` prop:
+ *   A — Luxury affiliate (Chrono24, WoS, Swedish retailers)
+ *   B — Same guide + Klockrummet cross-link as secondary CTA
+ *
+ * Used by:
+ *   Bucket A: Omega, Rolex, Breitling, Patek, Longines, etc.
+ *   Bucket B: Casio, Triwa, etc. (Klockrummet stocks or has close alternative)
+ */
+import Layout from '@/layouts/Layout.astro';
+
+export interface AffiliateCta {
+  label: string;
+  href: string;
+  partner: string;
+  rel?: string;
+}
+
+export interface BuyingGuideMeta {
+  /** Brand name, e.g. "Omega" */
+  brand: string;
+  /** Bucket variant */
+  variant: 'A' | 'B';
+  /** Page title */
+  title: string;
+  /** Meta description */
+  description: string;
+  /** Hero image src */
+  heroImage?: string;
+  /** Hero image alt */
+  heroAlt?: string;
+  /** Short brand intro blurb for the hero */
+  heroIntro: string;
+  /** Price range string, e.g. "10 000 – 150 000 kr" */
+  priceRange?: string;
+  /** Affiliate CTAs for Bucket A */
+  affiliateCtas?: AffiliateCta[];
+  /** Klockrummet CTA for Bucket B */
+  klockrummetCta?: { href: string; label: string };
+  /** JSON-LD Article schema override */
+  articleSchema?: Record<string, unknown>;
+}
+
+interface Props extends BuyingGuideMeta {}
+
+const {
+  brand,
+  variant,
+  title,
+  description,
+  heroImage,
+  heroAlt,
+  heroIntro,
+  priceRange,
+  affiliateCtas = [],
+  klockrummetCta,
+  articleSchema,
+} = Astro.props;
+
+const schema: Record<string, unknown>[] = [
+  articleSchema ?? {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url: `https://klocka.com${Astro.url.pathname}`,
+    inLanguage: 'sv-SE',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Klocka.com',
+      url: 'https://klocka.com',
+    },
+  },
+];
+---
+
+<Layout {title} {description} ogType="article" schema={schema} ogImage={heroImage}>
+  <div class="guide-page">
+
+    <!-- Hero -->
+    <header class="guide-hero">
+      <div class="guide-hero-inner">
+        <nav class="breadcrumb" aria-label="Brödsmulor">
+          <a href="/">Hem</a>
+          <span aria-hidden="true">›</span>
+          <a href="/klockmarken/">Klockmärken</a>
+          <span aria-hidden="true">›</span>
+          <span aria-current="page">{brand}</span>
+        </nav>
+        <h1>{title.split('|')[0]?.trim() ?? title}</h1>
+        <p class="guide-intro">{heroIntro}</p>
+        {priceRange && (
+          <p class="price-badge">
+            <span class="price-label">Prisintervall</span>
+            <span class="price-value">{priceRange}</span>
+          </p>
+        )}
+      </div>
+      {heroImage && (
+        <div class="guide-hero-img">
+          <img src={heroImage} alt={heroAlt ?? `${brand} klockor`} width="600" height="400" loading="eager" decoding="async" />
+        </div>
+      )}
+    </header>
+
+    <!-- Affiliate CTAs: Bucket A -->
+    {variant === 'A' && affiliateCtas.length > 0 && (
+      <section class="cta-section" aria-label="Köpguide">
+        <div class="affiliate-cta">
+          <div class="affiliate-label">Köp {brand} i Sverige</div>
+          <div class="cta-grid">
+            {affiliateCtas.map(({ label, href, partner, rel }) => (
+              <a
+                href={href}
+                class="btn btn-primary"
+                target="_blank"
+                rel={rel ?? 'noopener nofollow sponsored'}
+                aria-label={`${label} — öppnas i ny flik`}
+              >
+                {label}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                </svg>
+              </a>
+            ))}
+          </div>
+          <p class="affiliate-disclaimer">* Klocka.com tjänar provision på köp via dessa länkpartners. Priset för dig är oförändrat.</p>
+        </div>
+      </section>
+    )}
+
+    <!-- Klockrummet CTA: Bucket B (secondary) -->
+    {variant === 'B' && klockrummetCta && (
+      <aside class="klockrummet-aside" aria-label="Alternativ i lägre prisklass">
+        <p class="klockrummet-label">Letar du efter ett budgetalternativ?</p>
+        <a
+          href={klockrummetCta.href}
+          class="btn btn-secondary"
+          target="_blank"
+          rel="noopener"
+        >
+          {klockrummetCta.label}
+        </a>
+        <p class="klockrummet-caption">Via Klockrummet.se — vi samäger båda sajterna</p>
+      </aside>
+    )}
+
+    <!-- Article body -->
+    <article class="guide-body prose">
+      <slot />
+    </article>
+
+    <!-- Bottom CTA (repeat) -->
+    {variant === 'A' && affiliateCtas.length > 0 && (
+      <section class="cta-section cta-section--bottom" aria-label="Köplänkar">
+        <div class="affiliate-cta">
+          <div class="affiliate-label">Hitta din {brand}</div>
+          <div class="cta-grid">
+            {affiliateCtas.map(({ label, href, partner, rel }) => (
+              <a href={href} class="btn btn-primary" target="_blank" rel={rel ?? 'noopener nofollow sponsored'}>
+                {label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+  </div>
+</Layout>
+
+<style>
+  .guide-page {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  /* Hero */
+  .guide-hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    align-items: start;
+  }
+  @media (min-width: 768px) {
+    .guide-hero { grid-template-columns: 1fr auto; }
+    .guide-hero-img { width: 320px; }
+  }
+  @media (min-width: 1024px) {
+    .guide-hero-img { width: 420px; }
+  }
+
+  .guide-hero-img img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    object-fit: cover;
+    box-shadow: var(--shadow-md);
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-4);
+  }
+  .breadcrumb a { color: var(--color-ink-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-accent); }
+
+  .guide-hero-inner h1 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-4);
+    letter-spacing: -0.02em;
+  }
+  @media (min-width: 640px) { .guide-hero-inner h1 { font-size: var(--text-4xl); } }
+
+  .guide-intro {
+    font-size: var(--text-lg);
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--space-4);
+    max-width: var(--max-w-prose);
+  }
+
+  .price-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    font-size: var(--text-sm);
+  }
+  .price-label { color: var(--color-ink-muted); font-weight: 500; }
+  .price-value { font-weight: 700; }
+
+  /* CTA */
+  .cta-section { max-width: var(--max-w-prose); }
+  .cta-section--bottom { margin-top: var(--space-4); }
+  .cta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+  .affiliate-disclaimer {
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+    margin: var(--space-3) 0 0;
+  }
+
+  /* Klockrummet aside */
+  .klockrummet-aside {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    max-width: var(--max-w-prose);
+  }
+  .klockrummet-label {
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin: 0 0 var(--space-3);
+  }
+  .klockrummet-caption {
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+    margin: var(--space-2) 0 0;
+  }
+
+  /* Guide body */
+  .guide-body { max-width: var(--max-w-prose); }
+</style>

@@ -1,0 +1,43 @@
+---
+import ToolLayout from '@/layouts/ToolLayout.astro';
+
+const howToSteps = [
+  { name: 'Ange total tid', text: 'Skriv in hur lång tid din presentation eller ditt tal ska vara.' },
+  { name: 'Starta', text: 'Klicka på Starta när du börjar tala — klockan räknar ner från angiven tid.' },
+  { name: 'Övervaka', text: 'Klockan byter färg när du passerar halva tiden och varnar när det är lite tid kvar.' },
+  { name: 'Pausa vid behov', text: 'Pausa klockan om frågor eller oväntade avbrott förlänger sessionen.' },
+];
+---
+<ToolLayout
+  slug="presentation"
+  title="Presentationsklocka online — Håll koll på din tid | Klocka.com"
+  description="Gratis presentationsklocka för föreläsningar och tal. Se hur mycket tid du har kvar på scen."
+  howToSteps={howToSteps}
+>
+  <p slot="intro">Ange din talartid, tryck Starta — klockan visar hur mycket tid du har kvar på scen.</p>
+
+  <div slot="tool">
+    <p style="text-align:center;color:var(--color-ink-muted);padding:2rem 0">Presentationsklocka — kommer snart</p>
+  </div>
+
+  <Fragment slot="content">
+    <h2>Om presentationsklockan</h2>
+    <p>
+      Att hålla sig inom sin tilldelade tid är en av de svåraste delarna av en presentation. Utan en synlig timer
+      är det lätt att lägga för lång tid på de inledande bilderna och stressa igenom slutet — eller tvärtom.
+      En presentationsklocka ger dig en konstant visuell signal om hur lång tid du har kvar, så att du kan
+      anpassa tempot längs vägen.
+    </p>
+    <p>
+      Klocka.coms presentationsklocka visar återstående tid med tydlig typografi avsedd att synas på ett bord
+      eller i ett hörn av skärmen. Färgen ändras gradvis — grön när det är gott om tid, gul i mitten av
+      presentationen och röd när du närmar dig slutet. På så sätt får du en intuitiv känsla för tid utan att
+      behöva läsa av siffror.
+    </p>
+    <p>
+      Verktyget passar lika bra för konferenstal och TED-liknande framträdanden som för klassrumsföredrag,
+      podcastinspelningar och videomanus. Öppna det i en flik eller ett separat fönster bredvid ditt
+      presentationsprogram och du har alltid koll på klockan.
+    </p>
+  </Fragment>
+</ToolLayout>

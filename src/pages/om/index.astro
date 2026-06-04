@@ -1,0 +1,36 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout
+  title="Om Klocka.com — Gratis tidverktyg för svenska webbläsaren"
+  description="Klocka.com är ett verktygsbibliotek med gratis schackklocka, stoppur, timer och mer — allt direkt i webbläsaren."
+>
+  <div class="page-about prose">
+    <h1>Om Klocka.com</h1>
+    <p>
+      Klocka.com är ett bibliotek med gratis tidverktyg som fungerar direkt i webbläsaren.
+      Inget konto. Ingen app. Inga cookies. Allt lagras lokalt på din enhet.
+    </p>
+    <h2>Våra verktyg</h2>
+    <ul>
+      <li><a href="/schackklocka/">Schackklocka</a> — Fischer &amp; Bronstein tillägg</li>
+      <li><a href="/stoppur/">Stoppur</a> — precisionsstoppur med varvtider</li>
+      <li><a href="/nedrakning/">Nedräkningstimer</a> — räkna ner med larm</li>
+      <li><a href="/pomodoro/">Pomodoroklocka</a> — 25/5-tekniken</li>
+      <li><a href="/interval/">Intervallklocka</a> — träningsintervaller</li>
+      <li><a href="/presentation/">Presentationsklocka</a> — håll koll på scen</li>
+      <li><a href="/aggklocka/">Äggklocka</a> — snabb köksTimer</li>
+    </ul>
+    <h2>Kontakt</h2>
+    <p>Frågor? Mejla <a href="mailto:hej@klocka.com">hej@klocka.com</a>.</p>
+  </div>
+</Layout>
+
+<style>
+  .page-about {
+    max-width: var(--max-w-prose);
+    margin-inline: auto;
+    padding: var(--space-12) var(--space-4);
+  }
+</style>

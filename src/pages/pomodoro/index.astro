@@ -1,0 +1,43 @@
+---
+import ToolLayout from '@/layouts/ToolLayout.astro';
+
+const howToSteps = [
+  { name: 'Välj uppgift', text: 'Bestäm vilken uppgift du ska fokusera på under nästa session.' },
+  { name: 'Starta klockan', text: 'Klicka på Starta för att sätta igång 25-minuterstimern.' },
+  { name: 'Arbeta fokuserat', text: 'Jobba utan avbrott tills timern larmar efter 25 minuter.' },
+  { name: 'Ta paus', text: 'Ta en kort paus på 5 minuter. Var fjärde session ges en längre paus på 15–30 minuter.' },
+];
+---
+<ToolLayout
+  slug="pomodoro"
+  title="Pomodoroklocka online — 25/5 Pomodoro-tekniken | Klocka.com"
+  description="Gratis pomodoroklocka för fokus och produktivitet. 25 minuter arbete, 5 minuter paus."
+  howToSteps={howToSteps}
+>
+  <p slot="intro">Jobba fokuserat i 25 minuter, vila i 5 — Pomodoro-tekniken direkt i webbläsaren.</p>
+
+  <div slot="tool">
+    <p style="text-align:center;color:var(--color-ink-muted);padding:2rem 0">Pomodoroklocka — kommer snart</p>
+  </div>
+
+  <Fragment slot="content">
+    <h2>Vad är Pomodoro-tekniken?</h2>
+    <p>
+      Pomodoro-tekniken är en tidshanteringsmetod skapad av Francesco Cirillo på slutet av 1980-talet. Namnet
+      kommer från den tomatkformade kökstiduret han använde som student. Metoden bygger på ett enkelt
+      mönster: arbeta fokuserat i 25 minuter (ett "pomodoro"), ta sedan en kort paus på 5 minuter. Var fjärde
+      session ersätts den korta pausen av en längre rast på 15–30 minuter.
+    </p>
+    <p>
+      Forskning kring fokus och kognition visar att hjärnan presterar bättre när arbete bryts upp i avgränsade
+      block med obligatoriska återhämtningsperioder. Den tickande timern skapar också ett litet
+      tryck — en känsla av att man "racear mot klockan" — som kan motverka prokrastinering och hålla
+      koncentrationen uppe.
+    </p>
+    <p>
+      Klocka.coms pomodoroklocka hanterar sessionsräkning och pausbyten automatiskt. Du behöver inte hålla
+      reda på om det är en kort eller lång paustur — klockan vet det. Allt du behöver göra är att välja vad
+      du ska jobba med och trycka Starta.
+    </p>
+  </Fragment>
+</ToolLayout>

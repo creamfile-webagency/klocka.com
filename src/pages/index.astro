@@ -1,0 +1,168 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const tools = [
+  { href: '/schackklocka/', label: 'Schackklocka', desc: 'Fischer & Bronstein tillägg', icon: '♟' },
+  { href: '/stoppur/', label: 'Stoppur', desc: 'Tidtagning med varvtider', icon: '⏱' },
+  { href: '/nedrakning/', label: 'Nedräkningstimer', desc: 'Räkna ner till noll', icon: '⏳' },
+  { href: '/pomodoro/', label: 'Pomodoroklocka', desc: '25/5-tekniken för fokus', icon: '🍅' },
+  { href: '/interval/', label: 'Intervallklocka', desc: 'Träning & intervalltimer', icon: '🔔' },
+  { href: '/presentation/', label: 'Presentationsklocka', desc: 'Håll koll på din tid på scen', icon: '🎤' },
+  { href: '/aggklocka/', label: 'Äggklocka', desc: 'Snabb köksTimer', icon: '🥚' },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Klocka.com',
+  url: 'https://klocka.com',
+  description: 'Gratis tidverktyg och klockor online — schackklocka, stoppur, timer och mer',
+  inLanguage: 'sv-SE',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: 'https://klocka.com/?q={search_term_string}' },
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+
+<Layout
+  title="Klocka.com — Gratis tidverktyg online"
+  description="Gratis schackklocka, stoppur, nedräkningstimer, pomodoroklocka och mer. Alla verktyg fungerar direkt i webbläsaren — ingen nedladdning."
+  schema={schema}
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Tidverktyg direkt i webbläsaren</h1>
+      <p class="hero-sub">
+        Gratis schackklocka, stoppur, timer och mer — fungerar direkt, utan app.
+        Välj ett verktyg nedan.
+      </p>
+    </div>
+  </section>
+
+  <!-- Tools grid -->
+  <section class="tools-section">
+    <div class="section-inner">
+      <h2 class="section-heading">Välj verktyg</h2>
+      <ul class="tools-grid" role="list">
+        {tools.map(({ href, label, desc, icon }) => (
+          <li>
+            <a href={href} class="tool-card-link">
+              <span class="tool-icon" aria-hidden="true">{icon}</span>
+              <span class="tool-name">{label}</span>
+              <span class="tool-desc">{desc}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Pitch -->
+  <section class="pitch-section">
+    <div class="section-inner pitch-inner">
+      <div class="pitch-block">
+        <h2>Snabba, rena verktyg</h2>
+        <p>Inget konto. Ingen app. Allt lagras lokalt i din webbläsare. Fungerar offline.</p>
+      </div>
+      <div class="pitch-block">
+        <h2>Optimerade för mobil</h2>
+        <p>Stora, pekfingervänliga ytor. Tangentbordsgenvägar för desktopmestare.</p>
+      </div>
+      <div class="pitch-block">
+        <h2>Öppna för inbäddning</h2>
+        <p>Alla verktyg kan snart bäddas in på din sajt — free with backlink.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--color-ink) 0%, color-mix(in srgb, var(--color-ink) 85%, var(--color-accent)) 100%);
+    color: #fff;
+    padding: var(--space-16) var(--space-4);
+  }
+  .hero-inner {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: clamp(var(--text-3xl), 5vw, 3.5rem);
+    font-weight: 700;
+    margin: 0 0 var(--space-4);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .hero-sub {
+    font-size: var(--text-lg);
+    color: color-mix(in srgb, #fff 75%, var(--color-ink));
+    max-width: 40rem;
+    margin-inline: auto;
+    margin-bottom: 0;
+  }
+
+  .section-inner {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+    padding: var(--space-12) var(--space-4);
+  }
+  .section-heading {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-8);
+    letter-spacing: -0.01em;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tool-card-link {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--color-ink);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    height: 100%;
+  }
+  .tool-card-link:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+  .tool-icon { font-size: var(--text-3xl); line-height: 1; }
+  .tool-name { font-size: var(--text-base); font-weight: 700; }
+  .tool-desc { font-size: var(--text-sm); color: var(--color-ink-muted); }
+
+  .pitch-section {
+    background: var(--color-surface-2);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .pitch-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-8);
+  }
+  .pitch-block h2 {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    margin: 0 0 var(--space-2);
+  }
+  .pitch-block p { font-size: var(--text-sm); color: var(--color-ink-muted); margin: 0; }
+</style>

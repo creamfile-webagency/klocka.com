@@ -1,0 +1,41 @@
+---
+import ToolLayout from '@/layouts/ToolLayout.astro';
+
+const howToSteps = [
+  { name: 'Ange arbetstid', text: 'Ställ in hur många sekunder varje arbetsintervall ska vara, t.ex. 40 sekunder.' },
+  { name: 'Ange paustid', text: 'Ställ in hur lång vilointervallet ska vara, t.ex. 20 sekunder.' },
+  { name: 'Välj antal rundor', text: 'Ange hur många intervaller du vill genomföra i ett pass.' },
+  { name: 'Starta', text: 'Klicka på Starta — klockan växlar automatiskt mellan arbete och vila och larmar vid varje byte.' },
+];
+---
+<ToolLayout
+  slug="interval"
+  title="Intervallklocka online — Träningsintervaller | Klocka.com"
+  description="Gratis intervallklocka för träning. Anpassa arbets- och paustider efter ditt träningsprogram."
+  howToSteps={howToSteps}
+>
+  <p slot="intro">Ange dina arbets- och vilointervaller, starta — klockan sköter resten av passet.</p>
+
+  <div slot="tool">
+    <p style="text-align:center;color:var(--color-ink-muted);padding:2rem 0">Intervallklocka — kommer snart</p>
+  </div>
+
+  <Fragment slot="content">
+    <h2>Om intervallklockan</h2>
+    <p>
+      Intervallträning — HIIT, Tabata, EMOM eller egna upplägg — kräver att du vet exakt när arbets- och
+      vilofaser börjar och slutar. Att titta på en vanlig klocka eller försöka räkna sekunder i huvudet fungerar
+      dåligt när du är andfådd och fokuserad på rörelsen. En dedikerad intervallklocka tar bort det problemet
+      helt.
+    </p>
+    <p>
+      Med Klocka.coms intervallklocka ställer du in arbetstid, vilotid och antal rundor en gång, sedan larmar
+      klockan vid varje fas­byte. Du hör när du ska köra hårt och när du ska vila — utan att behöva kika på
+      skärmen mitt i en burpee. Klockan visar tydligt vilken fas du är i och hur många rundor som återstår.
+    </p>
+    <p>
+      Verktyget är lika användbart för styrketräning, löpintervaller, boxning, yoga och stretchroutiner.
+      Klassisk Tabata — 20 sekunder arbete, 10 sekunder vila, 8 rundor — ställer du in på under tio sekunder.
+    </p>
+  </Fragment>
+</ToolLayout>

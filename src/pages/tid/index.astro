@@ -1,0 +1,121 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+// V2 launch list — top 20 countries by Swedish search demand for "tid i [country]"
+const countries = [
+  { slug: 'usa', label: 'USA', city: 'New York', timezone: 'America/New_York', offset: '-5' },
+  { slug: 'thailand', label: 'Thailand', city: 'Bangkok', timezone: 'Asia/Bangkok', offset: '+7' },
+  { slug: 'spanien', label: 'Spanien', city: 'Madrid', timezone: 'Europe/Madrid', offset: '+1' },
+  { slug: 'turkiet', label: 'Turkiet', city: 'Istanbul', timezone: 'Europe/Istanbul', offset: '+3' },
+  { slug: 'japan', label: 'Japan', city: 'Tokyo', timezone: 'Asia/Tokyo', offset: '+9' },
+  { slug: 'dubai', label: 'Dubai', city: 'Dubai', timezone: 'Asia/Dubai', offset: '+4' },
+  { slug: 'australien', label: 'Australien', city: 'Sydney', timezone: 'Australia/Sydney', offset: '+10' },
+  { slug: 'frankrike', label: 'Frankrike', city: 'Paris', timezone: 'Europe/Paris', offset: '+1' },
+  { slug: 'kina', label: 'Kina', city: 'Peking', timezone: 'Asia/Shanghai', offset: '+8' },
+  { slug: 'indien', label: 'Indien', city: 'Mumbai', timezone: 'Asia/Kolkata', offset: '+5:30' },
+  { slug: 'brasilien', label: 'Brasilien', city: 'São Paulo', timezone: 'America/Sao_Paulo', offset: '-3' },
+  { slug: 'kanada', label: 'Kanada', city: 'Toronto', timezone: 'America/Toronto', offset: '-5' },
+  { slug: 'sydkorea', label: 'Sydkorea', city: 'Seoul', timezone: 'Asia/Seoul', offset: '+9' },
+  { slug: 'mexiko', label: 'Mexiko', city: 'Mexico City', timezone: 'America/Mexico_City', offset: '-6' },
+  { slug: 'egypten', label: 'Egypten', city: 'Kairo', timezone: 'Africa/Cairo', offset: '+2' },
+  { slug: 'grekland', label: 'Grekland', city: 'Aten', timezone: 'Europe/Athens', offset: '+2' },
+  { slug: 'marocko', label: 'Marocko', city: 'Casablanca', timezone: 'Africa/Casablanca', offset: '+1' },
+  { slug: 'indonesia', label: 'Indonesien', city: 'Jakarta', timezone: 'Asia/Jakarta', offset: '+7' },
+  { slug: 'singapore', label: 'Singapore', city: 'Singapore', timezone: 'Asia/Singapore', offset: '+8' },
+  { slug: 'sydafrika', label: 'Sydafrika', city: 'Johannesburg', timezone: 'Africa/Johannesburg', offset: '+2' },
+];
+---
+
+<Layout
+  title="Tid i världen — Klockan just nu i alla länder | Klocka.com"
+  description="Kolla vad klockan är i olika länder just nu. Tid i USA, Thailand, Spanien, Japan och 20+ länder — uppdateras i realtid."
+>
+  <div class="page-index">
+    <header class="index-header">
+      <h1>Tid i världen</h1>
+      <p>Kolla vad klockan är just nu i populära resmål och länder — uppdateras automatiskt.</p>
+    </header>
+
+    <ul class="country-grid" role="list" id="country-grid">
+      {countries.map(({ slug, label, city, timezone, offset }) => (
+        <li>
+          <a href={`/tid/${slug}/`} class="country-card" data-timezone={timezone}>
+            <span class="country-name">{label}</span>
+            <span class="country-city">{city}</span>
+            <span class="country-time" aria-label={`Klockan i ${label}`}>--:--</span>
+            <span class="country-offset">UTC{offset}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>
+
+<script>
+  function tick() {
+    const cards = document.querySelectorAll<HTMLElement>('.country-card[data-timezone]');
+    const now = new Date();
+    cards.forEach(card => {
+      const tz = card.dataset.timezone;
+      if (!tz) return;
+      try {
+        const timeEl = card.querySelector('.country-time');
+        if (timeEl) {
+          timeEl.textContent = now.toLocaleTimeString('sv-SE', {
+            timeZone: tz,
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          });
+        }
+      } catch { /* unsupported tz */ }
+    });
+  }
+  tick();
+  setInterval(tick, 10000);
+</script>
+
+<style>
+  .page-index {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4);
+  }
+  .index-header { margin-bottom: var(--space-8); }
+  .index-header h1 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-3);
+    letter-spacing: -0.02em;
+  }
+  .index-header p { font-size: var(--text-lg); color: var(--color-ink-muted); margin: 0; }
+
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .country-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  }
+  .country-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-md);
+  }
+  .country-name { font-weight: 700; font-size: var(--text-base); }
+  .country-city { font-size: var(--text-xs); color: var(--color-ink-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .country-time { font-size: var(--text-2xl); font-weight: 700; font-variant-numeric: tabular-nums; margin: var(--space-1) 0; }
+  .country-offset { font-size: var(--text-xs); color: var(--color-ink-muted); }
+</style>

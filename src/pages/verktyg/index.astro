@@ -1,0 +1,87 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const tools = [
+  { href: '/schackklocka/', label: 'Schackklocka', desc: 'Online schackklocka med Fischer & Bronstein tillägg. Klicka på din timer för att byta spelare.', icon: '♟', clicks: 30 },
+  { href: '/stoppur/', label: 'Stoppur', desc: 'Precisionsstoppur med varvtider. Starta med ett knapptryck.', icon: '⏱', clicks: 26 },
+  { href: '/presentation/', label: 'Presentationsklocka', desc: 'Håll koll på din tid under föreläsningar och presentationer.', icon: '🎤', clicks: 23 },
+  { href: '/interval/', label: 'Intervallklocka', desc: 'Timerfunktion för träningsintervaller och pauscykler.', icon: '🔔', clicks: 22 },
+  { href: '/pomodoro/', label: 'Pomodoroklocka', desc: 'Pomodoro-tekniken: 25 minuter fokus, 5 minuter paus.', icon: '🍅', clicks: 21 },
+  { href: '/nedrakning/', label: 'Nedräkningstimer', desc: 'Nedräkningstimer med larmfunktion — sätt din tid och kör.', icon: '⏳', clicks: 8 },
+  { href: '/aggklocka/', label: 'Äggklocka', desc: 'Snabb köksTimer för perfekta ägg — och allt annat i köket.', icon: '🥚', clicks: 4 },
+];
+---
+
+<Layout
+  title="Verktyg — Gratis tidverktyg online | Klocka.com"
+  description="Alla gratis tidverktyg på Klocka.com: schackklocka, stoppur, nedräkningstimer, pomodoroklocka, intervallklocka, presentationsklocka och äggklocka."
+>
+  <div class="page-index">
+    <header class="index-header">
+      <h1>Verktyg</h1>
+      <p>Sju gratis tidverktyg — direkt i webbläsaren, utan app eller konto.</p>
+    </header>
+    <ul class="tools-list" role="list">
+      {tools.map(({ href, label, desc, icon }) => (
+        <li>
+          <a href={href} class="tool-row">
+            <span class="tool-row-icon" aria-hidden="true">{icon}</span>
+            <span class="tool-row-body">
+              <span class="tool-row-name">{label}</span>
+              <span class="tool-row-desc">{desc}</span>
+            </span>
+            <svg class="tool-row-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .page-index {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4);
+  }
+  .index-header { margin-bottom: var(--space-8); }
+  .index-header h1 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-3);
+    letter-spacing: -0.02em;
+  }
+  .index-header p { font-size: var(--text-lg); color: var(--color-ink-muted); margin: 0; }
+
+  .tools-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .tool-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  }
+  .tool-row:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-md);
+  }
+  .tool-row-icon { font-size: var(--text-2xl); flex-shrink: 0; }
+  .tool-row-body { flex: 1; display: flex; flex-direction: column; gap: var(--space-1); }
+  .tool-row-name { font-weight: 600; font-size: var(--text-base); }
+  .tool-row-desc { font-size: var(--text-sm); color: var(--color-ink-muted); }
+  .tool-row-arrow { flex-shrink: 0; color: var(--color-ink-muted); }
+</style>

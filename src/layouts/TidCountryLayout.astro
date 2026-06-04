@@ -1,0 +1,244 @@
+---
+/**
+ * TidCountryLayout — V2 /tid/[country]/ page template.
+ * Parameterised shell. At H1, the slot content can be empty.
+ * Actual time data will be populated by a client-side island.
+ *
+ * URL pattern: /tid/[country-slug]/  (e.g. /tid/frankrike/, /tid/usa/)
+ */
+import Layout from '@/layouts/Layout.astro';
+
+export interface TidCountryMeta {
+  /** Country name in Swedish, e.g. "Frankrike" */
+  country: string;
+  /** Country slug for URL, e.g. "frankrike" */
+  slug: string;
+  /** IANA time zone, e.g. "Europe/Paris" */
+  timezone: string;
+  /** Capital or primary city in Swedish, e.g. "Paris" */
+  city: string;
+  /** Meta title */
+  title: string;
+  /** Meta description */
+  description: string;
+  /** UTC offset string, e.g. "+2" (used for display before JS hydrates) */
+  utcOffset: string;
+}
+
+interface Props extends TidCountryMeta {}
+
+const {
+  country,
+  slug,
+  timezone,
+  city,
+  title,
+  description,
+  utcOffset,
+} = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: `https://klocka.com/tid/${slug}/`,
+  inLanguage: 'sv-SE',
+  about: {
+    '@type': 'Country',
+    name: country,
+  },
+};
+---
+
+<Layout {title} {description} schema={schema}>
+  <div class="tid-page">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Brödsmulor">
+      <a href="/">Hem</a>
+      <span aria-hidden="true">›</span>
+      <a href="/tid/">Tid i världen</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">{country}</span>
+    </nav>
+
+    <!-- Hero clock -->
+    <header class="tid-hero">
+      <h1>Vad är klockan i {country} just nu?</h1>
+      <p class="tid-city-label">{city} · UTC{utcOffset}</p>
+
+      <!-- Live clock island -->
+      <div class="tid-clock-wrap" aria-live="polite" aria-atomic="true">
+        <div class="tid-clock" id="live-clock" data-timezone={timezone}>
+          <span class="clock-display" id="tid-time" aria-label={`Nuvarande tid i ${country}`}>--:--:--</span>
+          <span class="tid-date" id="tid-date"></span>
+        </div>
+      </div>
+
+      <!-- Static comparison row (populated by slot or left for V2 content) -->
+      <div class="tid-vs-row">
+        <div class="tid-vs-cell">
+          <span class="tid-vs-label">Sverige (Stockholm)</span>
+          <span class="tid-vs-time" id="tid-sweden-time">--:--</span>
+        </div>
+        <span class="tid-vs-sep" aria-hidden="true">·</span>
+        <div class="tid-vs-cell">
+          <span class="tid-vs-label">{country} ({city})</span>
+          <span class="tid-vs-time" id="tid-country-time">--:--</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content slot — editorial (empty at H1 is fine) -->
+    <article class="tid-body prose">
+      <slot />
+    </article>
+
+    <!-- Related countries (populated by parent page or left for V2) -->
+    <aside class="tid-related">
+      <h2 class="tid-related-heading">Fler tider</h2>
+      <slot name="related" />
+    </aside>
+  </div>
+</Layout>
+
+<!-- Live clock script — vanilla, no deps -->
+<script define:vars={{ timezone, country }}>
+  function padTwo(n) { return n < 10 ? '0' + n : String(n); }
+
+  const timeEl = document.getElementById('tid-time');
+  const dateEl = document.getElementById('tid-date');
+  const swedenTimeEl = document.getElementById('tid-sweden-time');
+  const countryTimeEl = document.getElementById('tid-country-time');
+
+  function tick() {
+    const now = new Date();
+
+    // Country time
+    try {
+      const ctOpts = { timeZone: timezone, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+      const dateOpts = { timeZone: timezone, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      if (timeEl) timeEl.textContent = now.toLocaleTimeString('sv-SE', ctOpts);
+      if (dateEl) dateEl.textContent = now.toLocaleDateString('sv-SE', dateOpts);
+      if (countryTimeEl) countryTimeEl.textContent = now.toLocaleTimeString('sv-SE', { timeZone: timezone, hour: '2-digit', minute: '2-digit', hour12: false });
+    } catch (e) {
+      if (timeEl) timeEl.textContent = 'Tidzon ej tillgänglig';
+    }
+
+    // Sweden time
+    if (swedenTimeEl) {
+      swedenTimeEl.textContent = now.toLocaleTimeString('sv-SE', { timeZone: 'Europe/Stockholm', hour: '2-digit', minute: '2-digit', hour12: false });
+    }
+  }
+
+  tick();
+  const id = setInterval(tick, 1000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) clearInterval(id);
+  });
+</script>
+
+<style>
+  .tid-page {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+  .breadcrumb a { color: var(--color-ink-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-accent); }
+
+  /* Hero */
+  .tid-hero {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .tid-hero h1 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  @media (min-width: 640px) { .tid-hero h1 { font-size: var(--text-4xl); } }
+  .tid-city-label {
+    font-size: var(--text-base);
+    color: var(--color-ink-muted);
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* Clock */
+  .tid-clock-wrap {
+    background: var(--color-ink);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8) var(--space-12);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 280px;
+    box-shadow: var(--shadow-lg);
+  }
+  .tid-clock .clock-display {
+    color: #ffffff;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+  .tid-date {
+    font-size: var(--text-sm);
+    color: color-mix(in srgb, #fff 60%, var(--color-ink));
+    text-transform: capitalize;
+  }
+
+  /* Sweden vs Country row */
+  .tid-vs-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-6);
+  }
+  .tid-vs-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .tid-vs-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-ink-muted);
+  }
+  .tid-vs-time {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .tid-vs-sep { color: var(--color-border); font-size: var(--text-xl); }
+
+  /* Body & related */
+  .tid-body { max-width: var(--max-w-prose); }
+  .tid-related { max-width: var(--max-w-prose); }
+  .tid-related-heading {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-4);
+  }
+</style>

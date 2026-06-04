@@ -1,0 +1,52 @@
+---
+import TidCountryLayout from '@/layouts/TidCountryLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { country: 'usa' }, props: { country: 'USA', city: 'New York', timezone: 'America/New_York', utcOffset: '-5', title: 'Tid i USA — Klockan i New York just nu | Klocka.com', description: 'Kolla vad klockan är i USA (New York) just nu. Tid i USA live, jämfört med Sverige.' } },
+    { params: { country: 'thailand' }, props: { country: 'Thailand', city: 'Bangkok', timezone: 'Asia/Bangkok', utcOffset: '+7', title: 'Tid i Thailand — Klockan i Bangkok just nu | Klocka.com', description: 'Vad är klockan i Thailand just nu? Bangkok-tid live, jämfört med Sverige.' } },
+    { params: { country: 'spanien' }, props: { country: 'Spanien', city: 'Madrid', timezone: 'Europe/Madrid', utcOffset: '+1', title: 'Tid i Spanien — Klockan i Madrid just nu | Klocka.com', description: 'Vad är klockan i Spanien just nu? Madrid-tid live.' } },
+    { params: { country: 'turkiet' }, props: { country: 'Turkiet', city: 'Istanbul', timezone: 'Europe/Istanbul', utcOffset: '+3', title: 'Tid i Turkiet — Klockan i Istanbul just nu | Klocka.com', description: 'Vad är klockan i Turkiet just nu? Istanbul-tid live.' } },
+    { params: { country: 'japan' }, props: { country: 'Japan', city: 'Tokyo', timezone: 'Asia/Tokyo', utcOffset: '+9', title: 'Tid i Japan — Klockan i Tokyo just nu | Klocka.com', description: 'Vad är klockan i Japan just nu? Tokyo-tid live.' } },
+    { params: { country: 'dubai' }, props: { country: 'Dubai', city: 'Dubai', timezone: 'Asia/Dubai', utcOffset: '+4', title: 'Tid i Dubai — Klockan just nu | Klocka.com', description: 'Vad är klockan i Dubai just nu? Dubai-tid live, jämfört med Sverige.' } },
+    { params: { country: 'australien' }, props: { country: 'Australien', city: 'Sydney', timezone: 'Australia/Sydney', utcOffset: '+10', title: 'Tid i Australien — Klockan i Sydney just nu | Klocka.com', description: 'Vad är klockan i Australien just nu? Sydney-tid live.' } },
+    { params: { country: 'frankrike' }, props: { country: 'Frankrike', city: 'Paris', timezone: 'Europe/Paris', utcOffset: '+1', title: 'Tid i Frankrike — Klockan i Paris just nu | Klocka.com', description: 'Vad är klockan i Frankrike just nu? Paris-tid live.' } },
+    { params: { country: 'kina' }, props: { country: 'Kina', city: 'Peking', timezone: 'Asia/Shanghai', utcOffset: '+8', title: 'Tid i Kina — Klockan i Peking just nu | Klocka.com', description: 'Vad är klockan i Kina just nu? Pekingtid live.' } },
+    { params: { country: 'indien' }, props: { country: 'Indien', city: 'Mumbai', timezone: 'Asia/Kolkata', utcOffset: '+5:30', title: 'Tid i Indien — Klockan i Mumbai just nu | Klocka.com', description: 'Vad är klockan i Indien just nu? Indisk tid (IST) live.' } },
+    { params: { country: 'brasilien' }, props: { country: 'Brasilien', city: 'São Paulo', timezone: 'America/Sao_Paulo', utcOffset: '-3', title: 'Tid i Brasilien — Klockan i São Paulo just nu | Klocka.com', description: 'Vad är klockan i Brasilien just nu? São Paulo-tid live.' } },
+    { params: { country: 'kanada' }, props: { country: 'Kanada', city: 'Toronto', timezone: 'America/Toronto', utcOffset: '-5', title: 'Tid i Kanada — Klockan i Toronto just nu | Klocka.com', description: 'Vad är klockan i Kanada just nu? Toronto-tid live.' } },
+    { params: { country: 'sydkorea' }, props: { country: 'Sydkorea', city: 'Seoul', timezone: 'Asia/Seoul', utcOffset: '+9', title: 'Tid i Sydkorea — Klockan i Seoul just nu | Klocka.com', description: 'Vad är klockan i Sydkorea just nu? Seoul-tid live.' } },
+    { params: { country: 'mexiko' }, props: { country: 'Mexiko', city: 'Mexico City', timezone: 'America/Mexico_City', utcOffset: '-6', title: 'Tid i Mexiko — Klockan i Mexico City just nu | Klocka.com', description: 'Vad är klockan i Mexiko just nu? Mexico City-tid live.' } },
+    { params: { country: 'egypten' }, props: { country: 'Egypten', city: 'Kairo', timezone: 'Africa/Cairo', utcOffset: '+2', title: 'Tid i Egypten — Klockan i Kairo just nu | Klocka.com', description: 'Vad är klockan i Egypten just nu? Kairo-tid live.' } },
+    { params: { country: 'grekland' }, props: { country: 'Grekland', city: 'Aten', timezone: 'Europe/Athens', utcOffset: '+2', title: 'Tid i Grekland — Klockan i Aten just nu | Klocka.com', description: 'Vad är klockan i Grekland just nu? Atentid live.' } },
+    { params: { country: 'marocko' }, props: { country: 'Marocko', city: 'Casablanca', timezone: 'Africa/Casablanca', utcOffset: '+1', title: 'Tid i Marocko — Klockan i Casablanca just nu | Klocka.com', description: 'Vad är klockan i Marocko just nu? Casablanca-tid live.' } },
+    { params: { country: 'indonesia' }, props: { country: 'Indonesien', city: 'Jakarta', timezone: 'Asia/Jakarta', utcOffset: '+7', title: 'Tid i Indonesien — Klockan i Jakarta just nu | Klocka.com', description: 'Vad är klockan i Indonesien just nu? Jakarta-tid live.' } },
+    { params: { country: 'singapore' }, props: { country: 'Singapore', city: 'Singapore', timezone: 'Asia/Singapore', utcOffset: '+8', title: 'Tid i Singapore — Klockan just nu | Klocka.com', description: 'Vad är klockan i Singapore just nu? Singaporetid live.' } },
+    { params: { country: 'sydafrika' }, props: { country: 'Sydafrika', city: 'Johannesburg', timezone: 'Africa/Johannesburg', utcOffset: '+2', title: 'Tid i Sydafrika — Klockan i Johannesburg just nu | Klocka.com', description: 'Vad är klockan i Sydafrika just nu? Johannesburg-tid live.' } },
+  ];
+}
+
+interface Props {
+  country: string;
+  city: string;
+  timezone: string;
+  utcOffset: string;
+  title: string;
+  description: string;
+}
+
+const { country, city, timezone, utcOffset, title, description } = Astro.props;
+const slug = Astro.params.country;
+---
+
+<TidCountryLayout
+  {country}
+  {slug}
+  {timezone}
+  {city}
+  {title}
+  {description}
+  {utcOffset}
+>
+  <!-- Content slot: empty at H1 — ready for V2 editorial -->
+</TidCountryLayout>

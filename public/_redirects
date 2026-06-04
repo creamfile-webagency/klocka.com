@@ -1,0 +1,41 @@
+# Cloudflare Pages / Netlify redirect rules
+# Generated from url-preservation-map.csv — H2 cutover rules
+
+# ── Tool pages: URLs preserved 1:1 (no redirect needed on Astro — same paths) ──
+# /schackklocka/ -> /schackklocka/  (same URL, served by Astro)
+# /stoppur/      -> /stoppur/       (same URL)
+# /nedrakning/   -> /nedrakning/    (same URL)
+# /pomodoro/     -> /pomodoro/      (same URL)
+# /interval/     -> /interval/      (same URL)
+# /presentation/ -> /presentation/  (same URL)
+# /aggklocka/    -> /aggklocka/     (same URL)
+
+# ── Brand/marke/ -> /klockmarken/ redirects ──
+/marke/omega/         /klockmarken/omega/           301
+/marke/rolex/         /klockmarken/rolex/            301
+/marke/breitling/     /klockmarken/breitling/        301
+/marke/certina/       /klockmarken/certina/          301
+/marke/michael-kors/  /klockmarken/michael-kors/     301
+/marke/triwa/         /klockmarken/triwa/            301
+/marke/longines/      /klockmarken/longines/         301
+/marke/casio/         /klockmarken/casio/            301
+/marke/daniel-wellington/ /klockmarken/daniel-wellington/ 301
+/marke/seiko/         /klockmarken/seiko/            301
+/marke/tag-heuer/     /klockmarken/tag-heuer/        301
+/marke/hugo-boss/     /klockmarken/hugo-boss/        301
+# Catch-all for remaining /marke/* -> /klockmarken/ index
+/marke/*              /klockmarken/                  301
+
+# ── /k/ category pages -> /klockor/ ──
+/k/damklockor/        /klockor/                      301
+/k/herrklockor/       /klockor/                      301
+/k/barnklockor/       /klockor/                      301
+/k/smartwatch/        /klockor/                      301
+/k/*                  /klockor/                      301
+
+# ── Old tool aliases ──
+/appar/               /verktyg/                      301
+/tools/               /verktyg/                      301
+
+# ── WordPress pagination (no longer needed) ──
+/page/*               /                              301

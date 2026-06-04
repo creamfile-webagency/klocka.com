@@ -1,0 +1,35 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="404 — Sidan hittades inte | Klocka.com" description="Sidan du letar efter finns inte." noindex>
+  <div class="error-page">
+    <div class="error-inner">
+      <div class="error-icon" aria-hidden="true">⏰</div>
+      <h1>404 — Sidan hittades inte</h1>
+      <p>Sidan du letade efter verkar ha försvunnit. Börja om från startsidan.</p>
+      <a href="/" class="btn btn-primary">Till startsidan</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .error-page {
+    min-height: 60dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-8) var(--space-4);
+  }
+  .error-inner {
+    text-align: center;
+    max-width: 28rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .error-icon { font-size: 4rem; }
+  .error-inner h1 { font-size: var(--text-2xl); font-weight: 700; margin: 0; }
+  .error-inner p { color: var(--color-ink-muted); margin: 0; }
+</style>
