@@ -139,18 +139,11 @@ const schema: Record<string, unknown>[] = [
 
     <!-- Klockrummet CTA: Bucket B (secondary) -->
     {variant === 'B' && klockrummetCta && (
-      <aside class="klockrummet-aside" aria-label="Alternativ i lägre prisklass">
-        <p class="klockrummet-label">Letar du efter ett budgetalternativ?</p>
-        <a
-          href={klockrummetCta.href}
-          class="btn btn-secondary"
-          target="_blank"
-          rel="noopener"
-        >
-          {klockrummetCta.label}
-        </a>
-        <p class="klockrummet-caption">Via Klockrummet.se — vi samäger båda sajterna</p>
-      </aside>
+      <KlockrummetCTA
+        brand={brand}
+        klockrummetUrl={klockrummetCta.href}
+        ctaCopy={klockrummetCta.label}
+      />
     )}
 
     <!-- Article body -->
@@ -257,25 +250,6 @@ const schema: Record<string, unknown>[] = [
     flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-4);
-  }
-
-  /* Klockrummet aside */
-  .klockrummet-aside {
-    background: var(--color-surface-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
-    max-width: var(--max-w-prose);
-  }
-  .klockrummet-label {
-    font-size: var(--text-base);
-    font-weight: 600;
-    margin: 0 0 var(--space-3);
-  }
-  .klockrummet-caption {
-    font-size: var(--text-xs);
-    color: var(--color-ink-muted);
-    margin: var(--space-2) 0 0;
   }
 
   /* Guide body */
