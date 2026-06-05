@@ -119,6 +119,7 @@ const schema: Record<string, unknown>[] = [
                 target="_blank"
                 rel={rel ?? 'noopener nofollow sponsored'}
                 aria-label={`${label} — öppnas i ny flik`}
+                data-partner={partner}
               >
                 {label}
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -160,7 +161,7 @@ const schema: Record<string, unknown>[] = [
           <div class="affiliate-label">Hitta din {brand}</div>
           <div class="cta-grid">
             {affiliateCtas.map(({ label, href, partner, rel }) => (
-              <a href={href} class="btn btn-primary" target="_blank" rel={rel ?? 'noopener nofollow sponsored'}>
+              <a href={href} class="btn btn-primary" target="_blank" rel={rel ?? 'noopener nofollow sponsored'} data-partner={partner}>
                 {label}
               </a>
             ))}
@@ -170,6 +171,26 @@ const schema: Record<string, unknown>[] = [
     )}
   </div>
 </Layout>
+
+<script is:inline>
+  (function () {
+    var links = document.querySelectorAll('a[rel~="sponsored"]');
+    links.forEach(function (el) {
+      el.addEventListener('click', function () {
+        if (typeof gtag !== 'function') return;
+        var program = el.getAttribute('data-partner') || '';
+        var segments = window.location.pathname.replace(/\/+$/, '').split('/');
+        var brand_page = segments[segments.length - 1] || '';
+        var destination_url = el.getAttribute('href') || '';
+        gtag('event', 'affiliate_click', {
+          program: program,
+          brand_page: brand_page,
+          destination_url: destination_url,
+        });
+      });
+    });
+  })();
+</script>
 
 <style>
   .guide-page {
