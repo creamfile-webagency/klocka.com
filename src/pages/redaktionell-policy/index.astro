@@ -1,0 +1,92 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout
+  title="Redaktionell policy | Klocka.com"
+  description="Klocka.coms redaktionella policy — så här tar vi fram köpguider, vilka affilieringsförhållanden vi har och hur våra rekommendationer fungerar."
+>
+  <div class="page-prose prose">
+    <h1>Redaktionell policy</h1>
+    <p><strong>Senast uppdaterad:</strong> 2026</p>
+
+    <h2>Redaktionellt oberoende</h2>
+    <p>
+      Klocka.coms köpguider och rekommendationer skrivs av vårt redaktionella team. Vilka klockor,
+      märken och kategorier vi väljer att täcka — och vad vi skriver om dem — bestäms av oss,
+      inte av annonsörer eller affilierings­partners. Vi tar inte emot betalning för positiv
+      omnämning. Vi accepterar inte heller produkter i utbyte mot recensioner.
+    </p>
+
+    <h2>Affiliering och provision</h2>
+    <p>
+      Vissa länkar på Klocka.com är affilieringslänkar. Det betyder att vi kan få provision om
+      du klickar på en länk och köper en produkt — utan extra kostnad för dig. Vi använder
+      främst två typer av partners:
+    </p>
+    <ul>
+      <li>
+        <strong>Lyxsegmentet</strong> — Chrono24, Watches of Switzerland och liknande
+        andrahandsmarknader för märken som Omega, Rolex, Breitling, Longines, TAG Heuer och Seiko.
+      </li>
+      <li>
+        <strong>Populärsegmentet</strong> — Klockrummet och utvalda återförsäljare för märken
+        som Casio, Daniel Wellington och Triwa.
+      </li>
+    </ul>
+    <p>
+      Provision påverkar inte vilka klockor eller märken vi rekommenderar. Om vi anser att en
+      klocka är dålig så skriver vi det — även om det innebär att vi förlorar provision.
+    </p>
+
+    <h2>Hur vi väljer ut produkter</h2>
+    <p>
+      Vi rekommenderar klockor baserat på fyra kriterier: <strong>kvalitet</strong> (rörelse,
+      material, finish), <strong>värde för pengarna</strong> (relativt prisintervallet),
+      <strong>tillgänglighet</strong> (rimligt att köpa i Sverige eller via etablerad
+      andrahandsmarknad) och <strong>användarrelevans</strong> (passar målgruppen för respektive
+      köpguide).
+    </p>
+
+    <h2>Annonsering</h2>
+    <p>
+      Vi visar AdSense-annonser på vissa verktygssidor. Annonser är tydligt avgränsade från
+      redaktionellt innehåll och påverkar inte vilka klockor eller verktyg vi täcker.
+    </p>
+
+    <h2>Rättelser</h2>
+    <p>
+      Hittar du ett faktafel? Mejla <a href="mailto:hej@klocka.com">hej@klocka.com</a>. Vi
+      uppdaterar artikeln och anger när den senast reviderades.
+    </p>
+
+    <h2>Kontakt</h2>
+    <p>
+      Frågor om vår redaktionella policy eller våra affiliering­partners?
+      <a href="mailto:hej@klocka.com">hej@klocka.com</a>.
+    </p>
+  </div>
+</Layout>
+
+<style>
+  .page-prose {
+    max-width: 70ch;
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4);
+  }
+  .prose h1 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-4);
+    letter-spacing: -0.02em;
+  }
+  .prose h2 {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin: var(--space-6) 0 var(--space-3);
+  }
+  .prose p, .prose ul { margin: 0 0 var(--space-3); line-height: 1.65; }
+  .prose ul { padding-inline-start: var(--space-5); }
+  .prose a { color: var(--color-accent); }
+  .prose a:hover { text-decoration: underline; }
+</style>

@@ -50,9 +50,10 @@
 /k/smartwatch/        /klockor/smartwatch/           301
 /k/*                  /klockor/                      301
 
-# ── Old tool aliases ──
-/appar/               /verktyg/                      301
-/tools/               /verktyg/                      301
+# ── Tools/Appar hub URL (CRE-1478 Stream E: /app/ slug, "Appar" label) ──
+/verktyg/             /app/                          301
+/appar/               /app/                          301
+/tools/               /app/                          301
 
 # ── WordPress pagination (no longer needed) ──
 /page/*               /                              301

@@ -1,6 +1,6 @@
 ---
 const navLinks = [
-  { href: '/verktyg/', label: 'Verktyg' },
+  { href: '/app/', label: 'Appar' },
   { href: '/tid/', label: 'Tid' },
   { href: '/klockmarken/', label: 'Klockmärken' },
   { href: '/klockor/', label: 'Klockor' },
@@ -36,7 +36,7 @@ const { pathname } = Astro.url;
     <nav class="desktop-nav" aria-label="Primär navigation">
       <ul role="list">
         {navLinks.map(({ href, label }) => {
-          const isTools = href === '/verktyg/';
+          const isTools = href === '/app/';
           const isActive = pathname === href || (isTools && pathname.match(/^\/(schackklocka|stoppur|nedrakning|pomodoro|interval|presentation|aggklocka)\//));
           return (
             <li class={isTools ? 'has-dropdown' : ''}>
@@ -53,7 +53,7 @@ const { pathname } = Astro.url;
                 )}
               </a>
               {isTools && (
-                <div class="dropdown" role="menu" aria-label="Verktyg">
+                <div class="dropdown" role="menu" aria-label="Appar">
                   {toolLinks.map(({ href: toolHref, label: toolLabel }) => (
                     <a
                       href={toolHref}
@@ -91,7 +91,7 @@ const { pathname } = Astro.url;
   <!-- Mobile nav -->
   <nav id="mobile-nav" class="mobile-nav hidden" aria-label="Mobilmeny">
     <div class="mobile-nav-section">
-      <div class="mobile-nav-heading">Verktyg</div>
+      <div class="mobile-nav-heading">Appar</div>
       {toolLinks.map(({ href, label }) => (
         <a
           href={href}
@@ -101,7 +101,7 @@ const { pathname } = Astro.url;
       ))}
     </div>
     <div class="mobile-nav-section">
-      {navLinks.filter(l => l.href !== '/verktyg/').map(({ href, label }) => (
+      {navLinks.filter(l => l.href !== '/app/').map(({ href, label }) => (
         <a
           href={href}
           class:list={['mobile-nav-link', { active: pathname === href }]}
