@@ -1,12 +1,35 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 
-// Buying guides organized by category — V2 content coming
 const categories = [
-  { label: 'Herrur', desc: 'Klassiska och sportiga herrur i alla prisklasser', slug: 'herrur' },
-  { label: 'Damur', desc: 'Eleganta och moderna damur', slug: 'damur' },
-  { label: 'Sportwatch', desc: 'Robusta klockor för träning och utomhus', slug: 'sportwatch' },
-  { label: 'Smartwatch', desc: 'Smarta klockor med app-stöd och hälsofunktioner', slug: 'smartwatch' },
+  {
+    label: 'Herrur',
+    desc: 'Klassiska och sportiga herrur i alla prisklasser — från Seiko under 2 000 kr till Omega och Rolex.',
+    slug: 'herrur',
+    img: '/img/og-herrur.jpg',
+    imgAlt: 'Herrklockor — köpguide',
+  },
+  {
+    label: 'Damur',
+    desc: 'Eleganta och moderna damklockor. Daniel Wellington, Longines, Omega och mer — i alla prisklasser.',
+    slug: 'damur',
+    img: '/img/og-damklockor.jpg',
+    imgAlt: 'Damklockor — köpguide',
+  },
+  {
+    label: 'Sportwatch',
+    desc: 'GPS-klockor för löpning, triathlon och äventyr. Garmin, Polar, Suunto och Coros jämförda.',
+    slug: 'sportwatch',
+    img: '/img/og-sportwatch.jpg',
+    imgAlt: 'Sportwatch — GPS-klockor för träning',
+  },
+  {
+    label: 'Smartwatch',
+    desc: 'Smarta klockor med app-stöd, hälsofunktioner och notiser. Apple Watch vs Samsung vs Garmin.',
+    slug: 'smartwatch',
+    img: '/img/og-smartwatch.jpg',
+    imgAlt: 'Smartwatch — smarta klockor',
+  },
 ];
 ---
 
@@ -20,9 +43,24 @@ const categories = [
       <h1>Klockor</h1>
       <p>Köpguider för klockor i alla prisklasser — hitta rätt klocka för dig.</p>
     </header>
-    <p class="coming-soon">
-      Fördjupade köpguider per kategori kommer snart. Under tiden, se våra
-      <a href="/klockmarken/">märkesguider</a>.
+
+    <nav class="category-grid" aria-label="Klockategorier">
+      {categories.map(({ label, desc, slug, img, imgAlt }) => (
+        <a href={`/klockor/${slug}/`} class="category-card">
+          <div class="category-card-img">
+            <img src={img} alt={imgAlt} width="400" height="210" loading="lazy" decoding="async" />
+          </div>
+          <div class="category-card-body">
+            <h2>{label}</h2>
+            <p>{desc}</p>
+            <span class="category-cta">Läs köpguide →</span>
+          </div>
+        </a>
+      ))}
+    </nav>
+
+    <p class="brand-link">
+      Letar du efter ett specifikt märke? Se våra <a href="/klockmarken/">märkesguider</a>.
     </p>
   </div>
 </Layout>
@@ -39,7 +77,76 @@ const categories = [
     margin: 0 0 var(--space-3);
     letter-spacing: -0.02em;
   }
-  .index-header p { font-size: var(--text-lg); color: var(--color-ink-muted); margin: 0 0 var(--space-6); }
-  .coming-soon { font-size: var(--text-base); color: var(--color-ink-muted); }
-  .coming-soon a { color: var(--color-accent); }
+  .index-header p {
+    font-size: var(--text-lg);
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--space-8);
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    margin-bottom: var(--space-8);
+  }
+  @media (min-width: 640px) {
+    .category-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .category-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-md);
+  }
+
+  .category-card-img img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .category-card-body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex: 1;
+  }
+
+  .category-card-body h2 {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .category-card-body p {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .category-cta {
+    margin-top: auto;
+    padding-top: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .brand-link {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+  .brand-link a { color: var(--color-accent); }
 </style>

@@ -43,11 +43,11 @@
 # Catch-all for remaining /marke/* -> /klockmarken/ index
 /marke/*              /klockmarken/                  301
 
-# ── /k/ category pages -> /klockor/ ──
-/k/damklockor/        /klockor/                      301
-/k/herrklockor/       /klockor/                      301
+# ── /k/ category pages -> specific /klockor/ category pages ──
+/k/damklockor/        /klockor/damur/                301
+/k/herrklockor/       /klockor/herrur/               301
 /k/barnklockor/       /klockor/                      301
-/k/smartwatch/        /klockor/                      301
+/k/smartwatch/        /klockor/smartwatch/           301
 /k/*                  /klockor/                      301
 
 # ── Old tool aliases ──

@@ -22,7 +22,7 @@ export interface AffiliateCta {
 }
 
 export interface BuyingGuideMeta {
-  /** Brand name, e.g. "Omega" */
+  /** Brand or category name, e.g. "Omega" or "Damur" */
   brand: string;
   /** Bucket variant */
   variant: 'A' | 'B';
@@ -44,6 +44,8 @@ export interface BuyingGuideMeta {
   klockrummetCta?: { href: string; label: string };
   /** JSON-LD Article schema override */
   articleSchema?: Record<string, unknown>;
+  /** Breadcrumb parent override — defaults to Klockmärken /klockmarken/ */
+  breadcrumbParent?: { href: string; label: string };
 }
 
 interface Props extends BuyingGuideMeta {}
@@ -60,6 +62,7 @@ const {
   affiliateCtas = [],
   klockrummetCta,
   articleSchema,
+  breadcrumbParent = { href: '/klockmarken/', label: 'Klockmärken' },
 } = Astro.props;
 
 const schema: Record<string, unknown>[] = [
@@ -88,7 +91,7 @@ const schema: Record<string, unknown>[] = [
         <nav class="breadcrumb" aria-label="Brödsmulor">
           <a href="/">Hem</a>
           <span aria-hidden="true">›</span>
-          <a href="/klockmarken/">Klockmärken</a>
+          <a href={breadcrumbParent.href}>{breadcrumbParent.label}</a>
           <span aria-hidden="true">›</span>
           <span aria-current="page">{brand}</span>
         </nav>
