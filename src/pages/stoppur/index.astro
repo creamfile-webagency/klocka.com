@@ -4,8 +4,8 @@ import ToolLayout from '@/layouts/ToolLayout.astro';
 const howToSteps = [
   { name: 'Starta', text: 'Klicka på Starta eller tryck Space för att börja mäta tid.' },
   { name: 'Pausa', text: 'Klicka på Pausa för att tillfälligt stoppa klockan utan att nollställa.' },
-  { name: 'Varv', text: 'Klicka på Varv för att spara mellantider — klockan fortsätter löpa.' },
-  { name: 'Återställ', text: 'Klicka på Återställ för att nollställa och radera alla varvtider.' },
+  { name: 'Varv', text: 'Klicka på Varv eller tryck L för att spara mellantider — klockan fortsätter löpa.' },
+  { name: 'Återställ', text: 'Klicka på Återställ eller tryck Esc för att nollställa och radera alla varvtider.' },
 ];
 ---
 <ToolLayout
@@ -17,7 +17,30 @@ const howToSteps = [
   <p slot="intro">Kör stoppuret direkt — tryck Start, Varvtid eller Återställ. Mäter till millisekund, sparar varvtider. Ingen app krävs.</p>
 
   <div slot="tool">
-    <p style="text-align:center;color:var(--color-ink-muted);padding:2rem 0">Stoppur — kommer snart</p>
+    <!-- Timer display -->
+    <div class="sw-display" role="timer" aria-label="Stoppur">
+      <span class="sw-time clock-display" id="sw-time" aria-live="off">00:00.000</span>
+    </div>
+
+    <!-- Control buttons -->
+    <div class="sw-controls">
+      <button id="sw-start" class="btn btn-primary sw-btn" aria-label="Starta stoppuret">Starta</button>
+      <button id="sw-lap"   class="btn btn-secondary sw-btn" aria-label="Spara varvtid" disabled>Varv</button>
+      <button id="sw-reset" class="btn btn-ghost sw-btn"    aria-label="Återställ stoppuret">Återställ</button>
+    </div>
+
+    <!-- Lap list -->
+    <ol id="sw-laps" class="sw-laps" aria-label="Varvtider" hidden></ol>
+
+    <!-- Keyboard shortcuts hint -->
+    <p class="shortcuts-hint">
+      <kbd>Space</kbd> starta/pausa &nbsp;·&nbsp;
+      <kbd>L</kbd> varv &nbsp;·&nbsp;
+      <kbd>Esc</kbd> återställ
+    </p>
+
+    <!-- ARIA live region for lap announcements -->
+    <p id="sw-announce" class="sr-only" aria-live="assertive" aria-atomic="true"></p>
   </div>
 
   <Fragment slot="content">
@@ -36,5 +59,242 @@ const howToSteps = [
       Stoppuret fungerar i alla moderna webbläsare på dator och mobil. Tidmätningen sker med
       <code>performance.now()</code> för hög precision, och sidan kräver ingen inloggning eller kontoregistrering.
     </p>
+
+    <h3>Kortkommandon</h3>
+    <ul>
+      <li><kbd>Space</kbd> — starta eller pausa stoppuret</li>
+      <li><kbd>L</kbd> — spara varvtid (klockan fortsätter ticka)</li>
+      <li><kbd>Esc</kbd> — återställ och rensa alla varvtider</li>
+    </ul>
+
+    <h3>Varvtider och delsträckor</h3>
+    <p>
+      Varje gång du trycker <strong>Varv</strong> sparas både delsträckstiden (tid sedan förra varvet) och
+      totaltiden. Listan visas direkt under klockan med det senaste varvet överst. Varvtiderna sparas under
+      hela sessionen och försvinner när du återställer eller laddar om sidan.
+    </p>
   </Fragment>
 </ToolLayout>
+
+<style>
+  /* ── Stopwatch display ── */
+  .sw-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-6) 0 var(--space-4);
+    min-height: 5rem;
+  }
+  .sw-time {
+    font-size: clamp(2.5rem, 10vw, var(--text-hero));
+    letter-spacing: -0.02em;
+  }
+
+  /* ── Controls ── */
+  .sw-controls {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+  }
+  .sw-btn {
+    flex: 1;
+    max-width: 140px;
+    min-width: 88px;
+  }
+  /* Disabled lap button */
+  .sw-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .sw-btn:disabled:hover {
+    transform: none;
+  }
+
+  /* ── Lap list ── */
+  .sw-laps {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-4);
+    border-top: 1px solid var(--color-border);
+    max-height: 240px;
+    overflow-y: auto;
+  }
+  .sw-lap-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+  }
+  .lap-num {
+    font-weight: 600;
+    color: var(--color-ink-muted);
+    min-width: 4rem;
+  }
+  .lap-split {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--color-ink);
+    flex: 1;
+  }
+  .lap-total {
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink-muted);
+    font-size: var(--text-xs);
+  }
+
+  /* ── Shortcuts hint ── */
+  .shortcuts-hint {
+    text-align: center;
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+    margin: var(--space-4) 0 0;
+  }
+  kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  /* ── Accessibility ── */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border-width: 0;
+  }
+
+  /* ── Focus rings — visible for keyboard users ── */
+  .sw-btn:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  (function () {
+    const timeEl    = document.getElementById('sw-time');
+    const startBtn  = document.getElementById('sw-start') as HTMLButtonElement | null;
+    const lapBtn    = document.getElementById('sw-lap')   as HTMLButtonElement | null;
+    const resetBtn  = document.getElementById('sw-reset') as HTMLButtonElement | null;
+    const lapsList  = document.getElementById('sw-laps')  as HTMLOListElement | null;
+    const announceEl = document.getElementById('sw-announce');
+
+    if (!timeEl || !startBtn || !lapBtn || !resetBtn || !lapsList || !announceEl) return;
+
+    let running       = false;
+    let startedAt     = 0;   // performance.now() snapshot when last started
+    let accumulated   = 0;   // ms accumulated before current run
+    let rafId: number | null = null;
+    let lapBase       = 0;   // accumulated ms at last lap
+
+    // ── Helpers ──
+    function pad2(n: number) { return n < 10 ? '0' + n : String(n); }
+    function pad3(n: number) { return n < 100 ? (n < 10 ? '00' + n : '0' + n) : String(n); }
+
+    function formatTime(ms: number) {
+      const t = Math.max(0, Math.floor(ms));
+      const min  = Math.floor(t / 60000);
+      const sec  = Math.floor((t % 60000) / 1000);
+      const msec = t % 1000;
+      return `${pad2(min)}:${pad2(sec)}.${pad3(msec)}`;
+    }
+
+    function elapsed() {
+      return accumulated + (running ? performance.now() - startedAt : 0);
+    }
+
+    // ── Render loop ──
+    function tick() {
+      timeEl!.textContent = formatTime(elapsed());
+      rafId = requestAnimationFrame(tick);
+    }
+
+    // ── Actions ──
+    function start() {
+      if (running) return;
+      running = true;
+      startedAt = performance.now();
+      startBtn!.textContent = 'Pausa';
+      startBtn!.setAttribute('aria-label', 'Pausa stoppuret');
+      lapBtn!.disabled = false;
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function pause() {
+      if (!running) return;
+      accumulated += performance.now() - startedAt;
+      running = false;
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      timeEl!.textContent = formatTime(accumulated);
+      startBtn!.textContent = 'Fortsätt';
+      startBtn!.setAttribute('aria-label', 'Fortsätt stoppuret');
+    }
+
+    function reset() {
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      running     = false;
+      accumulated = 0;
+      startedAt   = 0;
+      lapBase     = 0;
+      timeEl!.textContent = '00:00.000';
+      startBtn!.textContent = 'Starta';
+      startBtn!.setAttribute('aria-label', 'Starta stoppuret');
+      lapBtn!.disabled = true;
+      lapsList!.innerHTML = '';
+      lapsList!.hidden = true;
+      announceEl!.textContent = '';
+    }
+
+    function lap() {
+      if (!running) return;
+      const now      = elapsed();
+      const split    = now - lapBase;
+      lapBase        = now;
+      const lapNum   = lapsList!.children.length + 1;
+
+      lapsList!.hidden = false;
+      const li = document.createElement('li');
+      li.className = 'sw-lap-item';
+      li.innerHTML =
+        `<span class="lap-num">Varv ${lapNum}</span>` +
+        `<span class="lap-split">${formatTime(split)}</span>` +
+        `<span class="lap-total">${formatTime(now)}</span>`;
+      lapsList!.prepend(li);
+
+      // Screen-reader announcement (assertive)
+      announceEl!.textContent = '';
+      requestAnimationFrame(() => {
+        announceEl!.textContent = `Varv ${lapNum}: ${formatTime(split)}`;
+      });
+    }
+
+    // ── Event listeners ──
+    startBtn.addEventListener('click', () => running ? pause() : start());
+    lapBtn.addEventListener('click', lap);
+    resetBtn.addEventListener('click', reset);
+
+    document.addEventListener('keydown', (e) => {
+      const tag = (document.activeElement as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        running ? pause() : start();
+      } else if (e.key === 'l' || e.key === 'L') {
+        e.preventDefault();
+        if (running) lap();
+      } else if (e.code === 'Escape') {
+        e.preventDefault();
+        reset();
+      }
+    });
+  })();
+</script>
