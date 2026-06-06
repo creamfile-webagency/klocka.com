@@ -23,6 +23,23 @@
 /marke/seiko/         /klockmarken/seiko/            301
 /marke/tag-heuer/     /klockmarken/tag-heuer/        301
 /marke/hugo-boss/     /klockmarken/hugo-boss/        301
+# Legacy brand URLs with GSC traffic — 302 until H2-P1 brand pages ship, then flip to 301
+/marke/james-son/     /klockmarken/                  302
+/marke/black-oak/     /klockmarken/                  302
+/marke/tory-burch/    /klockmarken/                  302
+/marke/marc-jacobs/   /klockmarken/                  302
+/marke/diesel/        /klockmarken/                  302
+/marke/calvin-klein/  /klockmarken/                  302
+/marke/anne-klein/    /klockmarken/                  302
+/marke/carl-edmond/   /klockmarken/                  302
+/marke/axcent/        /klockmarken/                  302
+/marke/philippe-banks/ /klockmarken/                 302
+/marke/grand-seiko/   /klockmarken/                  302
+/marke/karl-lagerfeld/ /klockmarken/                 302
+/marke/thomas-sabo/   /klockmarken/                  302
+/marke/tommy-hilfiger/ /klockmarken/                 302
+/marke/tendence/      /klockmarken/                  302
+/marke/rhythm/        /klockmarken/                  302
 # Catch-all for remaining /marke/* -> /klockmarken/ index
 /marke/*              /klockmarken/                  301
 
