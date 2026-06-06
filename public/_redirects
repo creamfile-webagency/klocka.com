@@ -10,6 +10,15 @@
 # /presentation/ -> /presentation/  (same URL)
 # /aggklocka/    -> /aggklocka/     (same URL)
 
+# ── /app/<tool>/ aliases — root stays canonical (GSC equity), /app/ form 301s back ──
+/app/schackklocka/    /schackklocka/                 301
+/app/stoppur/         /stoppur/                      301
+/app/nedrakning/      /nedrakning/                   301
+/app/pomodoro/        /pomodoro/                     301
+/app/interval/        /interval/                     301
+/app/presentation/    /presentation/                 301
+/app/aggklocka/       /aggklocka/                    301
+
 # ── Brand/marke/ -> /klockmarken/ redirects ──
 /marke/omega/         /klockmarken/omega/           301
 /marke/rolex/         /klockmarken/rolex/            301

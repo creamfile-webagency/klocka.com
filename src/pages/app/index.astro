@@ -13,14 +13,19 @@ const tools = [
 ---
 
 <Layout
-  title="Appar — Gratis tidappar online | Klocka.com"
-  description="Alla gratis tidappar på Klocka.com: schackklocka, stoppur, nedräkningstimer, pomodoroklocka, intervallklocka, presentationsklocka och äggklocka."
+  title="Appar — Gratis timers, stoppur och tidappar online | Klocka.com"
+  description="Sju gratis tidappar online — schackklocka, stoppur, nedräkningstimer, Pomodoro-timer, intervalltimer, presentationstimer och äggklocka. Inga installationer, inga konton — bara öppna och kör i webbläsaren."
 >
   <div class="page-index">
     <header class="index-header">
       <h1>Appar</h1>
-      <p>Sju gratis tidappar — direkt i webbläsaren, utan installation eller konto.</p>
+      <p class="index-lead">
+        Sju kostnadsfria <strong>tidappar</strong> — alla våra <strong>timers</strong> och
+        <strong>time tools</strong> körs direkt i webbläsaren. Ingen nedladdning, inget konto,
+        ingen reklam i själva appen. Välj en app nedan och kör direkt.
+      </p>
     </header>
+
     <ul class="tools-list" role="list">
       {tools.map(({ href, label, desc, icon }) => (
         <li>
@@ -37,6 +42,65 @@ const tools = [
         </li>
       ))}
     </ul>
+
+    <section class="page-prose prose">
+      <h2>Webbappar för tid och tidtagning</h2>
+      <p>
+        Alla appar på Klocka.com är byggda som <strong>progressive web apps</strong> —
+        snabba JavaScript-timers med millisekundsprecision via <code>performance.now()</code>.
+        Inställningar sparas lokalt i webbläsaren via <code>localStorage</code>, så nästa
+        gång du öppnar en app hittar du den exakt som du lämnade den. Inget moln, ingen
+        spårning av personuppgifter.
+      </p>
+
+      <h2>Vilken timer passar dig?</h2>
+      <ul>
+        <li>
+          <strong>Schackklocka</strong> — för schackpartier med tidsbegränsning. Stöder
+          både Fischer- och Bronstein-tillägg.
+        </li>
+        <li>
+          <strong>Stoppur</strong> — för tidtagning med varvtider. Springer du, lagar mat
+          eller mäter responstid?
+        </li>
+        <li>
+          <strong>Nedräkningstimer</strong> — sätt en tid, få ett larm. Klassisk
+          kitchen timer i webbläsaren.
+        </li>
+        <li>
+          <strong>Pomodoro-timer</strong> — för Pomodoro-tekniken: 25 minuters fokus
+          följt av 5 minuters paus.
+        </li>
+        <li>
+          <strong>Intervalltimer</strong> — för HIIT, Tabata och annan intervallträning
+          med konfigurerbara arbets- och vilopass.
+        </li>
+        <li>
+          <strong>Presentationstimer</strong> — för föreläsare som vill hålla koll på
+          tid på scen utan att titta på telefonen.
+        </li>
+        <li>
+          <strong>Äggklocka</strong> — kökstimer med preset för löskokt, mellankokt och
+          hårdkokt ägg.
+        </li>
+      </ul>
+
+      <h2>Varför öppna en webbapp istället för att ladda ner?</h2>
+      <p>
+        Mobilappar tar plats, kräver uppdateringar och spårar dig. En timer i
+        webbläsaren startar på en sekund, fungerar i bakgrunden (många stöder
+        Wake Lock API), och uppdateras automatiskt när vi förbättrar dem. Bookmarka
+        sidan på din hemskärm så får du en "app"-genväg utan att installera något.
+      </p>
+
+      <h2>Alla appar är gratis</h2>
+      <p>
+        Klocka.com finansieras via diskreta AdSense-annonser bredvid (inte i) appen
+        och affilieringslänkar i våra köpguider för klockor. Se vår
+        <a href="/redaktionell-policy/">redaktionella policy</a>. Apparna i sig är
+        helt gratis — utan inloggning, utan begränsningar, utan abonnemang.
+      </p>
+    </section>
   </div>
 </Layout>
 
@@ -53,7 +117,29 @@ const tools = [
     margin: 0 0 var(--space-3);
     letter-spacing: -0.02em;
   }
-  .index-header p { font-size: var(--text-lg); color: var(--color-ink-muted); margin: 0; }
+  .index-lead { font-size: var(--text-lg); color: var(--color-ink-muted); margin: 0; max-width: 64ch; }
+  .index-lead strong { color: var(--color-ink); font-weight: 600; }
+
+  .page-prose {
+    max-width: 64ch;
+    margin-top: var(--space-10);
+  }
+  .page-prose h2 {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin: var(--space-6) 0 var(--space-3);
+  }
+  .page-prose p, .page-prose ul { margin: 0 0 var(--space-3); line-height: 1.65; }
+  .page-prose ul { padding-inline-start: var(--space-5); }
+  .page-prose a { color: var(--color-accent); }
+  .page-prose a:hover { text-decoration: underline; }
+  .page-prose code {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    background: var(--color-surface-2);
+    padding: 0 0.3em;
+    border-radius: var(--radius-sm);
+    font-size: 0.92em;
+  }
 
   .tools-list {
     list-style: none;
