@@ -2,10 +2,10 @@
 import ToolLayout from '@/layouts/ToolLayout.astro';
 
 const howToSteps = [
-  { name: 'Ange total tid', text: 'Skriv in hur lång tid din presentation eller ditt tal ska vara.' },
-  { name: 'Starta', text: 'Klicka på Starta när du börjar tala — klockan räknar ner från angiven tid.' },
-  { name: 'Övervaka', text: 'Klockan byter färg när du passerar halva tiden och varnar när det är lite tid kvar.' },
-  { name: 'Pausa vid behov', text: 'Pausa klockan om frågor eller oväntade avbrott förlänger sessionen.' },
+  { name: 'Ange total tid', text: 'Skriv in hur lång tid din presentation eller ditt tal ska vara, eller välj ett snabbval.' },
+  { name: 'Starta', text: 'Klicka på Starta (eller tryck Space) när du börjar tala — klockan räknar ner från angiven tid.' },
+  { name: 'Övervaka', text: 'Klockan byter färg vid 80 % förbrukad tid (gul) och blinkar rött i sista 10 sekunderna.' },
+  { name: 'Pausa vid behov', text: 'Tryck Pausa om frågor eller avbrott förlänger sessionen. Återstående tid sparas.' },
 ];
 ---
 <ToolLayout
@@ -16,8 +16,53 @@ const howToSteps = [
 >
   <p slot="intro">En presentationsklocka håller koll på din tid framför publiken. Välj hur länge du har — och fokusera på presentationen, inte klockan.</p>
 
-  <div slot="tool">
-    <p style="text-align:center;color:var(--color-ink-muted);padding:2rem 0">Presentationsklocka — kommer snart</p>
+  <div slot="tool" id="pres-timer" class="pres-timer stage-idle" role="timer" aria-label="Presentationsklocka">
+
+    <!-- Large countdown display -->
+    <output class="pt-display" id="pt-display" aria-live="off" aria-atomic="true">10:00</output>
+
+    <!-- Quick presets -->
+    <div class="pt-presets" role="group" aria-label="Snabbval av tid">
+      <button class="pt-preset" data-minutes="5">5 min</button>
+      <button class="pt-preset pt-preset--active" data-minutes="10">10 min</button>
+      <button class="pt-preset" data-minutes="15">15 min</button>
+      <button class="pt-preset" data-minutes="20">20 min</button>
+    </div>
+
+    <!-- Custom duration input -->
+    <div class="pt-input-row">
+      <label class="pt-input-label" for="pt-input">Egen tid</label>
+      <input
+        type="text"
+        id="pt-input"
+        class="pt-input"
+        value="10:00"
+        inputmode="numeric"
+        placeholder="mm:ss"
+        maxlength="5"
+        aria-label="Total tid i minuter och sekunder"
+      />
+    </div>
+
+    <!-- Controls -->
+    <div class="pt-controls">
+      <button id="pt-start" class="btn btn-primary">Starta</button>
+      <button id="pt-reset" class="btn btn-ghost">Återställ</button>
+    </div>
+
+    <!-- Options + wake-lock indicator -->
+    <div class="pt-options">
+      <label class="pt-option-label">
+        <input type="checkbox" id="pt-sound" checked />
+        <span>Ping-ljud</span>
+      </label>
+      <span class="pt-wakelock-status" id="pt-wakelock" aria-live="polite"></span>
+    </div>
+
+    <p class="shortcuts-hint"><kbd>Space</kbd> starta/pausa &nbsp;·&nbsp; <kbd>Esc</kbd> återställ</p>
+
+    <!-- ARIA live region for announcements -->
+    <p id="pt-announce" class="pt-sr-only" aria-live="assertive" aria-atomic="true"></p>
   </div>
 
   <Fragment slot="content">
@@ -41,3 +86,419 @@ const howToSteps = [
     </p>
   </Fragment>
 </ToolLayout>
+
+<style>
+  /* ── Presentation timer island ────────────────────────────────────────────── */
+  .pres-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    /* tool-card already has var(--space-8) padding — no extra needed */
+  }
+
+  /* Stage colour token — drives display colour + animations */
+  .pres-timer               { --pt-clr: var(--color-ink-muted); }
+  .pres-timer.stage-running  { --pt-clr: #16a34a; }   /* green-600  */
+  .pres-timer.stage-warning  { --pt-clr: #d97706; }   /* amber-600  */
+  .pres-timer.stage-critical { --pt-clr: #dc2626; }   /* red-600    */
+
+  /* ── Large countdown ── */
+  .pt-display {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: clamp(3.75rem, 16vw, 7rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--pt-clr);
+    text-align: center;
+    transition: color 0.45s ease;
+    /* fixed inline-size prevents CLS when digits change */
+    min-width: 5.5ch;
+    padding-block: var(--space-2);
+  }
+
+  @keyframes pt-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+  .pres-timer.stage-critical .pt-display {
+    animation: pt-blink 0.75s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pres-timer.stage-critical .pt-display { animation: none; }
+  }
+
+  /* ── Presets ── */
+  .pt-presets {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .pt-preset {
+    padding: var(--space-1) var(--space-4);
+    border: 1.5px solid var(--color-border);
+    border-radius: 999px;
+    background: transparent;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-ink-muted);
+    cursor: pointer;
+    min-height: 36px;
+    touch-action: manipulation;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .pt-preset:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .pt-preset--active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+
+  /* ── Custom duration input ── */
+  .pt-input-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .pt-input-label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-ink-muted);
+    white-space: nowrap;
+  }
+  .pt-input {
+    width: 5.5rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-ink);
+    background: var(--color-surface);
+    text-align: center;
+    min-height: 44px;
+  }
+  .pt-input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+    border-color: var(--color-accent);
+  }
+
+  /* ── Controls ── */
+  .pt-controls {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+  .pt-controls .btn { min-width: 110px; }
+
+  /* ── Options row ── */
+  .pt-options {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    min-height: 1.5em; /* prevent shift when wake-lock status appears */
+  }
+  .pt-option-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+    user-select: none;
+  }
+  .pt-wakelock-status {
+    font-size: var(--text-xs);
+    opacity: 0.8;
+  }
+
+  /* ── Keyboard hint ── */
+  .shortcuts-hint {
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+    margin: 0;
+    text-align: center;
+  }
+  kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  .pt-sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border-width: 0;
+  }
+</style>
+
+<script>
+  (function () {
+    // ── Elements ────────────────────────────────────────────────────────────
+    const container   = document.getElementById('pres-timer') as HTMLElement | null;
+    const displayEl   = document.getElementById('pt-display');
+    const inputEl     = document.getElementById('pt-input') as HTMLInputElement | null;
+    const startBtn    = document.getElementById('pt-start') as HTMLButtonElement | null;
+    const resetBtn    = document.getElementById('pt-reset') as HTMLButtonElement | null;
+    const soundToggle = document.getElementById('pt-sound') as HTMLInputElement | null;
+    const wakelockEl  = document.getElementById('pt-wakelock');
+    const announceEl  = document.getElementById('pt-announce');
+    const presets     = document.querySelectorAll<HTMLButtonElement>('.pt-preset');
+
+    if (!container || !displayEl || !inputEl || !startBtn || !resetBtn) return;
+
+    // ── Audio ────────────────────────────────────────────────────────────────
+    function synth(freq: number, dur: number, vol = 0.3) {
+      if (!soundToggle?.checked) return;
+      try {
+        const AC = window.AudioContext ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        if (!AC) return;
+        const ctx = new AC();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sine'; osc.frequency.value = freq;
+        gain.gain.setValueAtTime(vol, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+        osc.start(); osc.stop(ctx.currentTime + dur);
+      } catch { /* ignore — permissions or unsupported */ }
+    }
+
+    const pingWarning  = () => synth(660, 0.28, 0.28);
+    const pingCritical = () => { synth(880, 0.15); setTimeout(() => synth(880, 0.15), 230); };
+    const pingDone     = () => { synth(440, 0.6, 0.35); setTimeout(() => synth(440, 0.6, 0.35), 720); };
+
+    // ── Wake Lock ────────────────────────────────────────────────────────────
+    let wakeLock: { release(): Promise<void> } | null = null;
+
+    async function acquireWakeLock() {
+      const nav = navigator as typeof navigator & { wakeLock?: { request(t: string): Promise<{ release(): Promise<void>; addEventListener(e: string, cb: () => void): void }> } };
+      if (!nav.wakeLock) {
+        if (wakelockEl) wakelockEl.textContent = 'Skärmlås stöds ej';
+        return;
+      }
+      try {
+        const sentinel = await nav.wakeLock.request('screen');
+        wakeLock = sentinel;
+        if (wakelockEl) wakelockEl.textContent = '🔆 Skärmen hålls aktiv';
+        sentinel.addEventListener('release', () => {
+          wakeLock = null;
+          if (wakelockEl) wakelockEl.textContent = '';
+        });
+      } catch {
+        if (wakelockEl) wakelockEl.textContent = 'Skärmlås ej tillgängligt';
+      }
+    }
+
+    function releaseWakeLock() {
+      wakeLock?.release().catch(() => {});
+      wakeLock = null;
+      if (wakelockEl) wakelockEl.textContent = '';
+    }
+
+    // Re-acquire if the page becomes visible while running
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && running) acquireWakeLock();
+    });
+
+    // ── Duration helpers ─────────────────────────────────────────────────────
+    function parseDuration(raw: string): number | null {
+      const s = raw.trim();
+      const withColon = s.match(/^(\d{1,3}):([0-5]\d)$/);
+      if (withColon) return parseInt(withColon[1], 10) * 60 + parseInt(withColon[2], 10);
+      const bare = s.match(/^(\d{1,3})$/);
+      if (bare) return parseInt(bare[1], 10) * 60;
+      return null;
+    }
+
+    function fmtTime(sec: number): string {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    // ── State ────────────────────────────────────────────────────────────────
+    let totalSeconds = 600;
+    let remaining    = 600;
+    let running      = false;
+    let rafId: number | null = null;
+    let lastTs: number | null = null;
+
+    let warnPinged = false;
+    let critPinged = false;
+    let donePinged = false;
+
+    type Stage = 'idle' | 'running' | 'warning' | 'critical' | 'done';
+    let currentStage: Stage = 'idle';
+
+    function setStage(next: Stage) {
+      if (next === currentStage) return;
+      currentStage = next;
+      container!.className = `pres-timer stage-${next}`;
+    }
+
+    function computeStage(): Stage {
+      if (remaining <= 0) return 'done';
+      if (remaining <= 10) return 'critical';
+      const pctElapsed = (totalSeconds - remaining) / totalSeconds;
+      if (pctElapsed >= 0.8) return 'warning';
+      return 'running';
+    }
+
+    function updateDisplay() {
+      displayEl!.textContent = fmtTime(remaining);
+      displayEl!.setAttribute('aria-label', `${fmtTime(remaining)} kvar`);
+    }
+
+    function announce(msg: string) {
+      if (!announceEl) return;
+      announceEl.textContent = '';
+      requestAnimationFrame(() => { announceEl.textContent = msg; });
+    }
+
+    // ── Timer loop ───────────────────────────────────────────────────────────
+    function loop(ts: number) {
+      if (!running) return;
+      if (lastTs === null) lastTs = ts;
+
+      const elapsed = ts - lastTs;
+      const secs = Math.floor(elapsed / 1000);
+
+      if (secs >= 1) {
+        remaining = Math.max(0, remaining - secs);
+        lastTs = ts - (elapsed % 1000);
+
+        updateDisplay();
+
+        const stage = computeStage();
+        const prev  = currentStage;
+        setStage(stage);
+
+        // Stage-transition audio cues
+        if (stage === 'warning'  && prev === 'running' && !warnPinged) { pingWarning();  warnPinged = true; }
+        if (stage === 'critical' && prev !== 'critical' && !critPinged) { pingCritical(); critPinged = true; }
+
+        if (remaining <= 0) {
+          running = false;
+          if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+          if (!donePinged) { pingDone(); donePinged = true; }
+          startBtn!.textContent = 'Starta';
+          releaseWakeLock();
+          announce('Presentationstiden är slut!');
+          return;
+        }
+      }
+
+      rafId = requestAnimationFrame(loop);
+    }
+
+    // ── Controls ─────────────────────────────────────────────────────────────
+    function startTimer() {
+      if (running || remaining <= 0) return;
+      running = true;
+      lastTs  = null;
+      startBtn!.textContent = 'Pausa';
+      setStage(computeStage());
+      acquireWakeLock();
+      rafId = requestAnimationFrame(loop);
+      announce('Klockan startad');
+    }
+
+    function pauseTimer() {
+      if (!running) return;
+      running = false;
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      lastTs = null;
+      startBtn!.textContent = 'Starta';
+      releaseWakeLock();
+      announce('Pausad');
+    }
+
+    function toggleTimer() { running ? pauseTimer() : startTimer(); }
+
+    function resetTimer() {
+      running = false;
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      lastTs     = null;
+      remaining  = totalSeconds;
+      warnPinged = false;
+      critPinged = false;
+      donePinged = false;
+      startBtn!.textContent = 'Starta';
+      setStage('idle');
+      releaseWakeLock();
+      updateDisplay();
+      if (announceEl) announceEl.textContent = '';
+    }
+
+    function applyDuration(seconds: number) {
+      totalSeconds = seconds;
+      remaining    = seconds;
+      inputEl!.value = fmtTime(seconds);
+      const mins = seconds / 60;
+      presets.forEach(b => {
+        const isMatch = parseInt(b.dataset.minutes ?? '0', 10) === mins;
+        b.classList.toggle('pt-preset--active', isMatch);
+      });
+      warnPinged = false;
+      critPinged = false;
+      donePinged = false;
+      setStage('idle');
+      updateDisplay();
+    }
+
+    // ── Event wiring ──────────────────────────────────────────────────────────
+    startBtn.addEventListener('click', toggleTimer);
+    resetBtn.addEventListener('click', resetTimer);
+
+    presets.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (running) pauseTimer();
+        applyDuration(parseInt(btn.dataset.minutes ?? '10', 10) * 60);
+      });
+    });
+
+    inputEl.addEventListener('blur', () => {
+      const parsed = parseDuration(inputEl.value);
+      if (parsed && parsed > 0) {
+        if (running) pauseTimer();
+        applyDuration(parsed);
+      } else {
+        inputEl.value = fmtTime(totalSeconds);
+      }
+    });
+
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
+    });
+
+    // Strip non-numeric/colon chars while typing
+    inputEl.addEventListener('input', () => {
+      inputEl.value = inputEl.value.replace(/[^0-9:]/g, '');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      const tag = (document.activeElement as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+      if (e.code === 'Space')  { e.preventDefault(); toggleTimer(); }
+      if (e.code === 'Escape') { e.preventDefault(); resetTimer();  }
+    });
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    updateDisplay();
+  })();
+</script>
