@@ -1,3 +1,6 @@
+# ── Sitemap canonical redirect ──
+/sitemap.xml  /sitemap-index.xml  301
+
 # Cloudflare Pages / Netlify redirect rules
 # Generated from url-preservation-map.csv — H2 cutover rules
 
