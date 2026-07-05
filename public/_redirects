@@ -26,25 +26,25 @@
 /marke/omega/         /klockmarken/omega/           301
 /marke/rolex/         /klockmarken/rolex/            301
 /marke/breitling/     /klockmarken/breitling/        301
-/marke/certina/       /klockmarken/                  302
-/marke/michael-kors/  /klockmarken/                  302
+/marke/certina/       /klockmarken/certina/          301
+/marke/michael-kors/  /klockmarken/michael-kors/     301
 /marke/triwa/         /klockmarken/triwa/            301
 /marke/longines/      /klockmarken/longines/         301
 /marke/casio/         /klockmarken/casio/            301
 /marke/daniel-wellington/ /klockmarken/daniel-wellington/ 301
 /marke/seiko/         /klockmarken/seiko/            301
 /marke/tag-heuer/     /klockmarken/tag-heuer/        301
-/marke/hugo-boss/     /klockmarken/                  302
-# Legacy brand URLs with GSC traffic — 302 until H2-P1 brand pages ship, then flip to 301
+/marke/hugo-boss/     /klockmarken/hugo-boss/        301
+/marke/black-oak/     /klockmarken/black-oak/        301
+/marke/tory-burch/    /klockmarken/tory-burch/       301
+/marke/marc-jacobs/   /klockmarken/marc-jacobs/      301
+/marke/diesel/        /klockmarken/diesel/           301
+/marke/calvin-klein/  /klockmarken/calvin-klein/     301
+/marke/carl-edmond/   /klockmarken/carl-edmond/      301
+/marke/axcent/        /klockmarken/axcent/           301
+# Legacy brand URLs with GSC traffic — no brand page yet, 302 to index
 /marke/james-son/     /klockmarken/                  302
-/marke/black-oak/     /klockmarken/                  302
-/marke/tory-burch/    /klockmarken/                  302
-/marke/marc-jacobs/   /klockmarken/                  302
-/marke/diesel/        /klockmarken/                  302
-/marke/calvin-klein/  /klockmarken/                  302
 /marke/anne-klein/    /klockmarken/                  302
-/marke/carl-edmond/   /klockmarken/                  302
-/marke/axcent/        /klockmarken/                  302
 /marke/philippe-banks/ /klockmarken/                 302
 /marke/grand-seiko/   /klockmarken/                  302
 /marke/karl-lagerfeld/ /klockmarken/                 302
