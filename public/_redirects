@@ -26,15 +26,15 @@
 /marke/omega/         /klockmarken/omega/           301
 /marke/rolex/         /klockmarken/rolex/            301
 /marke/breitling/     /klockmarken/breitling/        301
-/marke/certina/       /klockmarken/certina/          301
-/marke/michael-kors/  /klockmarken/michael-kors/     301
+/marke/certina/       /klockmarken/                  302
+/marke/michael-kors/  /klockmarken/                  302
 /marke/triwa/         /klockmarken/triwa/            301
 /marke/longines/      /klockmarken/longines/         301
 /marke/casio/         /klockmarken/casio/            301
 /marke/daniel-wellington/ /klockmarken/daniel-wellington/ 301
 /marke/seiko/         /klockmarken/seiko/            301
 /marke/tag-heuer/     /klockmarken/tag-heuer/        301
-/marke/hugo-boss/     /klockmarken/hugo-boss/        301
+/marke/hugo-boss/     /klockmarken/                  302
 # Legacy brand URLs with GSC traffic — 302 until H2-P1 brand pages ship, then flip to 301
 /marke/james-son/     /klockmarken/                  302
 /marke/black-oak/     /klockmarken/                  302
