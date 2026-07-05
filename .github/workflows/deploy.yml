@@ -35,5 +35,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          wrangler-version: "3"
+          wranglerVersion: "3"
           command: pages deploy dist --project-name=klocka-com --branch=${{ github.head_ref || github.ref_name }}
