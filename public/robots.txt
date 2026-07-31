@@ -1,22 +1,26 @@
 User-agent: *
 Allow: /
 
-User-agent: Google-Extended
-Allow: /
-
+# LLM / AI crawler access — CF Webagency AEO policy
 User-agent: GPTBot
 Allow: /
 
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 User-agent: CCBot
-Disallow: /
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
 
 User-agent: Bytespider
-Disallow: /
-
-User-agent: Applebot-Extended
-Disallow: /
-
-User-agent: ClaudeBot
 Disallow: /
 
 Sitemap: https://klocka.com/sitemap-index.xml
