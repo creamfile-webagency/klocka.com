@@ -7,3 +7,7 @@ dist/
 .klocka.env
 *.klocka.env
 *.tsbuildinfo
+
+# secrets: house convention is .<site>.env — glob catches new sites automatically
+*.env
+secrets/
