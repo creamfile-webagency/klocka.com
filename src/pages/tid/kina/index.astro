@@ -1,0 +1,258 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const faqItems = [
+  {
+    question: 'Vad är Kinas tidszon?',
+    answer: 'Kina använder China Standard Time (CST), UTC+8, för hela landet.',
+  },
+  {
+    question: 'Vilken tidsskillnad är det mellan Sverige och Kina?',
+    answer: 'Sverige ligger 7 timmar efter Kina vintertid (CET, UTC+1) och 6 timmar efter sommartid (CEST, UTC+2).',
+  },
+  {
+    question: 'Har Kina bara en tidszon?',
+    answer: 'Ja. Hela fastlandskina — inklusive Tibet och Xinjiang — använder officiellt en enda tidszon, UTC+8.',
+  },
+  {
+    question: 'Vad heter klockan i Kina på kinesiska?',
+    answer: 'Tid på kinesiska är 时间 (shíjiān). "Vad är klockan?" heter 几点了 (jǐ diǎn le).',
+  },
+  {
+    question: 'Observerar Kina sommartid?',
+    answer: 'Nej. Kina avskaffade sommartid 1991 och håller sig på UTC+8 hela året.',
+  },
+];
+
+const schemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Vad är klockan i Kina nu?',
+    url: 'https://klocka.com/tid/kina/',
+    description: 'Se aktuell tid i Kina (CST, UTC+8) och lär dig tidsskillnaden mellan Sverige och Kina — 7h vintertid, 6h sommartid.',
+    inLanguage: 'sv-SE',
+    isPartOf: { '@type': 'WebSite', url: 'https://klocka.com' },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Klocka.com', item: 'https://klocka.com' },
+        { '@type': 'ListItem', position: 2, name: 'Tid i världen', item: 'https://klocka.com/tid/' },
+        { '@type': 'ListItem', position: 3, name: 'Kina', item: 'https://klocka.com/tid/kina/' },
+      ],
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
+    })),
+  },
+];
+---
+
+<Layout
+  title="Vad är klockan i Kina nu? | Klocka.com"
+  description="Se aktuell tid i Kina (CST, UTC+8) direkt i webbläsaren. Tidsskillnad Sverige–Kina: +7h vintertid, +6h sommartid. Fakta om Kinas tidszon."
+  schema={schemas}
+>
+  <div class="page-world-clock">
+    <header class="clock-header">
+      <h1>Vad är klockan i Kina nu?</h1>
+      <p class="clock-intro">
+        Kina använder <strong>China Standard Time (CST), UTC+8</strong> — en enda tidszon för hela landet.
+        Klockan nedan visar aktuell tid i Beijing, Shanghai och övriga Kina.
+      </p>
+    </header>
+
+    <div class="clock-widget" id="cst-clock" aria-label="Aktuell tid i Kina (CST)">
+      <time class="cst-time" datetime="">--:--:--</time>
+      <p class="cst-label">Kina (CST, UTC+8)</p>
+    </div>
+
+    <article class="clock-content prose">
+      <h2>Kinas tidszon — China Standard Time (CST)</h2>
+      <p>
+        Kina är ett av världens få länder med en enda officiell tidszon trots sin stora geografiska
+        bredd. China Standard Time (CST) är UTC+8 och gäller för hela fastlandskina — från den
+        östliga kusten vid Shanghai till de västra provinserna Xinjiang och Tibet.
+      </p>
+
+      <h2>Tidsskillnad mellan Sverige och Kina</h2>
+      <p>Tidsskillnaden varierar med den svenska sommartiden:</p>
+      <table>
+        <thead>
+          <tr><th>Period</th><th>Svensk tidszon</th><th>Kina är före med</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Vintertid (okt–mar)</td><td>CET (UTC+1)</td><td>+7 timmar</td></tr>
+          <tr><td>Sommartid (mar–okt)</td><td>CEST (UTC+2)</td><td>+6 timmar</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Exempel: om klockan är <strong>12:00 i Stockholm</strong> är den
+        <strong>19:00 (vintertid) eller 18:00 (sommartid) i Beijing</strong>.
+      </p>
+
+      <h2>Vanliga frågor om tid i Kina</h2>
+      <dl class="faq">
+        {faqItems.map(({ question, answer }) => (
+          <>
+            <dt>{question}</dt>
+            <dd>{answer}</dd>
+          </>
+        ))}
+      </dl>
+    </article>
+
+    <nav class="clock-nav" aria-label="Relaterade sidor">
+      <a href="/tid/">← Tid i världen</a>
+      <a href="/interval/">Intervallklocka</a>
+    </nav>
+  </div>
+</Layout>
+
+<style>
+  .page-world-clock {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .clock-header {
+    text-align: center;
+    max-width: 44rem;
+  }
+
+  .clock-header h1 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-3);
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 640px) {
+    .clock-header h1 { font-size: var(--text-4xl); }
+  }
+
+  .clock-intro {
+    font-size: var(--text-lg);
+    color: var(--color-ink-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .clock-widget {
+    width: 100%;
+    max-width: 28rem;
+    min-height: 8rem;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .clock-content {
+    width: 100%;
+    max-width: var(--max-w-prose);
+  }
+
+  .clock-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+
+  .clock-content th,
+  .clock-content td {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  .clock-content th {
+    background: var(--color-surface-2);
+    font-weight: 600;
+  }
+
+  .faq dt {
+    font-weight: 600;
+    color: var(--color-ink);
+    margin-top: var(--space-4);
+  }
+
+  .faq dd {
+    margin: var(--space-1) 0 0 0;
+    color: var(--color-ink-muted);
+  }
+
+  .clock-nav {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: var(--text-sm);
+  }
+
+  .clock-nav a {
+    color: var(--color-accent);
+    text-decoration: none;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .clock-nav a:hover {
+    background: var(--color-surface-2);
+  }
+
+  .cst-time {
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+    font-size: var(--text-5xl, 3rem);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: var(--color-ink);
+    display: block;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .cst-label {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    text-align: center;
+    margin: var(--space-2) 0 0;
+  }
+</style>
+
+<script>
+  const clockEl = document.querySelector<HTMLTimeElement>('#cst-clock time.cst-time');
+  if (clockEl) {
+    const fmt = new Intl.DateTimeFormat('sv-SE', {
+      timeZone: 'Asia/Shanghai',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    });
+    const tick = () => {
+      const now = new Date();
+      const t = fmt.format(now);
+      clockEl.textContent = t;
+      clockEl.setAttribute('datetime', now.toISOString());
+    };
+    tick();
+    setInterval(tick, 1000);
+  }
+</script>
