@@ -67,7 +67,7 @@ const schema = {
   <!-- Hero -->
   <section class="hero">
     <div class="hero-inner">
-      <h1>Allt om tid och klockor — på ett ställe</h1>
+      <h1>Klocka online – stoppur, timer och tid i världen</h1>
       <p class="hero-sub">
         Gratis tidappar, lokal tid världen över, köpguider för klockmärken och kategorier.
         Välj ett område nedan.
@@ -94,6 +94,42 @@ const schema = {
           </li>
         ))}
       </ul>
+    </div>
+  </section>
+
+  <!-- Intro + link rows -->
+  <section class="intro-section">
+    <div class="section-inner">
+      <div class="intro-body">
+        <p>Klocka.com samlar gratis tidverktyg, lokal tid från hela världen och köpguider för klockor – på ett ställe, utan installation och utan konto.</p>
+        <p><strong>Tidappar.</strong> Sju verktyg som körs direkt i webbläsaren, utan att du behöver installera något. Stoppuret sparar varvtider, nedräkningstimern räknar ner till noll och schackklockan hanterar Fischer- och Bronsteinregler. Pomodoroklockan delar din arbetsdag i 25-minutersblock, intervallklockan håller koll på träningspass och presentationsklockan visar hur mycket tid du har kvar på scen. Alla appar lagrar inställningarna lokalt i din webbläsare och fungerar offline.</p>
+        <p><strong>Tid i världen.</strong> Vad är klockan i USA, Japan eller Dubai just nu? Sidorna visar lokal tid, UTC-offset och sommartidsregler för länder i hela världen. Tabellerna räknar om tidsskillnaden mot Sverige för både sommartid och vintertid – praktiskt när du planerar möten med kollegor utomlands eller bokar resor.</p>
+        <p><strong>Köpguider.</strong> Funderar du på att köpa klocka? Guiderna täcker 20 märken – från Rolex och Omega till Seiko och Casio – och fyra kategorier: herrur, damur, sportwatch och smartwatch. Varje guide listar prisintervall, nyckelmodeller och vad du bör tänka på. Guiderna är oberoende och provisionfria.</p>
+      </div>
+      <nav class="link-row" aria-label="Tid i världen – populära länder">
+        <span class="link-row-label">Tid i världen:</span>
+        <ul role="list">
+          <li><a href="/tid/usa/">USA</a></li>
+          <li><a href="/tid/thailand/">Thailand</a></li>
+          <li><a href="/tid/spanien/">Spanien</a></li>
+          <li><a href="/tid/japan/">Japan</a></li>
+          <li><a href="/tid/kina/">Kina</a></li>
+          <li><a href="/tid/dubai/">Dubai</a></li>
+          <li><a href="/tid/turkiet/">Turkiet</a></li>
+          <li><a href="/tid/grekland/">Grekland</a></li>
+        </ul>
+      </nav>
+      <nav class="link-row" aria-label="Klockmärken – populära märken">
+        <span class="link-row-label">Klockmärken:</span>
+        <ul role="list">
+          <li><a href="/klockmarken/rolex/">Rolex</a></li>
+          <li><a href="/klockmarken/omega/">Omega</a></li>
+          <li><a href="/klockmarken/tag-heuer/">TAG Heuer</a></li>
+          <li><a href="/klockmarken/seiko/">Seiko</a></li>
+          <li><a href="/klockmarken/longines/">Longines</a></li>
+          <li><a href="/klockmarken/casio/">Casio</a></li>
+        </ul>
+      </nav>
     </div>
   </section>
 
@@ -243,6 +279,56 @@ const schema = {
     color: var(--color-ink-muted);
     align-self: center;
   }
+
+  .intro-section {
+    background: var(--color-bg, #fff);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .intro-section .section-inner {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+  .intro-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 64ch;
+    margin-bottom: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    line-height: 1.65;
+  }
+  .intro-body p { margin: 0; }
+  .intro-body strong { color: var(--color-ink); }
+
+  .link-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+  }
+  .link-row:last-child { margin-bottom: 0; }
+  .link-row-label {
+    font-weight: 600;
+    color: var(--color-ink-muted);
+    white-space: nowrap;
+  }
+  .link-row ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .link-row a {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .link-row a:hover { text-decoration: underline; }
 
   .tools-footer-cta {
     margin: var(--space-8) 0 0;
