@@ -31,7 +31,7 @@ const utmHref =
     target="_blank"
     rel="noopener"
     aria-label={`${ctaCopy} — öppnas i ny flik`}
-    data-brand={brand}
+    data-target={klockrummetUrl}
     data-placement={placement}
   >
     {ctaCopy}
@@ -77,7 +77,7 @@ const utmHref =
 document.querySelectorAll('.klockrummet-cta__btn').forEach(btn => {
   btn.addEventListener('click', () => {
     if (typeof gtag !== 'undefined') {
-      gtag('event', 'klockrummet_click', { brand: (btn as HTMLElement).dataset.brand, placement: (btn as HTMLElement).dataset.placement });
+      gtag('event', 'klockrummet_click', { placement: (btn as HTMLElement).dataset.placement, target: (btn as HTMLElement).dataset.target });
     }
   });
 });
