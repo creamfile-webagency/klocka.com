@@ -43,9 +43,17 @@ const year = new Date().getFullYear();
           <div class="footer-col-heading">Om</div>
           <ul role="list">
             <li><a href="/om/">Om Klocka.com</a></li>
+            <li><a href="/kontakt/">Kontakt</a></li>
             <li><a href="/integritetspolicy/">Integritetspolicy</a></li>
             <li><a href="/redaktionell-policy/">Redaktionell policy</a></li>
-            <li><a href="/sitemap.xml">Sitemap</a></li>
+            <li><a href="/sitemap-index.xml">Sitemap</a></li>
+            <li>
+              <button
+                type="button"
+                onclick="if(window.googlefc&&googlefc.showRevocationMessage){googlefc.showRevocationMessage();}else{window.googlefc=window.googlefc||{};googlefc.callbackQueue=googlefc.callbackQueue||[];googlefc.callbackQueue.push({CONSENT_DATA_READY:function(){googlefc.showRevocationMessage&&googlefc.showRevocationMessage();}});}"
+                class="footer-cookie-btn"
+              >Cookieinställningar</button>
+            </li>
           </ul>
         </div>
       </div>
@@ -119,6 +127,19 @@ const year = new Date().getFullYear();
     transition: color var(--transition-fast);
   }
   .footer-col a:hover { color: #fff; }
+
+  .footer-cookie-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: color-mix(in srgb, #fff 65%, var(--color-ink));
+    font-size: var(--text-sm);
+    font-family: inherit;
+    transition: color var(--transition-fast);
+    text-align: left;
+  }
+  .footer-cookie-btn:hover { color: #fff; }
 
   .footer-bottom {
     border-top: 1px solid color-mix(in srgb, #fff 15%, var(--color-ink));
