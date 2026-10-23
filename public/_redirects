@@ -1,6 +1,9 @@
 # ── Sitemap canonical redirect ──
 /sitemap.xml  /sitemap-index.xml  301
 
+# ── /tid/ slug corrections ──
+/tid/indonesia/   /tid/indonesien/   301
+
 # Cloudflare Pages / Netlify redirect rules
 # Generated from url-preservation-map.csv — H2 cutover rules
 
@@ -42,16 +45,17 @@
 /marke/calvin-klein/  /klockmarken/calvin-klein/     301
 /marke/carl-edmond/   /klockmarken/carl-edmond/      301
 /marke/axcent/        /klockmarken/axcent/           301
-# Legacy brand URLs with GSC traffic — no brand page yet, 302 to index
-/marke/james-son/     /klockmarken/                  302
-/marke/anne-klein/    /klockmarken/                  302
-/marke/philippe-banks/ /klockmarken/                 302
-/marke/grand-seiko/   /klockmarken/                  302
-/marke/karl-lagerfeld/ /klockmarken/                 302
-/marke/thomas-sabo/   /klockmarken/                  302
-/marke/tommy-hilfiger/ /klockmarken/                 302
-/marke/tendence/      /klockmarken/                  302
-/marke/rhythm/        /klockmarken/                  302
+# Legacy brand URLs — james-son + philippe-banks get own pages (CRE-7687)
+/marke/james-son/     /klockmarken/james-son/        301
+/marke/philippe-banks/ /klockmarken/philippe-banks/  301
+# Remaining legacy brands: no page planned — permanent redirect to hub
+/marke/anne-klein/    /klockmarken/                  301
+/marke/grand-seiko/   /klockmarken/                  301
+/marke/karl-lagerfeld/ /klockmarken/                 301
+/marke/thomas-sabo/   /klockmarken/                  301
+/marke/tommy-hilfiger/ /klockmarken/                 301
+/marke/tendence/      /klockmarken/                  301
+/marke/rhythm/        /klockmarken/                  301
 # Catch-all for remaining /marke/* -> /klockmarken/ index
 /marke/*              /klockmarken/                  301
 

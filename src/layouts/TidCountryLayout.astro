@@ -1,82 +1,182 @@
 ---
 /**
  * TidCountryLayout — V2 /tid/[country]/ page template.
- * Parameterised shell. At H1, the slot content can be empty.
- * Actual time data will be populated by a client-side island.
- *
- * URL pattern: /tid/[country-slug]/  (e.g. /tid/frankrike/, /tid/usa/)
+ * All content sections rendered statically at build time.
+ * Client script updates only the live clock and UTC offset display.
  */
 import Layout from '@/layouts/Layout.astro';
+import type { CountryData } from '@/data/countries';
+import { countries } from '@/data/countries';
 
-export interface TidCountryMeta {
-  /** Country name in Swedish, e.g. "Frankrike" */
-  country: string;
-  /** Country slug for URL, e.g. "frankrike" */
-  slug: string;
-  /** IANA time zone, e.g. "Europe/Paris" */
-  timezone: string;
-  /** Capital or primary city in Swedish, e.g. "Paris" */
-  city: string;
-  /** Meta title */
-  title: string;
-  /** Meta description */
-  description: string;
-  /** UTC offset string, e.g. "+2" (used for display before JS hydrates) */
-  utcOffset: string;
+interface Props {
+  data: CountryData;
 }
 
-interface Props extends TidCountryMeta {}
+const { data } = Astro.props;
 
-const {
-  country,
-  slug,
-  timezone,
-  city,
-  title,
-  description,
-  utcOffset,
-} = Astro.props;
+// ─── Build-time helpers ───────────────────────────────────────────────────
 
-const schema = {
+function getOffset(iana: string, date: Date): string {
+  const parts = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: iana,
+    timeZoneName: 'shortOffset',
+  }).formatToParts(date);
+  const raw = parts.find(p => p.type === 'timeZoneName')?.value ?? 'UTC';
+  return raw.replace(/^GMT/, 'UTC');
+}
+
+function fmtTime(iana: string, date: Date): string {
+  return new Intl.DateTimeFormat('sv-SE', {
+    timeZone: iana,
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(date);
+}
+
+// When Stockholm is 12:00: summer CEST=UTC+2 → 10:00 UTC; winter CET=UTC+1 → 11:00 UTC
+const summerRef = new Date('2026-06-21T10:00:00Z');
+const winterRef = new Date('2026-12-21T11:00:00Z');
+
+const zoneTimeSummer: Record<string, string> = {};
+const zoneTimeWinter: Record<string, string> = {};
+for (const zone of data.zones) {
+  zoneTimeSummer[zone.iana] = fmtTime(zone.iana, summerRef);
+  zoneTimeWinter[zone.iana] = fmtTime(zone.iana, winterRef);
+}
+
+// Current offset for static display (JS updates live)
+const buildOffset = getOffset(data.primaryZone, new Date());
+
+// Next DST transition (within next 366 days)
+function findNextDstChange(iana: string): Date | null {
+  const start = new Date();
+  let lastOff = getOffset(iana, start);
+  for (let d = 1; d <= 366; d++) {
+    const check = new Date(start.getTime() + d * 86_400_000);
+    const off = getOffset(iana, check);
+    if (off !== lastOff) return check;
+  }
+  return null;
+}
+
+const dstNextDate = data.dst.observes ? findNextDstChange(data.primaryZone) : null;
+const dstNextStr = dstNextDate
+  ? new Intl.DateTimeFormat('sv-SE', { dateStyle: 'long' }).format(dstNextDate)
+  : null;
+
+// Best call window: find Stockholm time for local office start/end hours
+function getCallWindow(
+  iana: string,
+  refDate: Date,
+  localStart: number,
+  localEnd: number,
+): { start: string; end: string } | null {
+  let start = '';
+  let end = '';
+  for (let h = 0; h < 48; h++) {
+    const d = new Date(refDate.getTime() + (h - 24) * 3_600_000);
+    const localH = parseInt(
+      new Intl.DateTimeFormat('sv-SE', {
+        timeZone: iana,
+        hour: '2-digit',
+        hour12: false,
+      }).format(d),
+      10,
+    );
+    const seTime = new Intl.DateTimeFormat('sv-SE', {
+      timeZone: 'Europe/Stockholm',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(d);
+    if (localH === localStart && !start) start = seTime;
+    if (localH === localEnd && !end) end = seTime;
+    if (start && end) break;
+  }
+  return start && end ? { start, end } : null;
+}
+
+const callSummer = getCallWindow(
+  data.primaryZone,
+  new Date('2026-06-21T12:00:00Z'),
+  data.officeHours.start,
+  data.officeHours.end,
+);
+const callWinter = getCallWindow(
+  data.primaryZone,
+  new Date('2026-12-21T12:00:00Z'),
+  data.officeHours.start,
+  data.officeHours.end,
+);
+
+// Neighbour country objects
+const neighbourData = data.neighbours
+  .map(slug => countries.find(c => c.slug === slug))
+  .filter(Boolean) as CountryData[];
+
+function pad(n: number) { return n.toString().padStart(2, '0'); }
+
+// Schema
+const pageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: title,
-  description,
-  url: `https://klocka.com/tid/${slug}/`,
+  name: data.title,
+  description: data.description,
+  url: `https://klocka.com/tid/${data.slug}/`,
   inLanguage: 'sv-SE',
-  about: {
-    '@type': 'Country',
-    name: country,
-  },
+  about: { '@type': 'Country', name: data.name },
+};
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Klocka.com', item: 'https://klocka.com' },
+    { '@type': 'ListItem', position: 2, name: 'Tid i världen', item: 'https://klocka.com/tid/' },
+    { '@type': 'ListItem', position: 3, name: data.name, item: `https://klocka.com/tid/${data.slug}/` },
+  ],
+};
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: data.faq.map(item => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
 };
 ---
 
-<Layout {title} {description} schema={schema} noindex={true}>
+<Layout
+  title={data.title}
+  description={data.description}
+  schema={[pageSchema, breadcrumbSchema, faqSchema]}
+>
   <div class="tid-page">
 
-    <!-- Breadcrumb -->
+    <!-- ① Breadcrumb -->
     <nav class="breadcrumb" aria-label="Brödsmulor">
       <a href="/">Hem</a>
       <span aria-hidden="true">›</span>
       <a href="/tid/">Tid i världen</a>
       <span aria-hidden="true">›</span>
-      <span aria-current="page">{country}</span>
+      <span aria-current="page">{data.name}</span>
     </nav>
 
-    <!-- Hero clock -->
+    <!-- ② Hero clock -->
     <header class="tid-hero">
-      <h1>Vad är klockan i {country} just nu?</h1>
-      <p class="tid-city-label">{city} · UTC{utcOffset}</p>
+      <h1>Vad är klockan i {data.name} just nu?</h1>
+      <p class="tid-city-label">
+        {data.city}&#160;<span id="js-offset">{buildOffset}</span>
+      </p>
 
-      <!-- Live clock island -->
       <div class="tid-clock-wrap" aria-live="polite" aria-atomic="true">
-        <div class="tid-clock" id="live-clock" data-timezone={timezone}>
-          <span class="clock-display" id="tid-time" aria-label={`Nuvarande tid i ${country}`}>--:--:--</span>
+        <div class="tid-clock" data-timezone={data.primaryZone}>
+          <span class="clock-display" id="tid-time" aria-label={`Nuvarande tid i ${data.name}`}>--:--:--</span>
           <span class="tid-date" id="tid-date"></span>
         </div>
       </div>
 
-      <!-- Static comparison row (populated by slot or left for V2 content) -->
       <div class="tid-vs-row">
         <div class="tid-vs-cell">
           <span class="tid-vs-label">Sverige (Stockholm)</span>
@@ -84,59 +184,178 @@ const schema = {
         </div>
         <span class="tid-vs-sep" aria-hidden="true">·</span>
         <div class="tid-vs-cell">
-          <span class="tid-vs-label">{country} ({city})</span>
+          <span class="tid-vs-label">{data.name} ({data.city})</span>
           <span class="tid-vs-time" id="tid-country-time">--:--</span>
         </div>
       </div>
     </header>
 
-    <!-- Content slot — editorial (empty at H1 is fine) -->
-    <article class="tid-body prose">
-      <slot />
+    <!-- ③ Offset table -->
+    <section class="tid-section prose" aria-labelledby="offset-heading">
+      <h2 id="offset-heading">Tidsskillnad Sverige – {data.name}</h2>
+      <p>
+        Tabellen visar vad klockan är i {data.name} när det är 12:00 i Sverige,
+        under sommartid (juni) respektive vintertid (december).
+      </p>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Tidzon</th>
+              <th>Städer</th>
+              <th>12:00 SE sommartid</th>
+              <th>12:00 SE vintertid</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.zones.map(zone => (
+              <tr>
+                <td><strong>{zone.label}</strong></td>
+                <td>{zone.cities.slice(0, 3).join(', ')}</td>
+                <td>{zoneTimeSummer[zone.iana]}</td>
+                <td>{zoneTimeWinter[zone.iana]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ④ All timezones (multi-zone countries only) -->
+    {data.zones.length > 1 && (
+      <section class="tid-section prose" aria-labelledby="zones-heading">
+        <h2 id="zones-heading">Tidszoner i {data.name}</h2>
+        <p>{data.name} sträcker sig över {data.zones.length} tidszoner:</p>
+        <ul class="zone-list">
+          {data.zones.map(zone => (
+            <li>
+              <strong>{zone.label}</strong>
+              {' — '}
+              {zone.cities.join(', ')}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <!-- ⑤ DST section -->
+    <section class="tid-section prose" aria-labelledby="dst-heading">
+      <h2 id="dst-heading">Sommartid i {data.name}</h2>
+      {data.dst.observes ? (
+        <>
+          <p>{data.name} observerar sommartid (DST).</p>
+          {data.dst.rule && <p>{data.dst.rule}</p>}
+          {dstNextStr && (
+            <p><strong>Nästa klockbyte:</strong> {dstNextStr}.</p>
+          )}
+        </>
+      ) : (
+        <>
+          <p>
+            {data.name} har ingen sommartid. {data.zones[0]?.label ?? 'Tidszonen'} gäller hela året utan klockbyten.
+          </p>
+          {data.dst.rule && <p>{data.dst.rule}</p>}
+        </>
+      )}
+    </section>
+
+    <!-- ⑥ Best time to call -->
+    <section class="tid-section prose" aria-labelledby="call-heading">
+      <h2 id="call-heading">Bästa tid att ringa till {data.name}</h2>
+      <p>
+        Kontorstid i {data.name} är normalt {pad(data.officeHours.start)}:00–{pad(data.officeHours.end)}:00 lokal tid.
+        Nedanstående visar motsvarande svensk tid:
+      </p>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Lokal kontorsstid</th>
+              <th>Motsvarar i Sverige</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sommartid (CEST, juni)</td>
+              <td>{pad(data.officeHours.start)}:00–{pad(data.officeHours.end)}:00</td>
+              <td>{callSummer ? `${callSummer.start}–${callSummer.end}` : '—'}</td>
+            </tr>
+            <tr>
+              <td>Vintertid (CET, december)</td>
+              <td>{pad(data.officeHours.start)}:00–{pad(data.officeHours.end)}:00</td>
+              <td>{callWinter ? `${callWinter.start}–${callWinter.end}` : '—'}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ⑦ Country prose + FAQ -->
+    <article class="tid-section tid-body prose" aria-labelledby="content-heading">
+      <h2 id="content-heading">Tidszoner och tid i {data.name}</h2>
+      {data.content.split('\n\n').map(para => (
+        <p set:html={para} />
+      ))}
+
+      <h2>Vanliga frågor om tid i {data.name}</h2>
+      <dl class="faq-list">
+        {data.faq.map(item => (
+          <>
+            <dt>{item.q}</dt>
+            <dd>{item.a}</dd>
+          </>
+        ))}
+      </dl>
     </article>
 
-    <!-- Related countries (populated by parent page or left for V2) -->
-    <aside class="tid-related">
-      <h2 class="tid-related-heading">Fler tider</h2>
-      <slot name="related" />
+    <!-- ⑧ Neighbour links -->
+    <aside class="tid-related" aria-label="Relaterade länder">
+      <h2 class="tid-related-heading">Fler tider i världen</h2>
+      <ul class="tid-related-links">
+        {neighbourData.map(c => (
+          <li><a href={`/tid/${c.slug}/`}>{c.name}</a></li>
+        ))}
+        <li><a href="/tid/">← Alla länder</a></li>
+      </ul>
     </aside>
+
   </div>
 </Layout>
 
-<!-- Live clock script — vanilla, no deps -->
-<script define:vars={{ timezone, country }}>
-  function padTwo(n) { return n < 10 ? '0' + n : String(n); }
-
+<!-- Live clock: updates time + offset display only -->
+<script define:vars={{ primaryZone: data.primaryZone }}>
   const timeEl = document.getElementById('tid-time');
   const dateEl = document.getElementById('tid-date');
-  const swedenTimeEl = document.getElementById('tid-sweden-time');
-  const countryTimeEl = document.getElementById('tid-country-time');
+  const swedenEl = document.getElementById('tid-sweden-time');
+  const countryEl = document.getElementById('tid-country-time');
+  const offsetEl = document.getElementById('js-offset');
+
+  function liveOffset(iana) {
+    try {
+      const parts = new Intl.DateTimeFormat('sv-SE', {
+        timeZone: iana,
+        timeZoneName: 'shortOffset',
+      }).formatToParts(new Date());
+      const raw = parts.find(p => p.type === 'timeZoneName')?.value ?? '';
+      return raw.replace(/^GMT/, 'UTC');
+    } catch { return ''; }
+  }
 
   function tick() {
     const now = new Date();
-
-    // Country time
     try {
-      const ctOpts = { timeZone: timezone, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-      const dateOpts = { timeZone: timezone, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      if (timeEl) timeEl.textContent = now.toLocaleTimeString('sv-SE', ctOpts);
-      if (dateEl) dateEl.textContent = now.toLocaleDateString('sv-SE', dateOpts);
-      if (countryTimeEl) countryTimeEl.textContent = now.toLocaleTimeString('sv-SE', { timeZone: timezone, hour: '2-digit', minute: '2-digit', hour12: false });
-    } catch (e) {
-      if (timeEl) timeEl.textContent = 'Tidzon ej tillgänglig';
-    }
-
-    // Sweden time
-    if (swedenTimeEl) {
-      swedenTimeEl.textContent = now.toLocaleTimeString('sv-SE', { timeZone: 'Europe/Stockholm', hour: '2-digit', minute: '2-digit', hour12: false });
-    }
+      if (timeEl) timeEl.textContent = now.toLocaleTimeString('sv-SE', { timeZone: primaryZone, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+      if (dateEl) dateEl.textContent = now.toLocaleDateString('sv-SE', { timeZone: primaryZone, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      if (countryEl) countryEl.textContent = now.toLocaleTimeString('sv-SE', { timeZone: primaryZone, hour: '2-digit', minute: '2-digit', hour12: false });
+    } catch { if (timeEl) timeEl.textContent = 'Tidzon ej tillgänglig'; }
+    if (swedenEl) swedenEl.textContent = now.toLocaleTimeString('sv-SE', { timeZone: 'Europe/Stockholm', hour: '2-digit', minute: '2-digit', hour12: false });
+    if (offsetEl) offsetEl.textContent = liveOffset(primaryZone);
   }
 
   tick();
   const id = setInterval(tick, 1000);
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) clearInterval(id);
-  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) clearInterval(id); });
 </script>
 
 <style>
@@ -146,7 +365,7 @@ const schema = {
     padding: var(--space-8) var(--space-4);
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);
+    gap: var(--space-10);
   }
 
   .breadcrumb {
@@ -159,7 +378,6 @@ const schema = {
   .breadcrumb a { color: var(--color-ink-muted); text-decoration: none; }
   .breadcrumb a:hover { color: var(--color-accent); }
 
-  /* Hero */
   .tid-hero {
     text-align: center;
     display: flex;
@@ -167,21 +385,10 @@ const schema = {
     align-items: center;
     gap: var(--space-4);
   }
-  .tid-hero h1 {
-    font-size: var(--text-3xl);
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: -0.02em;
-  }
+  .tid-hero h1 { font-size: var(--text-3xl); font-weight: 700; margin: 0; letter-spacing: -0.02em; }
   @media (min-width: 640px) { .tid-hero h1 { font-size: var(--text-4xl); } }
-  .tid-city-label {
-    font-size: var(--text-base);
-    color: var(--color-ink-muted);
-    margin: 0;
-    font-weight: 500;
-  }
+  .tid-city-label { font-size: var(--text-base); color: var(--color-ink-muted); margin: 0; font-weight: 500; }
 
-  /* Clock */
   .tid-clock-wrap {
     background: var(--color-ink);
     border-radius: var(--radius-xl);
@@ -193,17 +400,9 @@ const schema = {
     min-width: 280px;
     box-shadow: var(--shadow-lg);
   }
-  .tid-clock .clock-display {
-    color: #ffffff;
-    font-size: clamp(2.5rem, 8vw, 4rem);
-  }
-  .tid-date {
-    font-size: var(--text-sm);
-    color: color-mix(in srgb, #fff 60%, var(--color-ink));
-    text-transform: capitalize;
-  }
+  .tid-clock .clock-display { color: #fff; font-size: clamp(2.5rem, 8vw, 4rem); font-variant-numeric: tabular-nums; }
+  .tid-date { font-size: var(--text-sm); color: color-mix(in srgb, #fff 60%, var(--color-ink)); text-transform: capitalize; }
 
-  /* Sweden vs Country row */
   .tid-vs-row {
     display: flex;
     align-items: center;
@@ -213,32 +412,34 @@ const schema = {
     border-radius: var(--radius-lg);
     padding: var(--space-4) var(--space-6);
   }
-  .tid-vs-cell {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-1);
-  }
-  .tid-vs-label {
-    font-size: var(--text-xs);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-ink-muted);
-  }
-  .tid-vs-time {
-    font-size: var(--text-2xl);
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
+  .tid-vs-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); }
+  .tid-vs-label { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-muted); }
+  .tid-vs-time { font-size: var(--text-2xl); font-weight: 700; font-variant-numeric: tabular-nums; }
   .tid-vs-sep { color: var(--color-border); font-size: var(--text-xl); }
 
-  /* Body & related */
+  .tid-section { max-width: var(--max-w-prose); }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .zone-list { padding-left: var(--space-6); }
+  .zone-list li { margin-bottom: var(--space-2); }
   .tid-body { max-width: var(--max-w-prose); }
+
+  .faq-list dt { font-weight: 700; color: var(--color-ink); margin-top: var(--space-5); }
+  .faq-list dd { margin: var(--space-1) 0 0; color: var(--color-ink-muted); line-height: 1.6; }
+
   .tid-related { max-width: var(--max-w-prose); }
-  .tid-related-heading {
-    font-size: var(--text-xl);
-    font-weight: 700;
-    margin: 0 0 var(--space-4);
+  .tid-related-heading { font-size: var(--text-xl); font-weight: 700; margin: 0 0 var(--space-4); }
+  .tid-related-links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .tid-related-links a {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
   }
+  .tid-related-links a:hover { background: var(--color-surface-3, var(--color-surface-2)); border-color: var(--color-accent); }
 </style>

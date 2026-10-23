@@ -1,5 +1,23 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import { countries } from '@/data/countries';
+
+// Build-time: compute current UTC offset for each country's primary zone
+function getOffset(iana: string): string {
+  const parts = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: iana,
+    timeZoneName: 'shortOffset',
+  }).formatToParts(new Date());
+  const raw = parts.find(p => p.type === 'timeZoneName')?.value ?? 'UTC';
+  return raw.replace(/^GMT/, 'UTC');
+}
+
+// All countries including kina (separate page)
+const kina = { slug: 'kina', name: 'Kina', primaryZone: 'Asia/Shanghai' };
+const allEntries = [
+  ...countries,
+  kina,
+].sort((a, b) => a.name.localeCompare(b.name, 'sv'));
 
 const schemas = [
   {
@@ -7,7 +25,7 @@ const schemas = [
     '@type': 'WebPage',
     name: 'Tid i världen',
     url: 'https://klocka.com/tid/',
-    description: 'Aktuell tid i länder världen över. Se tidsskillnader och tidszoner.',
+    description: 'Aktuell tid i länder världen över. Se tidsskillnader, tidszoner och sommartid.',
     inLanguage: 'sv-SE',
     isPartOf: { '@type': 'WebSite', url: 'https://klocka.com' },
   },
@@ -24,27 +42,173 @@ const schemas = [
 
 <Layout
   title="Tid i världen | Klocka.com"
-  description="Aktuell tid i länder världen över. Se tidsskillnader och tidszoner."
+  description="Aktuell tid i länder världen över. Se tidsskillnader, tidszoner och fakta om sommartid."
   schema={schemas}
 >
   <div class="page-tid-hub">
+
+    <nav class="breadcrumb" aria-label="Brödsmulor">
+      <a href="/">Hem</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Tid i världen</span>
+    </nav>
+
     <header class="tid-header">
       <h1>Tid i världen</h1>
-      <p class="tid-intro">Se aktuell tid och tidszoner för länder världen över.</p>
+      <p class="tid-intro">
+        Se aktuell tid, tidszoner och tidsskillnad mot Sverige för länder världen över.
+        Tiderna uppdateras automatiskt i realtid.
+      </p>
     </header>
 
-    <nav class="tid-country-list" aria-label="Länder">
-      <a href="/tid/kina/" class="tid-card">
-        <span class="tid-card-name">Kina</span>
-        <span class="tid-card-tz">CST (UTC+8)</span>
-      </a>
-    </nav>
+    <!-- Live country table — JS fills in current times -->
+    <div class="table-wrap" role="region" aria-label="Aktuell tid per land">
+      <table class="country-table" id="country-table">
+        <thead>
+          <tr>
+            <th scope="col">Land</th>
+            <th scope="col">Primär stad</th>
+            <th scope="col">Aktuell tid</th>
+            <th scope="col">UTC-offset</th>
+            <th scope="col">Skillnad vs Sverige</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allEntries.map(c => {
+            const primaryZone = 'primaryZone' in c ? c.primaryZone : 'Asia/Shanghai';
+            const city = 'city' in c ? c.city : 'Peking';
+            const buildOffset = getOffset(primaryZone);
+            return (
+              <tr
+                data-iana={primaryZone}
+                data-slug={c.slug}
+              >
+                <td>
+                  <a href={`/tid/${c.slug}/`} class="country-link">{c.name}</a>
+                </td>
+                <td class="muted">{city}</td>
+                <td class="time-cell" data-time>--:--</td>
+                <td class="offset-cell mono" data-offset>{buildOffset}</td>
+                <td class="diff-cell muted" data-diff>—</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
 
-    <nav class="tid-nav" aria-label="Tillbaka">
+    <!-- Static content ~300 words -->
+    <article class="tid-content prose" aria-labelledby="content-heading">
+      <h2 id="content-heading">Tidszoner – hur fungerar det?</h2>
+
+      <p>
+        Världen är uppdelad i 24 tidszoner baserade på jordens rotation. En tidszon är ett geografiskt
+        område som delar samma standardtid. Tidszonerna mäts i förskjutning från UTC (Coordinated
+        Universal Time), som är den moderna ersättaren till GMT (Greenwich Mean Time). Sverige använder
+        Central European Time (CET, UTC+1) vintertid och Central European Summer Time (CEST, UTC+2) under
+        sommartid.
+      </p>
+
+      <p>
+        Sommartid (Daylight Saving Time, DST) är en praxis där klockan ställs fram en timme under
+        sommarhalvåret för att utnyttja morgonljuset bättre. Sverige och de flesta EU-länder byter till
+        sommartid sista söndagen i mars och tillbaka sista söndagen i oktober. Många länder utanför Europa
+        tillämpar dock inte sommartid – exempel är Japan, Indien, Kina, Singapore och de flesta afrikanska
+        länder. I USA och Kanada tillämpar man DST, men på andra datum än i Europa.
+      </p>
+
+      <p>
+        Tidsskillnaderna kan variera med årstiden när ett land observerar sommartid och ett annat inte
+        gör det, eller när de byter på olika datum. Det gäller exempelvis att tidsskillnaden mellan
+        Sverige och Australien varierar kraftigt – Australiens sommar (oktober–april) sammanfaller
+        med den europeiska vintern, vilket kan göra skillnaden 9–10 timmar under perioden när Sydneys
+        AEDT är aktiv och Sverige har vintertid.
+      </p>
+
+      <p>
+        Tabellen ovan visar aktuell tid i varje land baserat på landets primära tidszon och uppdateras
+        regelbundet via din webbläsares inbyggda klocka. Klicka på ett land för att se fullständig
+        information om tidszoner, tidsskillnader, sommartid och bästa tid att ringa.
+      </p>
+
+      <p>
+        Sveriges tidsskillnad mot världens länder varierar inte bara med geografi utan också med årstid.
+        Länder som USA, Australien och Kanada tillämpar sommartid på olika datum än Sverige, vilket gör
+        att skillnaden kan ändras med en timme utan att du byter destination. Planera alltid resor och
+        internationella möten med hänsyn till aktuell tidsskillnad – inte den du råkar minnas från
+        förra resan.
+      </p>
+    </article>
+
+    <nav class="tid-back" aria-label="Tillbaka">
       <a href="/">← Tillbaka till startsidan</a>
     </nav>
+
   </div>
 </Layout>
+
+<!-- Live update script: fills time, offset, diff for each row -->
+<script>
+  const SE_ZONE = 'Europe/Stockholm';
+
+  function liveOffset(iana: string): string {
+    try {
+      const parts = new Intl.DateTimeFormat('sv-SE', {
+        timeZone: iana,
+        timeZoneName: 'shortOffset',
+      }).formatToParts(new Date());
+      const raw = parts.find(p => p.type === 'timeZoneName')?.value ?? '';
+      return raw.replace(/^GMT/, 'UTC');
+    } catch { return '?'; }
+  }
+
+  function calcDiff(iana: string): string {
+    try {
+      const now = new Date();
+      const fmt = (tz: string) =>
+        parseInt(new Intl.DateTimeFormat('sv-SE', { timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: false }).format(now).replace(':', '.'));
+
+      const country = new Intl.DateTimeFormat('sv-SE', { timeZone: iana, hour: '2-digit', minute: '2-digit', hour12: false }).format(now);
+      const sweden = new Intl.DateTimeFormat('sv-SE', { timeZone: SE_ZONE, hour: '2-digit', minute: '2-digit', hour12: false }).format(now);
+
+      // Parse hours and minutes
+      const [ch, cm] = country.split(':').map(Number);
+      const [sh, sm] = sweden.split(':').map(Number);
+      let diffMin = (ch * 60 + cm) - (sh * 60 + sm);
+      // Normalize to -720..720
+      if (diffMin > 720) diffMin -= 1440;
+      if (diffMin < -720) diffMin += 1440;
+      const sign = diffMin >= 0 ? '+' : '−';
+      const abs = Math.abs(diffMin);
+      const h = Math.floor(abs / 60);
+      const m = abs % 60;
+      return m ? `${sign}${h}h ${m}min` : `${sign}${h}h`;
+    } catch { return '—'; }
+  }
+
+  function updateTable() {
+    const rows = document.querySelectorAll<HTMLTableRowElement>('#country-table tbody tr[data-iana]');
+    const now = new Date();
+    rows.forEach(row => {
+      const iana = row.dataset.iana;
+      if (!iana) return;
+      const timeEl = row.querySelector('[data-time]') as HTMLElement | null;
+      const offsetEl = row.querySelector('[data-offset]') as HTMLElement | null;
+      const diffEl = row.querySelector('[data-diff]') as HTMLElement | null;
+      try {
+        if (timeEl) timeEl.textContent = now.toLocaleTimeString('sv-SE', { timeZone: iana, hour: '2-digit', minute: '2-digit', hour12: false });
+        if (offsetEl) offsetEl.textContent = liveOffset(iana);
+        if (diffEl) diffEl.textContent = calcDiff(iana);
+      } catch {
+        if (timeEl) timeEl.textContent = '?';
+      }
+    });
+  }
+
+  updateTable();
+  setInterval(updateTable, 10000); // every 10s is plenty for a table
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) updateTable(); });
+</script>
 
 <style>
   .page-tid-hub {
@@ -53,83 +217,63 @@ const schemas = [
     padding: var(--space-8) var(--space-4);
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: var(--space-8);
   }
 
-  .tid-header {
-    text-align: center;
-    max-width: 44rem;
-  }
-
-  .tid-header h1 {
-    font-size: var(--text-3xl);
-    font-weight: 700;
-    margin: 0 0 var(--space-3);
-    color: var(--color-ink);
-    letter-spacing: -0.02em;
-  }
-
-  @media (min-width: 640px) {
-    .tid-header h1 { font-size: var(--text-4xl); }
-  }
-
-  .tid-intro {
-    font-size: var(--text-lg);
-    color: var(--color-ink-muted);
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  .tid-country-list {
-    width: 100%;
-    max-width: 28rem;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .tid-card {
+  .breadcrumb {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: var(--space-4) var(--space-5);
-    background: var(--color-surface-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    text-decoration: none;
-    color: var(--color-ink);
-    transition: background 0.15s;
-  }
-
-  .tid-card:hover {
-    background: var(--color-surface-3, var(--color-surface-2));
-    border-color: var(--color-accent);
-  }
-
-  .tid-card-name {
-    font-weight: 600;
-    font-size: var(--text-base);
-  }
-
-  .tid-card-tz {
+    gap: var(--space-2);
     font-size: var(--text-sm);
     color: var(--color-ink-muted);
   }
+  .breadcrumb a { color: var(--color-ink-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-accent); }
 
-  .tid-nav {
+  .tid-header { max-width: 44rem; }
+  .tid-header h1 { font-size: var(--text-3xl); font-weight: 700; margin: 0 0 var(--space-3); letter-spacing: -0.02em; }
+  @media (min-width: 640px) { .tid-header h1 { font-size: var(--text-4xl); } }
+  .tid-intro { font-size: var(--text-lg); color: var(--color-ink-muted); margin: 0; line-height: 1.6; }
+
+  /* Country table */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .country-table {
+    width: 100%;
+    border-collapse: collapse;
     font-size: var(--text-sm);
   }
+  .country-table th, .country-table td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    white-space: nowrap;
+  }
+  .country-table thead th {
+    background: var(--color-surface-2);
+    font-weight: 600;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-ink-muted);
+  }
+  .country-table tbody tr:hover td { background: var(--color-surface-2); }
+  .country-link { color: var(--color-accent); text-decoration: none; font-weight: 600; }
+  .country-link:hover { text-decoration: underline; }
+  .time-cell { font-variant-numeric: tabular-nums; font-weight: 600; font-size: var(--text-base); }
+  .offset-cell { font-variant-numeric: tabular-nums; }
+  .mono { font-family: var(--font-mono); }
+  .muted { color: var(--color-ink-muted); }
 
-  .tid-nav a {
+  /* Content */
+  .tid-content { max-width: var(--max-w-prose); }
+
+  .tid-back { font-size: var(--text-sm); }
+  .tid-back a {
     color: var(--color-accent);
     text-decoration: none;
     padding: var(--space-2) var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
   }
-
-  .tid-nav a:hover {
-    background: var(--color-surface-2);
-  }
+  .tid-back a:hover { background: var(--color-surface-2); }
 </style>
