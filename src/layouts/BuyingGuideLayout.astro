@@ -1,15 +1,4 @@
 ---
-/**
- * BuyingGuideLayout — template for brand/klockmärken buying-guide pages.
- *
- * Two variants, selected via `variant` prop:
- *   A — Luxury affiliate (Chrono24, WoS, Swedish retailers)
- *   B — Same guide + Klockrummet cross-link as secondary CTA
- *
- * Used by:
- *   Bucket A: Omega, Rolex, Breitling, Patek, Longines, etc.
- *   Bucket B: Casio, Triwa, etc. (Klockrummet stocks or has close alternative)
- */
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Layout from '@/layouts/Layout.astro';
@@ -28,8 +17,6 @@ export interface AffiliateCta {
 export interface BuyingGuideMeta {
   /** Brand or category name, e.g. "Omega" or "Damur" */
   brand: string;
-  /** Bucket variant */
-  variant: 'A' | 'B';
   /** Page title */
   title: string;
   /** Meta description */
@@ -44,8 +31,6 @@ export interface BuyingGuideMeta {
   priceRange?: string;
   /** Affiliate CTAs for Bucket A */
   affiliateCtas?: AffiliateCta[];
-  /** Klockrummet CTA for Bucket B */
-  klockrummetCta?: { href: string; label: string };
   /** JSON-LD Article schema override */
   articleSchema?: Record<string, unknown>;
   /** Breadcrumb parent override — defaults to Klockmärken /klockmarken/ */
@@ -60,7 +45,6 @@ interface Props extends BuyingGuideMeta {}
 
 const {
   brand,
-  variant,
   title,
   description,
   heroImage: heroImageProp,
@@ -68,7 +52,6 @@ const {
   heroIntro,
   priceRange,
   affiliateCtas = [],
-  klockrummetCta,
   articleSchema,
   breadcrumbParent = { href: '/klockmarken/', label: 'Klockmärken' },
   datePublished,
@@ -180,7 +163,7 @@ const schema: Record<string, unknown>[] = [
 
     <!-- Affiliate CTAs: Bucket A -->
     {showDisclosure && <AffiliateDisclosure />}
-    {variant === 'A' && affiliateCtas.length > 0 && (
+    {affiliateCtas.length > 0 && (
       <section class="cta-section" aria-label="Köpguide">
         <div class="affiliate-cta">
           <div class="affiliate-label">Köp {brand} i Sverige</div>
@@ -193,6 +176,7 @@ const schema: Record<string, unknown>[] = [
                 rel={rel ?? 'noopener nofollow'}
                 aria-label={`${label} — öppnas i ny flik`}
                 data-partner={partner}
+                data-brand={brand}
               >
                 {label}
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -212,13 +196,13 @@ const schema: Record<string, unknown>[] = [
     </article>
 
     <!-- Bottom CTA (repeat) -->
-    {variant === 'A' && affiliateCtas.length > 0 && (
+    {affiliateCtas.length > 0 && (
       <section class="cta-section cta-section--bottom" aria-label="Köplänkar">
         <div class="affiliate-cta">
           <div class="affiliate-label">Hitta din {brand}</div>
           <div class="cta-grid">
             {affiliateCtas.map(({ label, href, partner, rel }) => (
-              <a href={href} class="btn btn-primary" target="_blank" rel={rel ?? 'noopener nofollow'} data-partner={partner}>
+              <a href={href} class="btn btn-primary" target="_blank" rel={rel ?? 'noopener nofollow'} data-partner={partner} data-brand={brand}>
                 {label}
               </a>
             ))}
@@ -232,8 +216,12 @@ const schema: Record<string, unknown>[] = [
 <script>
 document.querySelectorAll('.cta-section a[data-partner]').forEach(link => {
   link.addEventListener('click', () => {
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'outbound_affiliate_click', { partner: (link as HTMLAnchorElement).dataset.partner });
+    if (typeof gtag === 'undefined') return;
+    const el = link as HTMLAnchorElement;
+    if (el.dataset.partner === 'klockrummet') {
+      gtag('event', 'klockrummet_click', { brand: el.dataset.brand, placement: 'buying-guide-cta' });
+    } else {
+      gtag('event', 'outbound_affiliate_click', { partner: el.dataset.partner });
     }
   });
 });

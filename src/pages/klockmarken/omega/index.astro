@@ -1,10 +1,20 @@
 ---
 import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
+import { brandsBySlug } from '@/data/brands';
+const brandData = brandsBySlug['omega'];
+const brandSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Brand',
+  name: brandData.name,
+  url: brandData.officialUrl,
+  logo: 'https://klocka.com/img/og/omega.jpg',
+  description: brandData.tagline,
+};
 ---
 
 <BuyingGuideLayout
   brand="Omega"
-  variant="A"
+  articleSchema={brandSchema}
   title="Omega klockor — Köpguide | Klocka.com"
   description="Allt om Omega — Seamaster, Speedmaster och De Ville. Historia, modeller och var du köper Omega i Sverige. Prisintervall 15 000 – 200 000 kr."
   heroAlt="Omega Speedmaster kronograf — ikonisk schweizisk lyxklocka"
@@ -67,6 +77,10 @@ import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
 <table> <thead> <tr> <th>Aspekt</th> <th>Omega</th> <th>Rolex</th> </tr> </thead> <tbody> <tr> <td>Startpris (ny)</td> <td>~15 000 kr</td> <td>~60 000 kr</td> </tr> <tr> <td>Ikonisk modell</td> <td>Speedmaster, Seamaster</td> <td>Submariner, Datejust</td> </tr> <tr> <td>Stilkaraktär</td> <td>Teknisk, kulturhistorisk</td> <td>Status, tidlös</td> </tr> <tr> <td>Certifiering</td> <td>Master Chronometer (METAS)</td> <td>Kronometer (COSC + Rolex-standard)</td> </tr> <tr> <td>Andrahandsvärde</td> <td>Stabilt, apprecierar sällan</td> <td>Sportmodeller apprecierar starkt</td> </tr> <tr> <td>Tillgänglighet</td> <td>God tillgång i butik</td> <td>Sportmodeller med lång väntetid</td> </tr> </tbody> </table>
 
 <p><strong>Välj Omega</strong> om du vill ha en klocka med djup teknisk och kulturell historia (månen, OS), fler valmöjligheter under 30 000 kr och ett fackmässigt intressant urverk. <strong>Välj Rolex</strong> om du prioriterar investeringsvärde, maximal statussignal och tidlös igenkänning.</p>
+
+{brandData.officialUrl && (
+  <p><a href={brandData.officialUrl} rel="noopener" target="_blank">Officiell webbplats: {brandData.name}</a></p>
+)}
 
 <h2>Var köper du Omega i Sverige?</h2>
 

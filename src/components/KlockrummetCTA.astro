@@ -2,8 +2,7 @@
 type Variant = 'budget' | 'present' | 'armband';
 
 interface Props {
-  brand?: string;
-  variant?: Variant;
+  variant: Variant;
   klockrummetUrl: string;
   ctaCopy: string;
   pageSectionUtm?: string;
@@ -12,7 +11,6 @@ interface Props {
 }
 
 const {
-  brand,
   variant,
   klockrummetUrl,
   ctaCopy,
@@ -23,8 +21,8 @@ const {
 
 const variantContent: Record<Variant, { heading: string; body: string }> = {
   budget: {
-    heading: 'Billiga klockor från 149 kr',
-    body: 'Snygga klockor med fri frakt — handla dam- och herrklockor från 149 kr hos Klockrummet.',
+    heading: 'Prisvärda klockor hos Klockrummet',
+    body: 'Klockor för dam och herr i flera stilar – handla hos Klockrummet.',
   },
   present: {
     heading: 'Ge bort en klocka i present',
@@ -36,8 +34,8 @@ const variantContent: Record<Variant, { heading: string; body: string }> = {
   },
 };
 
-const heading = variant ? variantContent[variant].heading : `Hitta ${brand} hos Klockrummet`;
-const body = variant ? variantContent[variant].body : 'Klockrummet säljer klockor och armband med fri frakt.';
+const heading = variantContent[variant].heading;
+const body = variantContent[variant].body;
 
 const utmHref =
   `${klockrummetUrl}?utm_source=klocka.com&utm_medium=cross-link` +
@@ -53,7 +51,6 @@ const utmHref =
     target="_blank"
     rel="noopener"
     aria-label={`${ctaCopy} — öppnas i ny flik`}
-    data-target={klockrummetUrl}
     data-placement={placement}
   >
     {ctaCopy}
@@ -99,7 +96,7 @@ const utmHref =
 document.querySelectorAll('.klockrummet-cta__btn').forEach(btn => {
   btn.addEventListener('click', () => {
     if (typeof gtag !== 'undefined') {
-      gtag('event', 'klockrummet_click', { placement: (btn as HTMLElement).dataset.placement, target: (btn as HTMLElement).dataset.target });
+      gtag('event', 'klockrummet_click', { placement: (btn as HTMLElement).dataset.placement });
     }
   });
 });

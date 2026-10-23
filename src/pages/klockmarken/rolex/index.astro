@@ -1,10 +1,20 @@
 ---
 import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
+import { brandsBySlug } from '@/data/brands';
+const brandData = brandsBySlug['rolex'];
+const brandSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Brand',
+  name: brandData.name,
+  url: brandData.officialUrl,
+  logo: 'https://klocka.com/img/og/rolex.jpg',
+  description: brandData.tagline,
+};
 ---
 
 <BuyingGuideLayout
   brand="Rolex"
-  variant="A"
+  articleSchema={brandSchema}
   title="Rolex klockor — Köpguide | Klocka.com"
   description="Allt om Rolex — Submariner, Datejust och Daytona. Historia, modeller och var du köper Rolex i Sverige. Prisintervall 60 000 – 500 000+ kr."
   heroAlt="Rolex Submariner — ikonisk schweizisk lyxklocka i stål"
@@ -67,6 +77,10 @@ import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
 <table> <thead> <tr> <th>Modell</th> <th>Prisintervall (ny, rekommenderat butikspris, per oktober 2026)</th> </tr> </thead> <tbody> <tr> <td>Oyster Perpetual 41</td> <td>60 000 – 75 000 kr</td> </tr> <tr> <td>Datejust 41 stål</td> <td>80 000 – 115 000 kr</td> </tr> <tr> <td>Datejust 41 Rolesor</td> <td>90 000 – 130 000 kr</td> </tr> <tr> <td>Submariner (no date)</td> <td>110 000 – 120 000 kr</td> </tr> <tr> <td>Submariner Date</td> <td>115 000 – 145 000 kr</td> </tr> <tr> <td>GMT-Master II</td> <td>115 000 – 160 000 kr</td> </tr> <tr> <td>Daytona stål</td> <td>150 000 – 200 000 kr</td> </tr> <tr> <td>Day-Date guld</td> <td>200 000 – 500 000+ kr</td> </tr> </tbody> </table>
 
 <p>Andrahandspriser för eftertraktade stålsportmodeller (Submariner, GMT-Master II, Daytona) handlas vanligtvis 150–300 % av det rekommenderade butikspriset på grund av kronisk underproduktion och hög efterfrågan.</p>
+
+{brandData.officialUrl && (
+  <p><a href={brandData.officialUrl} rel="noopener" target="_blank">Officiell webbplats: {brandData.name}</a></p>
+)}
 
 <h2>Var köper du Rolex i Sverige?</h2>
 

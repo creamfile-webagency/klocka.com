@@ -6,6 +6,7 @@ export interface BrandData {
   priceRange: string;
   segment: string;
   tagline: string;
+  officialUrl: string;
 }
 
 export const brands: BrandData[] = [
@@ -17,6 +18,7 @@ export const brands: BrandData[] = [
     priceRange: '300 – 1 500 kr',
     segment: 'Budget',
     tagline: 'Dansk ungdomsdesign med stil',
+    officialUrl: 'https://www.axcent.dk/',
   },
   {
     slug: 'black-oak',
@@ -26,6 +28,7 @@ export const brands: BrandData[] = [
     priceRange: '500 – 2 000 kr',
     segment: 'Mid-range',
     tagline: 'Nordisk design med sportslig karaktär',
+    officialUrl: 'https://www.black-oak.se/',
   },
   {
     slug: 'breitling',
@@ -35,6 +38,7 @@ export const brands: BrandData[] = [
     priceRange: '25 000 – 150 000 kr',
     segment: 'Luxury',
     tagline: 'Precision för pilot och äventyrare',
+    officialUrl: 'https://www.breitling.com/',
   },
   {
     slug: 'calvin-klein',
@@ -44,6 +48,7 @@ export const brands: BrandData[] = [
     priceRange: '800 – 3 000 kr',
     segment: 'Fashion',
     tagline: 'New York-minimalism med clean design',
+    officialUrl: 'https://www.calvinklein.com/',
   },
   {
     slug: 'carl-edmond',
@@ -53,6 +58,7 @@ export const brands: BrandData[] = [
     priceRange: '800 – 2 500 kr',
     segment: 'Mid-range',
     tagline: 'Skandinavisk minimalism från Köpenhamn',
+    officialUrl: 'https://www.carl-edmond.dk/',
   },
   {
     slug: 'casio',
@@ -62,6 +68,7 @@ export const brands: BrandData[] = [
     priceRange: '500 – 15 000 kr',
     segment: 'Sport',
     tagline: 'G-Shock, Edifice och Pro Trek',
+    officialUrl: 'https://www.casio.com/',
   },
   {
     slug: 'certina',
@@ -71,6 +78,7 @@ export const brands: BrandData[] = [
     priceRange: '3 000 – 15 000 kr',
     segment: 'Mid-range',
     tagline: 'Schweizisk precision med sportsjäl',
+    officialUrl: 'https://www.certina.com/',
   },
   {
     slug: 'daniel-wellington',
@@ -80,6 +88,7 @@ export const brands: BrandData[] = [
     priceRange: '800 – 3 000 kr',
     segment: 'Fashion',
     tagline: 'Skandinavisk minimalism från Stockholm',
+    officialUrl: 'https://www.danielwellington.com/',
   },
   {
     slug: 'diesel',
@@ -89,6 +98,7 @@ export const brands: BrandData[] = [
     priceRange: '1 000 – 4 000 kr',
     segment: 'Fashion',
     tagline: 'Industriellt formspråk med edge',
+    officialUrl: 'https://www.diesel.com/',
   },
   {
     slug: 'hugo-boss',
@@ -98,6 +108,7 @@ export const brands: BrandData[] = [
     priceRange: '2 000 – 6 000 kr',
     segment: 'Fashion',
     tagline: 'Tysk affärsstil med modern design',
+    officialUrl: 'https://www.hugoboss.com/',
   },
   {
     slug: 'james-son',
@@ -107,6 +118,7 @@ export const brands: BrandData[] = [
     priceRange: '200 – 800 kr',
     segment: 'Budget',
     tagline: 'Prisvärda klockor för vardagsbruk',
+    officialUrl: '',
   },
   {
     slug: 'longines',
@@ -116,6 +128,7 @@ export const brands: BrandData[] = [
     priceRange: '8 000 – 40 000 kr',
     segment: 'Mid-luxury',
     tagline: 'Elegans och tradition sedan 1832',
+    officialUrl: 'https://www.longines.com/',
   },
   {
     slug: 'marc-jacobs',
@@ -125,6 +138,7 @@ export const brands: BrandData[] = [
     priceRange: '1 000 – 4 000 kr',
     segment: 'Fashion',
     tagline: 'New York-mode med lekfull design',
+    officialUrl: 'https://www.marcjacobs.com/',
   },
   {
     slug: 'michael-kors',
@@ -134,6 +148,7 @@ export const brands: BrandData[] = [
     priceRange: '1 500 – 5 000 kr',
     segment: 'Fashion',
     tagline: 'Glamour och stil från New York',
+    officialUrl: 'https://www.michaelkors.com/',
   },
   {
     slug: 'omega',
@@ -143,6 +158,7 @@ export const brands: BrandData[] = [
     priceRange: '15 000 – 200 000 kr',
     segment: 'Luxury',
     tagline: 'Schweizisk prestige — Seamaster, Speedmaster, De Ville',
+    officialUrl: 'https://www.omegawatches.com/',
   },
   {
     slug: 'philippe-banks',
@@ -152,6 +168,7 @@ export const brands: BrandData[] = [
     priceRange: '500 – 2 000 kr',
     segment: 'Mid-range',
     tagline: 'Europeisk klassisk klockdesign',
+    officialUrl: '',
   },
   {
     slug: 'rolex',
@@ -161,6 +178,7 @@ export const brands: BrandData[] = [
     priceRange: '60 000 – 500 000+ kr',
     segment: 'Luxury',
     tagline: 'Submariner, Datejust och Daytona',
+    officialUrl: 'https://www.rolex.com/',
   },
   {
     slug: 'seiko',
@@ -170,6 +188,7 @@ export const brands: BrandData[] = [
     priceRange: '2 000 – 80 000 kr',
     segment: 'Mid-range',
     tagline: 'Japansk precision och havsäventyr',
+    officialUrl: 'https://www.seikowatches.com/',
   },
   {
     slug: 'tag-heuer',
@@ -179,6 +198,7 @@ export const brands: BrandData[] = [
     priceRange: '10 000 – 60 000 kr',
     segment: 'Luxury',
     tagline: 'Kronografer med motorsportarv',
+    officialUrl: 'https://www.tagheuer.com/',
   },
   {
     slug: 'tory-burch',
@@ -188,6 +208,7 @@ export const brands: BrandData[] = [
     priceRange: '1 500 – 5 000 kr',
     segment: 'Fashion',
     tagline: 'Amerikansk bohemisk lyxestetik',
+    officialUrl: 'https://www.toryburch.com/',
   },
   {
     slug: 'triwa',
@@ -197,6 +218,7 @@ export const brands: BrandData[] = [
     priceRange: '1 000 – 4 000 kr',
     segment: 'Mid-range',
     tagline: 'Stockholmsdesign med hållbarhetsprofil',
+    officialUrl: 'https://www.triwa.com/',
   },
 ];
 

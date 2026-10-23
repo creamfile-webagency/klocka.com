@@ -1,10 +1,20 @@
 ---
 import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
+import { brandsBySlug } from '@/data/brands';
+const brandData = brandsBySlug['seiko'];
+const brandSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Brand',
+  name: brandData.name,
+  url: brandData.officialUrl,
+  logo: 'https://klocka.com/img/og/seiko.jpg',
+  description: brandData.tagline,
+};
 ---
 
 <BuyingGuideLayout
   brand="Seiko"
-  variant="A"
+  articleSchema={brandSchema}
   title="Seiko klockor — Köpguide | Klocka.com"
   description="Allt om Seiko — Prospex, Presage, Seiko 5 och Grand Seiko. Historia, modeller och var du köper Seiko i Sverige. Prisintervall 2 000 – 80 000 kr."
   heroAlt="Seiko Prospex dykerklocka — japansk precision och havsäventyr"
@@ -62,6 +72,10 @@ import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
 <h2>Vad kostar en Seiko?</h2>
 
 <table> <thead> <tr> <th>Modell</th> <th>Prisintervall (per oktober 2026)</th> </tr> </thead> <tbody> <tr> <td>Seiko 5 Sports Automatic</td> <td>2 000 – 4 000 kr</td> </tr> <tr> <td>Prospex Diver Automatic (Turtle)</td> <td>3 500 – 6 000 kr</td> </tr> <tr> <td>Prospex Land / Sky</td> <td>4 000 – 10 000 kr</td> </tr> <tr> <td>Presage Enamel</td> <td>6 000 – 15 000 kr</td> </tr> <tr> <td>Marinemaster Professional 300m</td> <td>15 000 – 25 000 kr</td> </tr> <tr> <td>Astron GPS Solar</td> <td>8 000 – 20 000 kr</td> </tr> <tr> <td>Grand Seiko Spring Drive</td> <td>30 000 – 80 000 kr</td> </tr> </tbody> </table>
+
+{brandData.officialUrl && (
+  <p><a href={brandData.officialUrl} rel="noopener" target="_blank">Officiell webbplats: {brandData.name}</a></p>
+)}
 
 <h2>Var köper du Seiko i Sverige?</h2>
 
