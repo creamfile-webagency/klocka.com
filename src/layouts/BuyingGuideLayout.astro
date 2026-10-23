@@ -10,9 +10,13 @@
  *   Bucket A: Omega, Rolex, Breitling, Patek, Longines, etc.
  *   Bucket B: Casio, Triwa, etc. (Klockrummet stocks or has close alternative)
  */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Layout from '@/layouts/Layout.astro';
 import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
 import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
+
+const heroAssets = import.meta.glob<{ default: ImageMetadata }>('/src/assets/img/*.jpg', { eager: true });
 
 export interface AffiliateCta {
   label: string;
@@ -68,7 +72,10 @@ const {
 // Derive brand slug from URL so each brand gets its own OG/hero image
 // without needing an explicit heroImage prop on every page.
 const _slug = Astro.url.pathname.replace(/\/$/, '').split('/').pop() ?? '';
+// String path for OG meta tag (served from public/)
 const heroImage = heroImageProp ?? (_slug ? `/img/og/${_slug}.jpg` : undefined);
+// ImageMetadata for the optimised <Image> hero (served from src/assets/img/)
+const heroImgMeta = (heroAssets[`/src/assets/img/${_slug}.jpg`] as { default: ImageMetadata } | undefined)?.default;
 
 const schema: Record<string, unknown>[] = [
   articleSchema ?? {
@@ -109,9 +116,16 @@ const schema: Record<string, unknown>[] = [
           </p>
         )}
       </div>
-      {heroImage && (
+      {heroImgMeta && (
         <div class="guide-hero-img">
-          <img src={heroImage} alt={heroAlt ?? `${brand} klockor`} width="600" height="400" loading="eager" decoding="async" />
+          <Image
+            src={heroImgMeta}
+            alt={heroAlt ?? `${brand} klockor`}
+            widths={[420, 840]}
+            sizes="(min-width: 768px) 420px, 100vw"
+            fetchpriority="high"
+            loading="eager"
+          />
         </div>
       )}
     </header>
