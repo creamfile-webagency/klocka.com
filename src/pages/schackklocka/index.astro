@@ -182,29 +182,6 @@ const schema = [
       </p>
       </article>
 
-      <!-- Slot 2: desktop sidebar (160×600) — hidden on mobile, visible at ≥1024px -->
-      <!-- OWNER ACTION: Replace REPLACE_WITH_SLOT_ID_2 with real slot ID from AdSense dashboard -->
-      <div class="ad-slot ad-slot--sidebar" aria-hidden="true">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-8364820223873979"
-             data-ad-slot="REPLACE_WITH_SLOT_ID_2"
-             data-ad-format="auto"
-             data-full-width-responsive="false"></ins>
-        <script is:inline>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>
-      </div>
-    </div>
-
-    <!-- Slot 1: below-fold rectangle — reserved space prevents CLS -->
-    <!-- OWNER ACTION: Replace REPLACE_WITH_SLOT_ID_1 with real slot ID from AdSense dashboard -->
-    <div class="ad-slot ad-slot--rectangle" aria-hidden="true">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-8364820223873979"
-           data-ad-slot="REPLACE_WITH_SLOT_ID_1"
-           data-ad-format="rectangle"
-           data-full-width-responsive="true"></ins>
-      <script is:inline>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
 </Layout>
@@ -345,26 +322,6 @@ const schema = [
     max-width: var(--max-w-prose);
   }
   .tool-content h2:first-child { margin-top: 0; }
-
-  /* Ad slots — reserved dimensions prevent CLS */
-  .ad-slot { overflow: hidden; }
-  .ad-slot--rectangle {
-    min-height: 250px;
-    min-width: 300px;
-  }
-  .ad-slot--sidebar {
-    width: 160px;
-    min-height: 600px;
-    flex-shrink: 0;
-    display: none;
-  }
-  @media (min-width: 1024px) {
-    .ad-slot--sidebar {
-      display: block;
-      position: sticky;
-      top: var(--space-4);
-    }
-  }
 
   .sr-only {
     position: absolute;
