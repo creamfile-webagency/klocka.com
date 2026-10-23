@@ -6,7 +6,7 @@
 >
 > **Positioning (from README):** Swedish clock and watch resource — timepiece information and tools.
 >
-> Baseline source: awaiting import of 2026-06-05 GSC xlsx into weekly pulse pipeline.
+> Baseline source: pull via `weekly_report.py --group brand-apps` or `fetch_gsc.py`.
 > Horizon: 2026-Q4 board review.
 
 ---
@@ -15,7 +15,7 @@
 
 | Metric | Value |
 |--------|-------|
-| Clicks/week | TBD (GSC xlsx 2026-06-05 exists — import pending) |
+| Clicks/week | TBD |
 | Impressions/week | TBD |
 | Avg position | TBD |
 

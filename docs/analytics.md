@@ -26,7 +26,8 @@ python3 ~/Websites/investviewer.com/GSC/fetch_gsc.py \
 
 ## GA4 (Google Analytics 4)
 
-- **Property ID:** [Not yet assigned — board to provide]
+- **Measurement ID:** G-FXEJ5M904P
+- **Property ID:** [Ben to fill in — needed for Data API / fetch_ga4.py]
 - **Access type:** Service account (same credential as GSC)
 - **Permission owner:** Board (info@creamfile.com)
 
@@ -34,7 +35,7 @@ python3 ~/Websites/investviewer.com/GSC/fetch_gsc.py \
 
 ```bash
 python3 ~/Websites/investviewer.com/GSC/fetch_ga4.py \
-    --property-id [Not yet assigned — board to provide] --start 2026-08-18 --end 2026-08-24
+    --property-id G-FXEJ5M904P --start 2026-08-18 --end 2026-08-24
 ```
 
 ---
