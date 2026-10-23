@@ -55,7 +55,7 @@ const {
   variant,
   title,
   description,
-  heroImage,
+  heroImage: heroImageProp,
   heroAlt,
   heroIntro,
   priceRange,
@@ -64,6 +64,11 @@ const {
   articleSchema,
   breadcrumbParent = { href: '/klockmarken/', label: 'Klockmärken' },
 } = Astro.props;
+
+// Derive brand slug from URL so each brand gets its own OG/hero image
+// without needing an explicit heroImage prop on every page.
+const _slug = Astro.url.pathname.replace(/\/$/, '').split('/').pop() ?? '';
+const heroImage = heroImageProp ?? (_slug ? `/img/og/${_slug}.jpg` : undefined);
 
 const schema: Record<string, unknown>[] = [
   articleSchema ?? {
