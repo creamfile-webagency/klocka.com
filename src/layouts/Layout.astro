@@ -62,39 +62,22 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
       <script type="application/ld+json" set:html={JSON.stringify(s)} />
     ))}
 
-    <!-- DNS hints (non-render-blocking) -->
+    <!-- Google Analytics consent default — must fire before gtag.js loads (KLC-6).
+         gtag/js network fetch is deferred to first interaction or 4 s (KLC-19). -->
     {import.meta.env.PROD && (
-      <>
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
-        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <link rel="preconnect" href="https://googleads.g.doubleclick.net" />
-        <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net" />
-      </>
-    )}
-
-    <!-- Google Analytics — must be in <head> for GSC verification (CRE-4678) -->
-    {import.meta.env.PROD && (
-      <>
-        {/* Consent default must run before gtag.js loads — keeps analytics_storage denied until user opts in */}
-        <script is:inline>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('consent', 'default', {
-            ad_storage: 'denied',
-            ad_user_data: 'denied',
-            ad_personalization: 'denied',
-            analytics_storage: 'denied',
-            wait_for_update: 500
-          });
-        </script>
-        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=G-FXEJ5M904P`}></script>
-        <script is:inline>
-          gtag('js', new Date());
-          gtag('config', 'G-FXEJ5M904P', { linker: { domains: ['klockrummet.se'] } });
-        </script>
-      </>
+      <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('consent', 'default', {
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          analytics_storage: 'denied',
+          wait_for_update: 500
+        });
+        gtag('js', new Date());
+        gtag('config', 'G-FXEJ5M904P', { linker: { domains: ['klockrummet.se'] } });
+      </script>
     )}
   </head>
   <body>
@@ -108,19 +91,31 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
     {import.meta.env.PROD && (
       <script is:inline>
         (function() {
-          var loaded = false;
-          function loadAds() {
-            if (loaded) return;
-            loaded = true;
+          var _ga4Loaded = false, _adsLoaded = false;
+          var _evts = ['scroll','pointerdown','keydown','touchstart'];
+
+          function _loadGA4() {
+            if (_ga4Loaded) return; _ga4Loaded = true;
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FXEJ5M904P';
+            document.head.appendChild(s);
+          }
+          function _loadAds() {
+            if (_adsLoaded) return; _adsLoaded = true;
             var s = document.createElement('script');
             s.async = true;
             s.crossOrigin = 'anonymous';
             s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8364820223873979';
             document.head.appendChild(s);
           }
-          ['click','scroll','keydown','touchstart','mousemove'].forEach(function(evt) {
-            document.addEventListener(evt, loadAds, {once: true, passive: true});
-          });
+          function _onInteraction() {
+            _evts.forEach(function(e) { document.removeEventListener(e, _onInteraction); });
+            clearTimeout(_timer);
+            _loadGA4(); _loadAds();
+          }
+          _evts.forEach(function(e) { document.addEventListener(e, _onInteraction, {passive: true}); });
+          var _timer = setTimeout(function() { _loadGA4(); _loadAds(); }, 4000);
         })();
       </script>
     )}
