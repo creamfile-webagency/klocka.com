@@ -75,7 +75,7 @@ const {
   dateModified,
 } = Astro.props;
 
-const showDisclosure = affiliateCtas.some(cta => cta.partner === 'klockrummet') || (variant === 'B' && !!klockrummetCta);
+const showDisclosure = affiliateCtas.some(cta => cta.partner === 'klockrummet');
 
 // Derive brand slug from URL so each brand gets its own OG/hero image
 // without needing an explicit heroImage prop on every page.
@@ -205,14 +205,6 @@ const schema: Record<string, unknown>[] = [
       </section>
     )}
 
-    <!-- Klockrummet CTA: Bucket B (secondary) -->
-    {variant === 'B' && klockrummetCta && (
-      <KlockrummetCTA
-        brand={brand}
-        klockrummetUrl={klockrummetCta.href}
-        ctaCopy={klockrummetCta.label}
-      />
-    )}
 
     <!-- Article body -->
     <article class="guide-body prose">

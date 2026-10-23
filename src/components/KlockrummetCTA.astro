@@ -1,6 +1,9 @@
 ---
+type Variant = 'budget' | 'present' | 'armband';
+
 interface Props {
-  brand: string;
+  brand?: string;
+  variant?: Variant;
   klockrummetUrl: string;
   ctaCopy: string;
   pageSectionUtm?: string;
@@ -10,6 +13,7 @@ interface Props {
 
 const {
   brand,
+  variant,
   klockrummetUrl,
   ctaCopy,
   pageSectionUtm = 'buying-guide-cta',
@@ -17,14 +21,32 @@ const {
   placement = 'buying-guide-cta',
 } = Astro.props;
 
+const variantContent: Record<Variant, { heading: string; body: string }> = {
+  budget: {
+    heading: 'Billiga klockor från 149 kr',
+    body: 'Snygga klockor med fri frakt — handla dam- och herrklockor från 149 kr hos Klockrummet.',
+  },
+  present: {
+    heading: 'Ge bort en klocka i present',
+    body: 'Klockrummet har klockor för alla tillfällen — till student, jul, mors dag och mer.',
+  },
+  armband: {
+    heading: 'Byt klockarmband',
+    body: 'Klockrummet säljer armband i mesh, nato, läder och silikon.',
+  },
+};
+
+const heading = variant ? variantContent[variant].heading : `Hitta ${brand} hos Klockrummet`;
+const body = variant ? variantContent[variant].body : 'Klockrummet säljer klockor och armband med fri frakt.';
+
 const utmHref =
   `${klockrummetUrl}?utm_source=klocka.com&utm_medium=cross-link` +
   `&utm_campaign=${campaignSlug}&utm_content=${pageSectionUtm}`;
 ---
 
-<aside class="klockrummet-cta" aria-label={`Hitta ${brand} hos Klockrummet`}>
-  <p class="klockrummet-cta__heading">Hitta {brand} hos Klockrummet</p>
-  <p class="klockrummet-cta__body">Klockrummet är en av Sveriges ledande klockbutiker.</p>
+<aside class="klockrummet-cta" aria-label={heading}>
+  <p class="klockrummet-cta__heading">{heading}</p>
+  <p class="klockrummet-cta__body">{body}</p>
   <a
     href={utmHref}
     class="btn btn-secondary klockrummet-cta__btn"
