@@ -11,3 +11,5 @@ dist/
 # secrets: house convention is .<site>.env — glob catches new sites automatically
 *.env
 secrets/
+*.xlsx
+.claude/
