@@ -40,16 +40,22 @@ const tools = [
 
 const schema = {
   '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Klocka.com',
-  url: 'https://klocka.com',
-  description: 'Gratis tidverktyg och klockor online — schackklocka, stoppur, timer och mer',
-  inLanguage: 'sv-SE',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: { '@type': 'EntryPoint', urlTemplate: 'https://klocka.com/?q={search_term_string}' },
-    'query-input': 'required name=search_term_string',
-  },
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: 'Klocka.com',
+      url: 'https://klocka.com',
+      description: 'Gratis tidverktyg och klockor online — schackklocka, stoppur, timer och mer',
+      inLanguage: 'sv-SE',
+    },
+    {
+      '@type': 'Organization',
+      name: 'Klocka.com',
+      url: 'https://klocka.com',
+      logo: 'https://klocka.com/img/klocka-og.png',
+      email: 'info@klocka.com',
+    },
+  ],
 };
 ---
 
