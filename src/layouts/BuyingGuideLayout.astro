@@ -50,6 +50,10 @@ export interface BuyingGuideMeta {
   articleSchema?: Record<string, unknown>;
   /** Breadcrumb parent override — defaults to Klockmärken /klockmarken/ */
   breadcrumbParent?: { href: string; label: string };
+  /** ISO 8601 date the article was first published, e.g. "2026-10-23" */
+  datePublished?: string;
+  /** ISO 8601 date the article was last modified, e.g. "2026-10-23" */
+  dateModified?: string;
 }
 
 interface Props extends BuyingGuideMeta {}
@@ -67,6 +71,8 @@ const {
   klockrummetCta,
   articleSchema,
   breadcrumbParent = { href: '/klockmarken/', label: 'Klockmärken' },
+  datePublished,
+  dateModified,
 } = Astro.props;
 
 const showDisclosure = affiliateCtas.some(cta => cta.partner === 'klockrummet') || (variant === 'B' && !!klockrummetCta);
@@ -92,6 +98,38 @@ const schema: Record<string, unknown>[] = [
       name: 'Klocka.com',
       url: 'https://klocka.com',
     },
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    author: {
+      '@type': 'Organization',
+      name: 'Klocka.com',
+      url: 'https://klocka.com',
+    },
+    ...(heroImage ? { image: `https://klocka.com${heroImage}` } : {}),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Hem',
+        item: 'https://klocka.com/',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: breadcrumbParent.label,
+        item: `https://klocka.com${breadcrumbParent.href}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: brand,
+        item: `https://klocka.com${Astro.url.pathname}`,
+      },
+    ],
   },
 ];
 ---
@@ -115,6 +153,14 @@ const schema: Record<string, unknown>[] = [
           <p class="price-badge">
             <span class="price-label">Prisintervall</span>
             <span class="price-value">{priceRange}</span>
+          </p>
+        )}
+        {dateModified && (
+          <p class="updated-date">
+            <span class="sr-only">Senast uppdaterad</span>
+            <time datetime={dateModified}>
+              Senast uppdaterad {new Date(dateModified).toLocaleDateString('sv-SE', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </time>
           </p>
         )}
       </div>
@@ -273,6 +319,12 @@ document.querySelectorAll('.cta-section a[data-partner]').forEach(link => {
   }
   .price-label { color: var(--color-ink-muted); font-weight: 500; }
   .price-value { font-weight: 700; }
+
+  .updated-date {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    margin: var(--space-2) 0 0;
+  }
 
   /* CTA */
   .cta-section { max-width: var(--max-w-prose); }
