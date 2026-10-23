@@ -350,6 +350,21 @@ const howToSteps = [
     let rafId: number | null = null;
     let lastTs: number | null = null;
 
+    // ── Wake lock ──
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let wakeLock: any = null;
+    async function requestWakeLock() {
+      if (!('wakeLock' in navigator)) return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      try { wakeLock = await (navigator as any).wakeLock.request('screen'); } catch { /* unsupported */ }
+    }
+    function releaseWakeLock() {
+      if (wakeLock) { wakeLock.release().catch(() => {}); wakeLock = null; }
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (running && document.visibilityState === 'visible') requestWakeLock();
+    });
+
     function getSettings() {
       return {
         focusSec:           Math.max(1, Number(focusIn?.value    ?? 25)) * 60,
@@ -478,6 +493,7 @@ const howToSteps = [
         renderTimer();
         if (remainingSec <= 0) {
           stopLoop();
+          releaseWakeLock();
           const dingCount = phase === 'focus' ? 2 : 1;
           advancePhase();
           render();
@@ -493,12 +509,14 @@ const howToSteps = [
       if (running) return;
       running = true;
       lastTs = null;
+      requestWakeLock();
       rafId = requestAnimationFrame(loop);
       render();
     }
 
     function pause() {
       stopLoop();
+      releaseWakeLock();
       render();
       document.title = PAGE_TITLE;
     }
@@ -511,12 +529,15 @@ const howToSteps = [
         running = true;
         lastTs = null;
         rafId = requestAnimationFrame(loop);
+      } else {
+        releaseWakeLock();
       }
       render();
     }
 
     function reset() {
       stopLoop();
+      releaseWakeLock();
       phase = 'focus';
       sessionsDone = 0;
       remainingSec = getSettings().focusSec;
