@@ -69,6 +69,8 @@ const {
   breadcrumbParent = { href: '/klockmarken/', label: 'Klockmärken' },
 } = Astro.props;
 
+const showDisclosure = affiliateCtas.some(cta => cta.partner === 'klockrummet') || (variant === 'B' && !!klockrummetCta);
+
 // Derive brand slug from URL so each brand gets its own OG/hero image
 // without needing an explicit heroImage prop on every page.
 const _slug = Astro.url.pathname.replace(/\/$/, '').split('/').pop() ?? '';
@@ -131,9 +133,7 @@ const schema: Record<string, unknown>[] = [
     </header>
 
     <!-- Affiliate CTAs: Bucket A -->
-    {variant === 'A' && affiliateCtas.length > 0 && (
-      <AffiliateDisclosure />
-    )}
+    {showDisclosure && <AffiliateDisclosure />}
     {variant === 'A' && affiliateCtas.length > 0 && (
       <section class="cta-section" aria-label="Köpguide">
         <div class="affiliate-cta">
@@ -144,7 +144,7 @@ const schema: Record<string, unknown>[] = [
                 href={href}
                 class="btn btn-primary"
                 target="_blank"
-                rel={rel ?? 'noopener nofollow sponsored'}
+                rel={rel ?? 'noopener nofollow'}
                 aria-label={`${label} — öppnas i ny flik`}
                 data-partner={partner}
               >
@@ -180,7 +180,7 @@ const schema: Record<string, unknown>[] = [
           <div class="affiliate-label">Hitta din {brand}</div>
           <div class="cta-grid">
             {affiliateCtas.map(({ label, href, partner, rel }) => (
-              <a href={href} class="btn btn-primary" target="_blank" rel={rel ?? 'noopener nofollow sponsored'} data-partner={partner}>
+              <a href={href} class="btn btn-primary" target="_blank" rel={rel ?? 'noopener nofollow'} data-partner={partner}>
                 {label}
               </a>
             ))}
@@ -190,6 +190,16 @@ const schema: Record<string, unknown>[] = [
     )}
   </div>
 </Layout>
+
+<script>
+document.querySelectorAll('.cta-section a[data-partner]').forEach(link => {
+  link.addEventListener('click', () => {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'outbound_affiliate_click', { partner: (link as HTMLAnchorElement).dataset.partner });
+    }
+  });
+});
+</script>
 
 <style>
   .guide-page {

@@ -5,6 +5,7 @@ interface Props {
   ctaCopy: string;
   pageSectionUtm?: string;
   campaignSlug?: string;
+  placement?: string;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   ctaCopy,
   pageSectionUtm = 'buying-guide-cta',
   campaignSlug = 'bucket-b-brand',
+  placement = 'buying-guide-cta',
 } = Astro.props;
 
 const utmHref =
@@ -29,6 +31,8 @@ const utmHref =
     target="_blank"
     rel="noopener"
     aria-label={`${ctaCopy} — öppnas i ny flik`}
+    data-brand={brand}
+    data-placement={placement}
   >
     {ctaCopy}
   </a>
@@ -68,3 +72,13 @@ const utmHref =
     margin: var(--space-2) 0 0;
   }
 </style>
+
+<script>
+document.querySelectorAll('.klockrummet-cta__btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'klockrummet_click', { brand: (btn as HTMLElement).dataset.brand, placement: (btn as HTMLElement).dataset.placement });
+    }
+  });
+});
+</script>
