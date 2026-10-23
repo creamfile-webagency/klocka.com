@@ -15,6 +15,10 @@ export default defineConfig({
         if (m) return MIGRATED_TID_SLUGS.has(m[1]);
         return true;
       },
+      serialize(item) {
+        item.lastmod = new Date().toISOString();
+        return item;
+      },
     }),
   ],
   vite: {
