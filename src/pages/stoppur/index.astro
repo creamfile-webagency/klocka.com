@@ -196,6 +196,21 @@ const howToSteps = [
     let rafId: number | null = null;
     let lapBase       = 0;   // accumulated ms at last lap
 
+    // ── Wake lock ──
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let wakeLock: any = null;
+    async function requestWakeLock() {
+      if (!('wakeLock' in navigator)) return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      try { wakeLock = await (navigator as any).wakeLock.request('screen'); } catch { /* unsupported */ }
+    }
+    function releaseWakeLock() {
+      if (wakeLock) { wakeLock.release().catch(() => {}); wakeLock = null; }
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (running && document.visibilityState === 'visible') requestWakeLock();
+    });
+
     // ── Helpers ──
     function pad2(n: number) { return n < 10 ? '0' + n : String(n); }
     function pad3(n: number) { return n < 100 ? (n < 10 ? '00' + n : '0' + n) : String(n); }
@@ -226,6 +241,7 @@ const howToSteps = [
       startBtn!.textContent = 'Pausa';
       startBtn!.setAttribute('aria-label', 'Pausa stoppuret');
       lapBtn!.disabled = false;
+      requestWakeLock();
       rafId = requestAnimationFrame(tick);
     }
 
@@ -233,6 +249,7 @@ const howToSteps = [
       if (!running) return;
       accumulated += performance.now() - startedAt;
       running = false;
+      releaseWakeLock();
       if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
       timeEl!.textContent = formatTime(accumulated);
       startBtn!.textContent = 'Fortsätt';
@@ -240,6 +257,7 @@ const howToSteps = [
     }
 
     function reset() {
+      releaseWakeLock();
       if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
       running     = false;
       accumulated = 0;
