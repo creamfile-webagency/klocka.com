@@ -1,0 +1,87 @@
+---
+// No ads: /om/ /kontakt/ /integritetspolicy/ /redaktionell-policy/ /404 and tool fullscreen
+import { AD_SLOTS, ADSENSE_CLIENT, type AdPlacement } from "../lib/ads";
+
+interface Props {
+  placement: AdPlacement;
+  minWidth?: number;
+}
+
+const { placement, minWidth } = Astro.props;
+const slot = AD_SLOTS[placement];
+---
+
+{slot.kind === "display-fixed" && !minWidth && (
+  <div class="ad-slot-wrap">
+    <p style="font-size:11px;color:#999;margin:0 0 2px">Annons</p>
+    <ins
+      class="adsbygoogle"
+      style="display:inline-block;width:300px;height:600px"
+      data-ad-client={ADSENSE_CLIENT}
+      data-ad-slot={slot.id}
+    ></ins>
+    <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+)}
+
+{slot.kind === "display-fixed" && minWidth && (
+  <div class="ad-slot-wrap">
+    <p style="font-size:11px;color:#999;margin:0 0 2px">Annons</p>
+    <script is:inline define:vars={{ adClient: ADSENSE_CLIENT, adSlot: slot.id, minW: minWidth }}>
+      if (window.matchMedia('(min-width:' + minW + 'px)').matches) {
+        var ins = document.createElement('ins');
+        ins.className = 'adsbygoogle';
+        ins.style.cssText = 'display:inline-block;width:300px;height:600px';
+        ins.setAttribute('data-ad-client', adClient);
+        ins.setAttribute('data-ad-slot', adSlot);
+        document.currentScript.parentElement.insertBefore(ins, document.currentScript);
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    </script>
+  </div>
+)}
+
+{slot.kind === "display-responsive" && (
+  <div class="ad-slot-wrap ad-slot-responsive">
+    <p style="font-size:11px;color:#999;margin:0 0 2px">Annons</p>
+    <ins
+      class="adsbygoogle"
+      style="display:block;width:100%"
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+      data-ad-client={ADSENSE_CLIENT}
+      data-ad-slot={slot.id}
+    ></ins>
+    <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+)}
+
+{slot.kind === "in-article" && (
+  <div class="ad-slot-wrap ad-slot-in-article">
+    <p style="font-size:11px;color:#999;margin:0 0 2px">Annons</p>
+    <ins
+      class="adsbygoogle"
+      style="display:block;text-align:center;width:100%"
+      data-ad-layout="in-article"
+      data-ad-format="fluid"
+      data-ad-client={ADSENSE_CLIENT}
+      data-ad-slot={slot.id}
+    ></ins>
+    <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+)}
+
+<style>
+  .ad-slot-wrap {
+    display: block;
+  }
+  .ad-slot-responsive {
+    min-height: 280px;
+  }
+  .ad-slot-in-article {
+    min-height: 250px;
+  }
+  :global([data-fullscreen]) .ad-slot-wrap {
+    display: none;
+  }
+</style>
