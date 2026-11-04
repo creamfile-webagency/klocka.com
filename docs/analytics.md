@@ -4,38 +4,45 @@
 
 - **Property URL:** https://klocka.com/
 - **Access type:** Service account
-- **Service account email:** investviwer@investviewer.iam.gserviceaccount.com
-- **Credential file:** `~/Websites/investviewer.com/secrets/investviewer-google-key.json`
+- **Service account email:** klockrummet@klockrummet-495806.iam.gserviceaccount.com
+- **Credential file:** `~/Websites/Klockrummet.se/secrets/key-google-klockrummet.json`
   (override with `$GOOGLE_APPLICATION_CREDENTIALS`)
 - **Permission owner:** Board (info@creamfile.com)
+- **Access confirmed:** 2026-11-02 (board comment CRE-8305)
 
 ### How to pull GSC data
 
 ```bash
+export GOOGLE_APPLICATION_CREDENTIALS="/home/ben/Websites/Klockrummet.se/secrets/key-google-klockrummet.json"
 python3 ~/Websites/tools/weekly_report.py --group brand-apps --week [YYYY-WNN]
 # or for this site only:
-python3 ~/Websites/investviewer.com/GSC/fetch_gsc.py \
-    --site https://klocka.com/ --start 2026-08-18 --end 2026-08-24 --dimensions query page
+python3 ~/Websites/tools/fetch_gsc.py \
+    --site https://klocka.com/ --start 2026-10-26 --end 2026-11-01 --dimensions query page
 ```
 
 ### Where CSVs land
 
-`~/Websites/tools/data/brand-apps/[YYYY-WNN]/`
+`~/Websites/tools/data/klocka-com_[dates]_[dimension].csv`
 
 ---
 
 ## GA4 (Google Analytics 4)
 
 - **Measurement ID:** G-FXEJ5M904P
-- **Property ID:** [Ben to fill in — needed for Data API / fetch_ga4.py]
+- **Property ID:** 357931740
+- **GA4 Account:** accounts/201661240 (E-Com)
 - **Access type:** Service account (same credential as GSC)
+- **Service account email:** klockrummet@klockrummet-495806.iam.gserviceaccount.com
+- **Credential file:** `~/Websites/Klockrummet.se/secrets/key-google-klockrummet.json`
 - **Permission owner:** Board (info@creamfile.com)
+- **Access confirmed:** 2026-11-02 (board comment CRE-8305)
 
 ### How to pull GA4 data
 
 ```bash
-python3 ~/Websites/investviewer.com/GSC/fetch_ga4.py \
-    --property-id G-FXEJ5M904P --start 2026-08-18 --end 2026-08-24
+export GOOGLE_APPLICATION_CREDENTIALS="/home/ben/Websites/Klockrummet.se/secrets/key-google-klockrummet.json"
+python3 ~/Websites/tools/fetch_ga4.py \
+    --property-id 357931740 --start 2026-10-26 --end 2026-11-01
 ```
 
 ---
