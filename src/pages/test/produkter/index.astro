@@ -1,0 +1,25 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ProductGrid from "@/components/ProductGrid.astro";
+---
+
+<Layout
+  title="Produkttest | Klocka.com"
+  description="Tillfällig testsida för produktflödet."
+  noindex
+>
+  <div class="test-products">
+    <ProductGrid
+      filter={{ source: "klockrummet" }}
+      limit={8}
+      sort="price-asc"
+      placement="test-produkter"
+    />
+  </div>
+</Layout>
+
+<style>
+  .test-products {
+    padding: var(--space-8) var(--space-4);
+  }
+</style>
