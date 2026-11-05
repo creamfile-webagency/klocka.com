@@ -1,3 +1,8 @@
+# ── Tradedoubler site verification (site ID 3486401) ──
+# Cloudflare Pages 308-redirects *.html to the extensionless path; this 200-rewrite
+# serves public/3486401.html directly at /3486401.html without a redirect.
+/3486401.html  /3486401  200
+
 # ── Sitemap canonical redirect ──
 /sitemap.xml  /sitemap-index.xml  301
 
