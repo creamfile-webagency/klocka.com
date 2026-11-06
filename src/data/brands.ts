@@ -25,7 +25,7 @@ export const brands: BrandData[] = [
     name: 'Black Oak',
     country: 'Okänt',
     founded: null,
-    priceRange: '500 – 2 000 kr',
+    priceRange: '',
     segment: 'Mid-range',
     tagline: 'Sportigt formgivna quartz-klockor',
     officialUrl: '',
