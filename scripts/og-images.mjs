@@ -6,13 +6,15 @@
  *   - Brand name (large), tagline, pill badges
  *   - Decorative watch illustration (right side)
  *
- * Run: node scripts/og-images.mjs
+ * Run: npm run generate:og  (requires Node.js 22+)
+ * Reads brand data live from src/data/brands.ts via Node's type-stripping.
  */
 
 import { createRequire } from 'module';
 import { mkdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { brands } from '../src/data/brands.ts';
 
 const require = createRequire(import.meta.url);
 const sharp = require('sharp');
@@ -22,33 +24,6 @@ const ROOT = join(__dirname, '..');
 const OUT_DIR = join(ROOT, 'public', 'img', 'og');
 
 mkdirSync(OUT_DIR, { recursive: true });
-
-// Import brand data — we read the TS file as a plain JS object by re-exporting
-// the data in a sibling .mjs. To avoid a transpile step, we duplicate just the
-// data inline here. If brands.ts changes, keep this in sync.
-const brands = [
-  { slug: 'axcent',            name: 'Axcent',           country: 'Danmark',      founded: 2000, priceRange: '300 – 1 500 kr',       segment: 'Budget',     tagline: 'Dansk ungdomsdesign med stil' },
-  { slug: 'black-oak',         name: 'Black Oak',        country: 'Norden',       founded: 2010, priceRange: '500 – 2 000 kr',       segment: 'Mid-range',  tagline: 'Nordisk design med sportslig karaktär' },
-  { slug: 'breitling',         name: 'Breitling',        country: 'Schweiz',      founded: 1884, priceRange: '25 000 – 150 000 kr',  segment: 'Luxury',     tagline: 'Precision för pilot och äventyrare' },
-  { slug: 'calvin-klein',      name: 'Calvin Klein',     country: 'USA',          founded: 1968, priceRange: '800 – 3 000 kr',       segment: 'Fashion',    tagline: 'New York-minimalism med clean design' },
-  { slug: 'carl-edmond',       name: 'Carl-Edmond',      country: 'Danmark',      founded: 2014, priceRange: '800 – 2 500 kr',       segment: 'Mid-range',  tagline: 'Skandinavisk minimalism från Köpenhamn' },
-  { slug: 'casio',             name: 'Casio',            country: 'Japan',        founded: 1946, priceRange: '500 – 15 000 kr',      segment: 'Sport',      tagline: 'G-Shock, Edifice och Pro Trek' },
-  { slug: 'certina',           name: 'Certina',          country: 'Schweiz',      founded: 1888, priceRange: '3 000 – 15 000 kr',    segment: 'Mid-range',  tagline: 'Schweizisk precision med sportsjäl' },
-  { slug: 'daniel-wellington', name: 'Daniel Wellington',country: 'Sverige',      founded: 2009, priceRange: '800 – 3 000 kr',       segment: 'Fashion',    tagline: 'Skandinavisk minimalism från Stockholm' },
-  { slug: 'diesel',            name: 'Diesel',           country: 'Italien',      founded: 1978, priceRange: '1 000 – 4 000 kr',     segment: 'Fashion',    tagline: 'Industriellt formspråk med edge' },
-  { slug: 'hugo-boss',         name: 'Hugo Boss',        country: 'Tyskland',     founded: 1924, priceRange: '2 000 – 6 000 kr',     segment: 'Fashion',    tagline: 'Tysk affärsstil med modern design' },
-  { slug: 'james-son',         name: 'James-Son',        country: 'Skandinavien', founded: 2015, priceRange: '200 – 800 kr',         segment: 'Budget',     tagline: 'Prisvärda klockor för vardagsbruk' },
-  { slug: 'longines',          name: 'Longines',         country: 'Schweiz',      founded: 1832, priceRange: '8 000 – 40 000 kr',    segment: 'Mid-luxury', tagline: 'Elegans och tradition sedan 1832' },
-  { slug: 'marc-jacobs',       name: 'Marc Jacobs',      country: 'USA',          founded: 1984, priceRange: '1 000 – 4 000 kr',     segment: 'Fashion',    tagline: 'New York-mode med lekfull design' },
-  { slug: 'michael-kors',      name: 'Michael Kors',     country: 'USA',          founded: 1981, priceRange: '1 500 – 5 000 kr',     segment: 'Fashion',    tagline: 'Glamour och stil från New York' },
-  { slug: 'omega',             name: 'Omega',            country: 'Schweiz',      founded: 1848, priceRange: '15 000 – 200 000 kr',  segment: 'Luxury',     tagline: 'Schweizisk prestige — Seamaster, Speedmaster, De Ville' },
-  { slug: 'philippe-banks',    name: 'Philippe Banks',   country: 'Europa',       founded: 2000, priceRange: '500 – 2 000 kr',       segment: 'Mid-range',  tagline: 'Europeisk klassisk klockdesign' },
-  { slug: 'rolex',             name: 'Rolex',            country: 'Schweiz',      founded: 1905, priceRange: '60 000 – 500 000+ kr', segment: 'Luxury',     tagline: 'Submariner, Datejust och Daytona' },
-  { slug: 'seiko',             name: 'Seiko',            country: 'Japan',        founded: 1881, priceRange: '2 000 – 80 000 kr',    segment: 'Mid-range',  tagline: 'Japansk precision och havsäventyr' },
-  { slug: 'tag-heuer',         name: 'TAG Heuer',        country: 'Schweiz',      founded: 1860, priceRange: '10 000 – 60 000 kr',   segment: 'Luxury',     tagline: 'Kronografer med motorsportarv' },
-  { slug: 'tory-burch',        name: 'Tory Burch',       country: 'USA',          founded: 2004, priceRange: '1 500 – 5 000 kr',     segment: 'Fashion',    tagline: 'Amerikansk bohemisk lyxestetik' },
-  { slug: 'triwa',             name: 'Triwa',            country: 'Sverige',      founded: 2007, priceRange: '1 000 – 4 000 kr',     segment: 'Mid-range',  tagline: 'Stockholmsdesign med hållbarhetsprofil' },
-];
 
 /** Escape special XML/SVG characters in text */
 function esc(str) {
@@ -85,18 +60,28 @@ function buildSvg(brand) {
   const W = 1200;
   const H = 630;
 
-  const countryBadge = `${brand.country} ${brand.founded}`;
-  const priceBadge = brand.priceRange;
-  const segBadge = brand.segment;
-
-  const cW = pillWidth(countryBadge);
-  const pW = pillWidth(priceBadge);
-  const sW = pillWidth(segBadge);
-
+  // Build only known pills; omit pill for unknown/missing values
   const badgeY = 410;
-  const badgeX1 = 80;
-  const badgeX2 = badgeX1 + cW + 12;
-  const badgeX3 = badgeX2 + pW + 12;
+  let badgeX = 80;
+  const pillSvgs = [];
+
+  if (brand.country !== 'Okänt' && brand.founded !== null) {
+    const text = `${brand.country} ${brand.founded}`;
+    const w = pillWidth(text);
+    pillSvgs.push(pill(text, badgeX, badgeY, w));
+    badgeX += w + 12;
+  }
+
+  if (brand.priceRange) {
+    const w = pillWidth(brand.priceRange);
+    pillSvgs.push(pill(brand.priceRange, badgeX, badgeY, w));
+    badgeX += w + 12;
+  }
+
+  {
+    const w = pillWidth(brand.segment);
+    pillSvgs.push(pill(brand.segment, badgeX, badgeY, w));
+  }
 
   // Watch face (simplified clock illustration, right side)
   const cx = 870;
@@ -189,9 +174,7 @@ function buildSvg(brand) {
   <text x="80" y="280" font-family="system-ui,-apple-system,Helvetica Neue,Arial,sans-serif" font-size="20" fill="rgba(255,255,255,0.65)" font-weight="400">${esc(brand.tagline)}</text>
 
   <!-- Pill badges -->
-  ${pill(countryBadge, badgeX1, badgeY, cW)}
-  ${pill(priceBadge,   badgeX2, badgeY, pW)}
-  ${pill(segBadge,     badgeX3, badgeY, sW)}
+  ${pillSvgs.join('\n')}
 </svg>`;
 }
 

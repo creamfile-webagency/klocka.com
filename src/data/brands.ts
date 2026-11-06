@@ -2,7 +2,7 @@ export interface BrandData {
   slug: string;
   name: string;
   country: string;
-  founded: number;
+  founded: number | null;
   priceRange: string;
   segment: string;
   tagline: string;
@@ -13,22 +13,22 @@ export const brands: BrandData[] = [
   {
     slug: 'axcent',
     name: 'Axcent',
-    country: 'Danmark',
-    founded: 2000,
+    country: 'Sverige',
+    founded: 1996,
     priceRange: '300 – 1 500 kr',
     segment: 'Budget',
-    tagline: 'Dansk ungdomsdesign med stil',
-    officialUrl: 'https://www.axcent.dk/',
+    tagline: 'Svensk modeinriktad klockdesign',
+    officialUrl: '',
   },
   {
     slug: 'black-oak',
     name: 'Black Oak',
-    country: 'Norden',
-    founded: 2010,
-    priceRange: '500 – 2 000 kr',
+    country: 'Okänt',
+    founded: null,
+    priceRange: '',
     segment: 'Mid-range',
-    tagline: 'Nordisk design med sportslig karaktär',
-    officialUrl: 'https://www.black-oak.se/',
+    tagline: 'Sportigt formgivna quartz-klockor',
+    officialUrl: '',
   },
   {
     slug: 'breitling',
@@ -53,12 +53,12 @@ export const brands: BrandData[] = [
   {
     slug: 'carl-edmond',
     name: 'Carl-Edmond',
-    country: 'Danmark',
+    country: 'Sverige',
     founded: 2014,
     priceRange: '800 – 2 500 kr',
     segment: 'Mid-range',
-    tagline: 'Skandinavisk minimalism från Köpenhamn',
-    officialUrl: 'https://www.carl-edmond.dk/',
+    tagline: 'Skandinavisk design med schweiziskt hantverk',
+    officialUrl: 'https://carledmond.com/',
   },
   {
     slug: 'casio',
@@ -84,7 +84,7 @@ export const brands: BrandData[] = [
     slug: 'daniel-wellington',
     name: 'Daniel Wellington',
     country: 'Sverige',
-    founded: 2009,
+    founded: 2011,
     priceRange: '800 – 3 000 kr',
     segment: 'Fashion',
     tagline: 'Skandinavisk minimalism från Stockholm',
@@ -112,12 +112,12 @@ export const brands: BrandData[] = [
   },
   {
     slug: 'james-son',
-    name: 'James-Son',
-    country: 'Skandinavien',
-    founded: 2015,
-    priceRange: '200 – 800 kr',
+    name: 'James & Son',
+    country: 'Okänt',
+    founded: null,
+    priceRange: '',
     segment: 'Budget',
-    tagline: 'Prisvärda klockor för vardagsbruk',
+    tagline: 'Enkla quartz-klockor för vardagsbruk',
     officialUrl: '',
   },
   {
@@ -163,11 +163,11 @@ export const brands: BrandData[] = [
   {
     slug: 'philippe-banks',
     name: 'Philippe Banks',
-    country: 'Europa',
-    founded: 2000,
-    priceRange: '500 – 2 000 kr',
+    country: 'Okänt',
+    founded: null,
+    priceRange: '',
     segment: 'Mid-range',
-    tagline: 'Europeisk klassisk klockdesign',
+    tagline: 'Avskalade quartz-klockor med klassisk form',
     officialUrl: '',
   },
   {
