@@ -1,6 +1,6 @@
 ---
 import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
-import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
 ---
 
 <BuyingGuideLayout
@@ -18,6 +18,8 @@ import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
       rel: 'noopener nofollow sponsored',
     },
   ]}
+  datePublished="2026-10-23"
+  dateModified="2026-10-23"
 >
 
 <h2>Klocka som present per mottagare</h2>
@@ -46,11 +48,10 @@ import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
 
 <table> <thead> <tr> <th>Budget</th> <th>Vad du får</th> </tr> </thead> <tbody> <tr> <td>Under 500 kr</td> <td>Kvartsur med akrylglas eller mineralglas, plastarmband eller enkel metalllänk. Casio och Axcent-modeller. Bra present till barn och tonåringar.</td> </tr> <tr> <td>500 – 2 000 kr</td> <td>Mineralglas standard, äkta läder eller stål, kända varumärken (Daniel Wellington, Skagen, Casio MTP-serien). Passar studenter, vuxna och de flesta högtidstillfällen.</td> </tr> <tr> <td>2 000 kr+</td> <td>Safirglas, schweiziska eller japanska kvalitetsurverk, längre garantier och återförsäljarservice. Tissot, Seiko Presage, Longines. Rätt val för jubileer, runda födelsedagar och bröllopspresenter.</td> </tr> </tbody> </table>
 
-<KlockrummetCTA
-  variant="present"
-  klockrummetUrl="https://klockrummet.se/present/"
-  ctaCopy="Se klockpresent hos Klockrummet"
-  placement="klocka-present-inline"
+<ProductGrid
+  filter={{ source: "klockrummet" }}
+  limit={6}
+  placement="klocka-present"
 />
 
 <h2>Vanliga frågor om klockpresent</h2>

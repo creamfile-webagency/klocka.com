@@ -4,6 +4,7 @@ import type { ImageMetadata } from 'astro';
 import Layout from '@/layouts/Layout.astro';
 import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
 import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
+import { brandsBySlug } from '@/data/brands';
 
 const heroAssets = import.meta.glob<{ default: ImageMetadata }>('/src/assets/img/*.jpg', { eager: true });
 
@@ -66,6 +67,10 @@ const _slug = Astro.url.pathname.replace(/\/$/, '').split('/').pop() ?? '';
 // String path for OG meta tag (served from public/)
 const heroImage = heroImageProp ?? (_slug ? `/img/og/${_slug}.jpg` : undefined);
 // ImageMetadata for the optimised <Image> hero (served from src/assets/img/)
+// Official brand website (only on /klockmarken/<slug>/ with a verified officialUrl in brands.ts)
+const brandData = Astro.url.pathname.startsWith('/klockmarken/') ? brandsBySlug[_slug] : undefined;
+const officialUrl = brandData?.officialUrl || undefined;
+const officialHost = officialUrl ? new URL(officialUrl).hostname.replace(/^www\./, '') : undefined;
 const heroImgMeta = (heroAssets[`/src/assets/img/${_slug}.jpg`] as { default: ImageMetadata } | undefined)?.default;
 
 const schema: Record<string, unknown>[] = [
@@ -89,6 +94,9 @@ const schema: Record<string, unknown>[] = [
       url: 'https://klocka.com',
     },
     ...(heroImage ? { image: `https://klocka.com${heroImage}` } : {}),
+    ...(brandData
+      ? { about: { '@type': 'Brand', name: brandData.name, ...(officialUrl ? { url: officialUrl } : {}) } }
+      : {}),
   },
   {
     '@context': 'https://schema.org',
@@ -193,6 +201,12 @@ const schema: Record<string, unknown>[] = [
     <!-- Article body -->
     <article class="guide-body prose">
       <slot />
+      {officialUrl && (
+        <p class="official-link">
+          <span class="price-label">Officiell webbplats för {brandData?.name}:</span>
+          <a href={officialUrl} target="_blank" rel="noopener" data-official-brand={brandData?.slug}>{officialHost} <span aria-hidden="true">↗</span></a>
+        </p>
+      )}
     </article>
 
     <!-- Bottom CTA (repeat) -->
@@ -298,6 +312,17 @@ document.querySelectorAll('.cta-section a[data-partner]').forEach(link => {
     font-size: var(--text-sm);
   }
   .price-label { color: var(--color-ink-muted); font-weight: 500; }
+  .official-link {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin: var(--space-8) 0 0;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+  }
+  .official-link a { font-weight: 600; color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
   .price-value { font-weight: 700; }
 
   .updated-date {

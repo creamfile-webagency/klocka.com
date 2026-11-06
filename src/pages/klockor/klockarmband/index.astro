@@ -1,6 +1,6 @@
 ---
 import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
-import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
 ---
 
 <BuyingGuideLayout
@@ -18,6 +18,8 @@ import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
       rel: 'noopener nofollow sponsored',
     },
   ]}
+  datePublished="2026-10-23"
+  dateModified="2026-10-23"
 >
 
 <h2>Mäta din klocka</h2>
@@ -60,13 +62,27 @@ import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
 <p>Med normal daglig användning håller ett läderarmband ett till tre år. Svett, fukt och UV-ljus bryter ner läder snabbare. Bär du klockan till vardags på sommaren, eller tränar med den på, förkortare det liv avsevärt. Förvara armbandet torrt och borstat från smuts, och det håller längre. Byte kostar 100–400 kr beroende på kvalitet.</p>
 
 <p><strong>Var köper man bra klockarmband i Sverige?</strong></p>
-<p>Klockrummet har ett brett urval av armband i läder, NATO, mesh och silikon — alla i standardmåtten 18–24 mm. Urmakare har ofta ett litet men handplockat sortiment om du vill se och känna på materialet innan du köper. NATO-band hittas också på sportbutiker och friluftsliv-butiker för 50–150 kr.</p>
+<p>Lösa armband hittar du hos urmakare och klockbutiker. Vill du ha en ny klocka med en viss armbandstyp finns exempel nedan.</p>
 
-<KlockrummetCTA
-  variant="armband"
-  klockrummetUrl="https://klockrummet.se/guide/klockarmband/"
-  ctaCopy="Se klockarmband hos Klockrummet"
-  placement="klockarmband-inline"
+<ProductGrid
+  filter={{ source: "klockrummet", strap: "mesh" }}
+  limit={4}
+  placement="klockarmband-mesh"
+  heading="Klockor med mesharmband"
+/>
+
+<ProductGrid
+  filter={{ source: "klockrummet", strap: "nato" }}
+  limit={4}
+  placement="klockarmband-nato"
+  heading="Klockor med nato-armband"
+/>
+
+<ProductGrid
+  filter={{ source: "klockrummet", strap: "läder" }}
+  limit={4}
+  placement="klockarmband-lader"
+  heading="Klockor med läderarmband"
 />
 
 </BuyingGuideLayout>

@@ -1,0 +1,247 @@
+---
+import productsData from "@/data/products.json";
+import type { Product } from "@/lib/feeds/types";
+
+export interface ProductFilter {
+  source?: string;
+  gender?: Product["gender"] | Product["gender"][];
+  strap?: string;
+  brand?: string;
+  maxPrice?: number;
+}
+
+type ProductSort = "price-asc" | "price-desc" | "updated-desc";
+
+interface Props {
+  filter?: ProductFilter;
+  limit?: number;
+  sort?: ProductSort;
+  placement: string;
+  heading?: string;
+}
+
+const { filter = {}, limit, sort = "updated-desc", placement, heading } = Astro.props;
+const products = productsData as Product[];
+
+const normalized = (value: string) => value.trim().toLocaleLowerCase("sv-SE");
+
+const genderFilter = filter.gender
+  ? Array.isArray(filter.gender)
+    ? filter.gender
+    : [filter.gender]
+  : null;
+
+const matchingProducts = products.filter((product) => {
+  if (!product.inStock) return false;
+  if (filter.source && normalized(product.source) !== normalized(filter.source))
+    return false;
+  if (genderFilter && !genderFilter.includes(product.gender!)) return false;
+  if (
+    filter.strap &&
+    normalized(product.strap ?? "") !== normalized(filter.strap)
+  )
+    return false;
+  if (filter.brand && normalized(product.brand) !== normalized(filter.brand))
+    return false;
+  if (filter.maxPrice !== undefined && product.price > filter.maxPrice)
+    return false;
+  return true;
+});
+
+matchingProducts.sort((a, b) => {
+  if (sort === "price-asc") return a.price - b.price;
+  if (sort === "price-desc") return b.price - a.price;
+  return Date.parse(b.updatedAt) - Date.parse(a.updatedAt);
+});
+
+const visibleProducts = matchingProducts.slice(
+  0,
+  Math.max(0, limit ?? matchingProducts.length),
+);
+const merchant = visibleProducts[0]?.merchant;
+const updatedAt = visibleProducts.reduce(
+  (latest, product) =>
+    product.updatedAt > latest ? product.updatedAt : latest,
+  visibleProducts[0]?.updatedAt ?? "",
+);
+const updatedLabel = updatedAt
+  ? new Intl.DateTimeFormat("sv-SE", { dateStyle: "medium" }).format(
+      new Date(updatedAt),
+    )
+  : "";
+const priceFormatter = new Intl.NumberFormat("sv-SE", {
+  style: "currency",
+  currency: "SEK",
+  maximumFractionDigits: 0,
+});
+
+const productHref = (product: Product) => {
+  const url = new URL(product.url);
+  url.searchParams.set("utm_content", placement);
+  return url.toString();
+};
+
+const isKlockrummet =
+  normalized(filter.source ?? "") === "klockrummet" ||
+  normalized(merchant ?? "") === "klockrummet";
+const sectionHeading = heading ?? `Klockor från ${merchant}`;
+---
+
+{
+  visibleProducts.length > 0 && merchant && (
+    <section class="product-grid" aria-labelledby={`product-grid-${placement}`}>
+      {isKlockrummet && (
+        <p class="product-grid__disclosure">
+          Klockrummet samägs med Klocka.com.
+        </p>
+      )}
+      <header class="product-grid__header">
+        <h2 id={`product-grid-${placement}`}>{sectionHeading}</h2>
+        <p>Uppdaterat {updatedLabel}</p>
+      </header>
+
+      <div class="product-grid__items">
+        {visibleProducts.map((product) => (
+          <article class="product-card">
+            <div class="product-card__image">
+              <img
+                src={product.image}
+                alt=""
+                loading="lazy"
+                width="600"
+                height="600"
+              />
+            </div>
+            <div class="product-card__content">
+              <h3>{product.title}</h3>
+              <p class="product-card__price">
+                {priceFormatter.format(product.price)}
+              </p>
+              <p class="product-card__merchant">Pris hos {product.merchant}</p>
+              <a
+                class="btn btn-primary product-card__link"
+                href={productHref(product)}
+                target="_blank"
+                rel={`noopener nofollow${product.affiliate ? " sponsored" : ""}`}
+                data-product-link
+                data-source={product.source}
+                data-merchant={product.merchant}
+                data-item-id={product.id}
+                data-placement={placement}
+              >
+                Se hos {product.merchant}
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<script>
+  document
+    .querySelectorAll<HTMLAnchorElement>("[data-product-link]")
+    .forEach((link) => {
+      link.addEventListener("click", () => {
+        if (typeof gtag === "undefined") return;
+
+        const event =
+          link.dataset.source === "klockrummet"
+            ? "klockrummet_click"
+            : "outbound_affiliate_click";
+        gtag("event", event, {
+          source: link.dataset.source,
+          merchant: link.dataset.merchant,
+          item_id: link.dataset.itemId,
+          placement: link.dataset.placement,
+        });
+      });
+    });
+</script>
+
+<style>
+  .product-grid {
+    max-width: var(--max-w-content);
+    margin-inline: auto;
+  }
+
+  .product-grid__disclosure {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .product-grid__header {
+    margin-bottom: var(--space-4);
+  }
+
+  .product-grid__header h2 {
+    margin: 0;
+    font-size: var(--text-2xl);
+  }
+
+  .product-grid__header p {
+    margin: var(--space-1) 0 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+  }
+
+  .product-grid__items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: var(--space-5);
+  }
+
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .product-card__image {
+    aspect-ratio: 1;
+    background: var(--color-surface-2);
+    overflow: hidden;
+  }
+
+  .product-card__image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+
+  .product-card__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: var(--space-4);
+  }
+
+  .product-card h3 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-base);
+    line-height: 1.4;
+  }
+
+  .product-card__price {
+    margin: auto 0 0;
+    font-size: var(--text-lg);
+    font-weight: 700;
+  }
+
+  .product-card__merchant {
+    margin: 0 0 var(--space-4);
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+  }
+
+  .product-card__link {
+    width: 100%;
+  }
+</style>
