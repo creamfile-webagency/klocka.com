@@ -11,8 +11,15 @@ const howToSteps = [
 <ToolLayout
   slug="pomodoro"
   title="Pomodoroklocka online — 25/5 Pomodoro-tekniken | Klocka.com"
-  description="Gratis pomodoroklocka för fokus och produktivitet. 25 minuter arbete, 5 minuter paus."
+  description="Pomodoro-timer online — 25 min fokus, 5 min paus med automatiska byten. Klassisk teknik för bättre koncentration och färre distraktioner. Gratis."
   howToSteps={howToSteps}
+  faqItems={[
+    { question: "Måste pauserna vara exakt 5 minuter?", answer: "Fem minuter är den klassiska rekommendationen, men många anpassar till 3–10 minuter beroende på arbetstyp. Det viktiga är att faktiskt ta pausen." },
+    { question: "Vad gör jag om 25 minuter känns för kort?", answer: "En del föredrar 50/10- eller 90/20-cykler. Denna timer kör det klassiska 25/5-formatet. För egna intervall, använd intervallklockan på klocka.com/interval/." },
+    { question: "Räknas en avbruten session som ett Pomodoro?", answer: "Nej — om du avbryts och inte kan återgå inom en minut eller två är det bättre att starta om intervallet." },
+    { question: "Fungerar Pomodoro för kreativt arbete?", answer: "Ja, många skribenter, formgivare och konstnärer använder tekniken effektivt. De fasta intervallen hjälper till att inte fastna för länge på ett ställe." },
+    { question: "Kan jag ändra tiderna till något annat?", answer: "Denna timer följer det klassiska 25/5-formatet. För egna arbets- och vilointervall, använd intervallklockan på klocka.com/interval/." },
+  ]}
 >
   <Fragment slot="intro">
     <p>Starta timern, arbeta i 25 minuter utan avbrott, ta en kort paus — sen om igen. Pomodoro-tekniken hjälper dig att fokusera och undvika prokrastinering.</p>
@@ -103,22 +110,85 @@ const howToSteps = [
   <Fragment slot="content">
     <h2>Vad är Pomodoro-tekniken?</h2>
     <p>
-      Pomodoro-tekniken är en tidshanteringsmetod skapad av Francesco Cirillo på slutet av 1980-talet. Namnet
-      kommer från den tomatformade kökstiduret han använde som student. Metoden bygger på ett enkelt
-      mönster: arbeta fokuserat i 25 minuter (ett "pomodoro"), ta sedan en kort paus på 5 minuter. Var fjärde
-      session ersätts den korta pausen av en längre rast på 15–30 minuter.
+      Pomodoro-tekniken är en tidshanteringsmetod som utvecklades av Francesco Cirillo i slutet
+      av 1980-talet. Namnet kommer från den tomatformade kökstiduret han använde som student —
+      "pomodoro" betyder tomat på italienska. Metoden bygger på ett enkelt mönster: arbeta
+      fokuserat i 25 minuter, ta sedan en kort paus på 5 minuter. Var fjärde cykel ersätts den
+      korta pausen av en längre rast på 15–30 minuter.
     </p>
     <p>
-      Forskning kring fokus och kognition visar att hjärnan presterar bättre när arbete bryts upp i avgränsade
-      block med obligatoriska återhämtningsperioder. Den tickande timern skapar också ett litet
-      tryck — en känsla av att man "racear mot klockan" — som kan motverka prokrastinering och hålla
-      koncentrationen uppe.
+      Varje 25-minutersblock kallas ett pomodoro. Tanken är att arbeta i korta, intensiva pass
+      och sedan vila, i stället för att försöka hålla koncentrationen uppe under långa ostörda
+      timmar. Det klassiska 25/5-formatet balanserar tillräckligt lång fokustid för att komma in
+      i ett arbetsflöde med tillräckligt korta intervall för att det ska kännas hanterbart.
+    </p>
+
+    <h2>Varför fungerar det?</h2>
+    <p>
+      Att dela upp arbetet i avgränsade tidsblock gör stora uppgifter mer hanterbara. I stället
+      för att stirra på en hel dags arbete fokuserar du på nästa 25 minuter — vilket är lätt att
+      starta. Regelbundna pauser motverkar att koncentrationen sjunker och förhindrar mental
+      utmattning under längre arbetsdagar.
     </p>
     <p>
-      Klocka.coms pomodoroklocka hanterar sessionsräkning och pausbyten automatiskt. Du behöver inte hålla
-      reda på om det är en kort eller lång paustur — klockan vet det. Allt du behöver göra är att välja vad
-      du ska jobba med och trycka Starta.
+      Timern skapar också ett åtagande: du lovar dig själv att fokusera tills den ringer.
+      Vetskapen om att en paus är på väg gör det lättare att motstå distraktioner. Tekniken
+      fungerar väl för studier, skrivande, programmering och allt annat arbete som kräver
+      sammanhängande fokus.
     </p>
+
+    <h2>Så här kör du din första Pomodoro</h2>
+    <ol>
+      <li>Bestäm vad du ska arbeta med och skriv in uppgiften i fältet ovanför timern.</li>
+      <li>Klicka på Starta — 25-minuterstimern börjar räkna ned.</li>
+      <li>Arbeta enbart med den uppgiften tills timern ringer. Undvik avbrott.</li>
+      <li>Ta den 5-minuters paus som följer automatiskt. Res dig, sträck på dig, drick vatten.</li>
+      <li>Efter fyra sessioner ger klockan dig en längre paus på 15 minuter — utnyttja den.</li>
+    </ol>
+
+    <h2>Tips</h2>
+    <ul>
+      <li>Stäng av notiser och lägg telefonen ur sikte under fokusintervallet.</li>
+      <li>Dela inte en Pomodoro mellan två olika uppgifter — avsluta en sak eller vänta till nästa session.</li>
+      <li>Om du avbryts oväntat och inte kan återgå inom ett par minuter är det bättre att starta om intervallet än att räkna en ofullständig session.</li>
+      <li>Använd den långa pausen till rörelse snarare än skärmar — det ger bättre återhämtning.</li>
+    </ul>
+
+    <h2>Vanliga frågor om Pomodoro-timern</h2>
+    <dl class="faq">
+      <dt>Måste pauserna vara exakt 5 minuter?</dt>
+      <dd>
+        Fem minuter är den klassiska rekommendationen, men många anpassar pauslängden till
+        3–10 minuter beroende på arbetstyp. Det viktiga är att faktiskt ta pausen och inte
+        fortsätta direkt in i nästa fokusblock.
+      </dd>
+
+      <dt>Vad gör jag om 25 minuter känns för kort?</dt>
+      <dd>
+        En del föredrar längre cykler som 50/10 eller 90/20. Den här timern följer det klassiska
+        25/5-formatet. För egna arbets- och vilointervall kan du använda intervallklockan på
+        klocka.com/interval/.
+      </dd>
+
+      <dt>Räknas en avbruten session som ett Pomodoro?</dt>
+      <dd>
+        Nej — om du avbryts och inte kan återgå inom en minut eller två är det bättre att starta
+        om intervallet. En Pomodoro ska vara odelad för att räknas.
+      </dd>
+
+      <dt>Fungerar Pomodoro för kreativt arbete?</dt>
+      <dd>
+        Ja, många skribenter, formgivare och konstnärer använder tekniken med gott resultat.
+        De fasta intervallen hjälper till att inte fastna för länge på ett ställe och håller
+        arbetet framåtriktat.
+      </dd>
+
+      <dt>Kan jag ändra tiderna till något annat?</dt>
+      <dd>
+        Den här timern följer det klassiska 25/5-formatet. För egna arbets- och vilointervall,
+        använd intervallklockan på klocka.com/interval/.
+      </dd>
+    </dl>
   </Fragment>
 </ToolLayout>
 

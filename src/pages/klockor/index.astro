@@ -30,18 +30,72 @@ const categories = [
     img: '/img/og-smartwatch.jpg',
     imgAlt: 'Smartwatch — smarta klockor',
   },
+  {
+    label: 'Billiga klockor',
+    desc: 'De bästa klockmynten under 1 000 kr. Vad du faktiskt får i olika prisklasser — och vad du ska titta på.',
+    slug: 'billiga-klockor',
+    img: '/img/klocka-og.png',
+    imgAlt: 'Billiga klockor — köpguide',
+  },
+  {
+    label: 'Klockarmband',
+    desc: 'Byt armband och förnya din klocka. Guide till material, bredd och hur du hittar rätt ersättningsband.',
+    slug: 'klockarmband',
+    img: '/img/klocka-og.png',
+    imgAlt: 'Klockarmband — guide',
+  },
+  {
+    label: 'Klocka i present',
+    desc: 'Ge bort en klocka som present. Tips på populära presentmodeller i alla prisklasser och stilar.',
+    slug: 'klocka-present',
+    img: '/img/klocka-og.png',
+    imgAlt: 'Klocka i present — presentguide',
+  },
 ];
 ---
 
 <Layout
   title="Klockor — Köpguide för klockor i alla prisklasser | Klocka.com"
-  description="Köpguider för klockor — herrur, damur, sportwatch och smartwatch. Hitta rätt klocka för din stil och budget."
+  description="Köpguider för klockor — herrur, damur, sportwatch, smartwatch, billiga klockor och klockarmband. Hitta rätt klocka för din stil och din budget."
   ogImage="/img/og-damklockor.jpg"
 >
   <div class="page-index">
     <header class="index-header">
       <h1>Klockor</h1>
-      <p>Köpguider för klockor i alla prisklasser — hitta rätt klocka för dig.</p>
+      <div class="index-intro prose">
+        <p>
+          En klocka kan vara mycket mer än ett sätt att se vad klockan är. Den berättar något om
+          dig — din stil, dina prioriteringar, om du föredrar klassiskt hantverk eller modern teknik.
+          Klockor köps av många anledningar: som vardagsur, träningspartner, statussymbol, present eller
+          för att komplettera en unik look. Den här sidan samlar Klocka.coms köpguider för alla de vanligaste
+          klockkategorierna, med ärlika råd om vad du faktiskt får för pengarna i varje prisklass.
+        </p>
+        <p>
+          Letar du efter ett <strong>herrur</strong>? Vi täcker allt från budgetmodeller till
+          lyxklockor från Omega och Rolex, med fokus på vad du faktiskt får för pengarna i varje
+          prisklass. Söker du <strong>damur</strong>? Vår guide går igenom eleganta modeller från
+          märken som Daniel Wellington, Longines och Tissot — samt hur du väljer mellan klassiskt,
+          minimalistiskt och modernt.
+        </p>
+        <p>
+          Vill du ha en klocka för träning? Välj mellan en <strong>sportwatch</strong> med GPS,
+          pulsmätning och konditionsanalys (Garmin, Polar, Suunto, Coros) eller en
+          <strong>smartwatch</strong> som kombinerar notiser, hälsofunktioner och klockutseende
+          (Apple Watch, Samsung Galaxy Watch). Vi jämför de populäraste modellerna i båda kategorierna.
+        </p>
+        <p>
+          Har du en snäv budget? Guiden om <strong>billiga klockor</strong> visar vad du kan
+          förvänta dig och vilka märken som håller kvaliteten. Vill du ge bort en klocka som present?
+          Se <a href="/klockor/klocka-present/">presentguiden för klockor</a>. Behöver du ett nytt
+          armband? <a href="/klockor/klockarmband/">Klockarmbandsguiden</a> tar upp material,
+          bredd och var du hittar ersättningsband.
+        </p>
+        <p>
+          Letar du efter ett specifikt märke? Se våra <a href="/klockmarken/">märkesguider</a>
+          för Omega, Rolex, Breitling, Longines, Casio och fler. Varje märkesguide täcker historik,
+          populära serier och var du köper i Sverige.
+        </p>
+      </div>
     </header>
 
     <nav class="category-grid" aria-label="Klockategorier">
@@ -59,9 +113,6 @@ const categories = [
       ))}
     </nav>
 
-    <p class="brand-link">
-      Letar du efter ett specifikt märke? Se våra <a href="/klockmarken/">märkesguider</a>.
-    </p>
   </div>
 </Layout>
 

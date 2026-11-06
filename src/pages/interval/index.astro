@@ -7,12 +7,21 @@ const howToSteps = [
   { name: 'Följ ljud- och bildindikationerna', text: 'Tre korta pip varnar sista tre sekunderna i varje fas. Dubbel ton signalerar fasbyte.' },
   { name: 'Pausa, hoppa eller återställ', text: 'Pausa när som helst, hoppa till nästa fas med Hoppa fas, eller börja om med Återställ.' },
 ];
+
+const faqItems = [
+  { question: 'Vad är Tabata?', answer: 'Tabata är ett träningsformat med 20 sekunders arbete och 10 sekunders vila, upprepat 8 gånger (totalt 4 minuter). Formatet är uppkallat efter idrottsforskaren Izumi Tabata.' },
+  { question: 'Vad är skillnaden mellan HIIT och Tabata?', answer: 'Tabata är ett specifikt format (20/10, 8 rundor). HIIT är den bredare kategorin — intervallträning med högintensiva pass och korta vilopauser. Tabata är en typ av HIIT.' },
+  { question: 'Kan jag ange olika tider för varje runda?', answer: 'Nej — klockan använder samma arbets- och vilotid för alla rundor. För anpassade tider, starta om manuellt mellan seten.' },
+  { question: 'Fungerar klockan utan internet efter laddning?', answer: 'Ja — när sidan väl laddats fungerar timern utan nätanslutning.' },
+  { question: 'Kan jag använda intervallklockan för annat än träning?', answer: 'Ja — den fungerar för alla upprepande arbets-/pauscykler, som studiepass, Pomodoro-liknande intervall eller kökstidurar.' },
+];
 ---
 <ToolLayout
   slug="interval"
   title="Intervallklocka — HIIT & Tabata-timer | Klocka.com"
-  description="Gratis intervallklocka online för HIIT, Tabata och EMOM. Ange arbets- och vilotider, antal rundor och tryck start. Nedräkningsljud, fasbyte-larm och skärmväckning ingår."
+  description="Intervallklocka online för HIIT, Tabata och EMOM. Ange arbets- och vilotider, antal rundor och starta. Fasbyte-larm och skärmväckning. Gratis."
   howToSteps={howToSteps}
+  faqItems={faqItems}
 >
   <p slot="intro">Ange arbets- och viloperioder, välj antal ronder och tryck Start. Klockan larmar vid varje fasbyte och visar tydligt om du ska köra eller vila — perfekt för HIIT, Tabata och EMOM.</p>
 
@@ -93,34 +102,77 @@ const howToSteps = [
   </div>
 
   <Fragment slot="content">
-    <h2>Om intervallklockan</h2>
+    <h2>Vad är en intervallklocka?</h2>
     <p>
-      Intervallträning — HIIT, Tabata, EMOM eller egna upplägg — kräver att du vet exakt när arbets- och
-      vilofaser börjar och slutar. Att titta på en vanlig klocka eller försöka räkna sekunder i huvudet fungerar
-      dåligt när du är andfådd och fokuserad på rörelsen. En dedikerad intervallklocka tar bort det problemet helt.
+      En intervallklocka alternerar automatiskt mellan arbets- och viloperioder. Du anger arbetstid, vilotid
+      och antal rundor en gång — sedan sköter klockan resten. Den larmar vid varje fasbyte så att du hör
+      när du ska köra hårt och när du ska vila, utan att behöva titta på skärmen mitt i en övning.
     </p>
     <p>
-      Med Klocka.coms intervallklocka ställer du in arbetstid, vilotid och antal rundor en gång, sedan larmar
-      klockan vid varje fasbyte. Du hör när du ska köra hårt och när du ska vila — utan att behöva kika på
-      skärmen mitt i en burpee. Klockan visar tydligt vilken fas du är i och hur många rundor som återstår.
+      Intervallklockan används framförallt för träning (HIIT, Tabata, EMOM, cirkelträning) men fungerar för
+      alla situationer där du behöver upprepa samma arbets- och pauscykel — studiesessioner, stretching,
+      kökstidurar och mer.
     </p>
-    <h3>Vad är HIIT?</h3>
+
+    <h2>Populära träningsformat</h2>
+
+    <h3>Tabata</h3>
     <p>
-      HIIT (High-Intensity Interval Training) är en träningsform där korta intensiva arbetsperioder varvas med
-      kortare viloperioder. Metoden är tidseffektiv och ger hög energiförbrukning både under och efter passet —
-      det så kallade efterförbränningseffekten. Intervallklockan håller strukturen åt dig så du kan fokusera
-      helt på träningen.
+      Tabata är 20 sekunder maximalt arbete följt av 10 sekunder vila, upprepat 8 gånger — totalt 4 minuter.
+      Formatet är uppkallat efter idrottsforskaren Izumi Tabata. Hög intensitet, kort tid.
+      Välj Tabata-preseten för att komma igång direkt.
     </p>
-    <h3>Tabata-protokollet</h3>
+
+    <h3>HIIT (High-Intensity Interval Training)</h3>
     <p>
-      Tabata är ett av de vanligaste HIIT-protokollen: 20 sekunder maximalt arbete följt av 10 sekunder vila,
-      upprepat 8 gånger — totalt knappt 4 minuter. Välj Tabata-preseten i klockan för att komma igång direkt.
+      HIIT är den bredare kategorin där korta intensiva arbetsperioder varvas med vilopauser. Tabata är ett
+      specifikt HIIT-format. Andra vanliga upplägg är 30/30 (30 sekunder arbete, 30 sekunder vila) eller
+      40/20. Anpassa arbetstid, vilotid och rundor efter din uthållighetsnivå.
     </p>
+
     <h3>EMOM — Every Minute On the Minute</h3>
     <p>
-      EMOM innebär att du utför ett visst antal rörelser i början av varje minut och vilar resten av minuten.
-      Välj EMOM-preseten (60 sekunder × 10 rundor) och anpassa efter ditt program.
+      EMOM innebär att du utför ett bestämt antal rörelser i börjar på varje minut. Resten av minuten är vila.
+      Välj EMOM-preseten (60 sekunder × 10 rundor) som startpunkt och anpassa efter ditt program.
     </p>
+
+    <h2>Hur du ställer in intervallklockan</h2>
+    <p>
+      Välj ett preset (Tabata eller EMOM) för att komma igång direkt, eller öppna inställningarna och ange
+      egna tider. Ange arbetstid, vilotid och antal rundor. Tryck Start — klockan räknar automatiskt ned
+      varje fas och byter till nästa med ett larm. Du behöver inte göra något mer under passet.
+    </p>
+    <p>
+      Vill du hoppa en fas? Tryck Hoppa fas för att gå direkt till nästa. Pausa när som helst om du
+      behöver en oplanerad paus. Återställ tar dig tillbaka till rundstart.
+    </p>
+
+    <h2>Tips för intervallträning med timer</h2>
+    <ul>
+      <li>Nybörjare: börja med längre vila än arbete (t.ex. 20 sek arbete / 40 sek vila) och öka intensiteten gradvis.</li>
+      <li>Håll skärmen synlig under passet — placera telefonen framför dig på golvet eller på ett stativ.</li>
+      <li>Lyssna på ljuden: tre pip varnar de sista tre sekunderna i varje fas, dubbelton vid fasbyte.</li>
+      <li>Skärmen lyser kvar under hela träningspasset — din display slocknar inte mitt i ett set.</li>
+      <li>Ladda sidan innan du börjar träna — timern fungerar sedan utan nätanslutning.</li>
+    </ul>
+
+    <h2>Vanliga frågor om intervallklockan</h2>
+    <dl class="faq">
+      <dt>Vad är Tabata?</dt>
+      <dd>Tabata är ett träningsformat med 20 sekunders arbete och 10 sekunders vila, upprepat 8 gånger (totalt 4 minuter). Formatet är uppkallat efter idrottsforskaren Izumi Tabata.</dd>
+
+      <dt>Vad är skillnaden mellan HIIT och Tabata?</dt>
+      <dd>Tabata är ett specifikt format (20/10, 8 rundor). HIIT är den bredare kategorin — intervallträning med högintensiva pass och korta vilopauser. Tabata är en typ av HIIT.</dd>
+
+      <dt>Kan jag ange olika tider för varje runda?</dt>
+      <dd>Nej — klockan använder samma arbets- och vilotid för alla rundor. För anpassade tider, starta om manuellt mellan seten.</dd>
+
+      <dt>Fungerar klockan utan internet efter laddning?</dt>
+      <dd>Ja — när sidan väl laddats fungerar timern utan nätanslutning.</dd>
+
+      <dt>Kan jag använda intervallklockan för annat än träning?</dt>
+      <dd>Ja — den fungerar för alla upprepande arbets-/pauscykler, som studiepass, Pomodoro-liknande intervall eller kökstidurar.</dd>
+    </dl>
   </Fragment>
 </ToolLayout>
 
