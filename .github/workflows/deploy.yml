@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+  # schedule:                            # Aktiveras efter Board-godkännande av KLF-4
+  #   - cron: '30 4 * * *'              # 05:30 svensk vintertid (04:30 UTC)
 
 jobs:
   build:
@@ -29,9 +32,18 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          KLOCKRUMMET_FEED_URL: ${{ secrets.KLOCKRUMMET_FEED_URL }}
 
       - name: Deploy to Cloudflare Pages
         run: npx wrangler@3 pages deploy dist --project-name=klocka-com --branch=${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Ping Gatus feed heartbeat
+        if: success() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+        run: |
+          curl -sf \
+            "https://gatus.creamfile.com/api/v1/endpoints/klocka.com_klocka-com-feed/external?success=true" \
+            -H "Authorization: Bearer ${{ secrets.GATUS_EXTERNAL_TOKEN }}"
