@@ -4,7 +4,7 @@ import type { Product } from "@/lib/feeds/types";
 
 export interface ProductFilter {
   source?: string;
-  gender?: Product["gender"];
+  gender?: Product["gender"] | Product["gender"][];
   strap?: string;
   brand?: string;
   maxPrice?: number;
@@ -17,18 +17,25 @@ interface Props {
   limit?: number;
   sort?: ProductSort;
   placement: string;
+  heading?: string;
 }
 
-const { filter = {}, limit, sort = "updated-desc", placement } = Astro.props;
+const { filter = {}, limit, sort = "updated-desc", placement, heading } = Astro.props;
 const products = productsData as Product[];
 
 const normalized = (value: string) => value.trim().toLocaleLowerCase("sv-SE");
+
+const genderFilter = filter.gender
+  ? Array.isArray(filter.gender)
+    ? filter.gender
+    : [filter.gender]
+  : null;
 
 const matchingProducts = products.filter((product) => {
   if (!product.inStock) return false;
   if (filter.source && normalized(product.source) !== normalized(filter.source))
     return false;
-  if (filter.gender && product.gender !== filter.gender) return false;
+  if (genderFilter && !genderFilter.includes(product.gender!)) return false;
   if (
     filter.strap &&
     normalized(product.strap ?? "") !== normalized(filter.strap)
@@ -73,13 +80,23 @@ const productHref = (product: Product) => {
   url.searchParams.set("utm_content", placement);
   return url.toString();
 };
+
+const isKlockrummet =
+  normalized(filter.source ?? "") === "klockrummet" ||
+  normalized(merchant ?? "") === "klockrummet";
+const sectionHeading = heading ?? `Klockor från ${merchant}`;
 ---
 
 {
   visibleProducts.length > 0 && merchant && (
     <section class="product-grid" aria-labelledby={`product-grid-${placement}`}>
+      {isKlockrummet && (
+        <p class="product-grid__disclosure">
+          Klockrummet samägs med Klocka.com.
+        </p>
+      )}
       <header class="product-grid__header">
-        <h2 id={`product-grid-${placement}`}>Klockor från {merchant}</h2>
+        <h2 id={`product-grid-${placement}`}>{sectionHeading}</h2>
         <p>Uppdaterat {updatedLabel}</p>
       </header>
 
@@ -147,6 +164,12 @@ const productHref = (product: Product) => {
   .product-grid {
     max-width: var(--max-w-content);
     margin-inline: auto;
+  }
+
+  .product-grid__disclosure {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
   }
 
   .product-grid__header {

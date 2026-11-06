@@ -1,6 +1,6 @@
 ---
 import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
-import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
 ---
 
 <BuyingGuideLayout
@@ -32,11 +32,11 @@ import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
 
 <table> <thead> <tr> <th>Prisklass</th> <th>Vad du får</th> </tr> </thead> <tbody> <tr> <td>150 – 400 kr</td> <td>Kvartsur med akrylglas (plast) och plastarmband eller enkel metalllänk. Fungerar utmärkt som vardagsklocka.</td> </tr> <tr> <td>400 – 800 kr</td> <td>Mineralglas är standard — tydligt tåligare mot repor än akryl. Metall- och läderalternativ för armbandet. Vattentäthet 3–5 ATM vanlig.</td> </tr> <tr> <td>800 – 1 000 kr</td> <td>Repbeständigt mineralglas, 2 års garanti standard, bättre armbandslås och mer genomarbetad konstruktion. Nära midrange i kvalitetskänsla utan priset.</td> </tr> </tbody> </table>
 
-<KlockrummetCTA
-  variant="budget"
-  klockrummetUrl="https://klockrummet.se/klockor/?utm_source=klocka.com&utm_medium=inline&utm_campaign=billiga-klockor"
-  ctaCopy="Se billiga klockor hos Klockrummet"
-  placement="billiga-klockor-inline"
+<ProductGrid
+  filter={{ source: "klockrummet" }}
+  limit={8}
+  sort="price-asc"
+  placement="billiga-klockor"
 />
 
 <h2>Vad ska du titta på?</h2>

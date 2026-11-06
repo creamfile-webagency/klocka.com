@@ -1,6 +1,6 @@
 ---
 import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
-import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
 ---
 
 <BuyingGuideLayout
@@ -62,11 +62,25 @@ import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
 <p><strong>Var köper man bra klockarmband i Sverige?</strong></p>
 <p>Klockrummet har ett brett urval av armband i läder, NATO, mesh och silikon — alla i standardmåtten 18–24 mm. Urmakare har ofta ett litet men handplockat sortiment om du vill se och känna på materialet innan du köper. NATO-band hittas också på sportbutiker och friluftsliv-butiker för 50–150 kr.</p>
 
-<KlockrummetCTA
-  variant="armband"
-  klockrummetUrl="https://klockrummet.se/guide/klockarmband/"
-  ctaCopy="Se klockarmband hos Klockrummet"
-  placement="klockarmband-inline"
+<ProductGrid
+  filter={{ source: "klockrummet", strap: "mesh" }}
+  limit={4}
+  placement="klockarmband-mesh"
+  heading="Klockor med mesharmband"
+/>
+
+<ProductGrid
+  filter={{ source: "klockrummet", strap: "nato" }}
+  limit={4}
+  placement="klockarmband-nato"
+  heading="Klockor med nato-armband"
+/>
+
+<ProductGrid
+  filter={{ source: "klockrummet", strap: "läder" }}
+  limit={4}
+  placement="klockarmband-läder"
+  heading="Klockor med läderarmband"
 />
 
 </BuyingGuideLayout>

@@ -1,6 +1,6 @@
 ---
 import BuyingGuideLayout from '@/layouts/BuyingGuideLayout.astro';
-import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
 ---
 
 <BuyingGuideLayout
@@ -39,10 +39,9 @@ import KlockrummetCTA from '@/components/KlockrummetCTA.astro';
 
 <p><strong>Boettstorlek</strong> är personlig. Damklockor ligger traditionellt mellan 28–38 mm, men trenden har gått mot 36–40 mm. En smalare handled mår ofta bättre av 30–34 mm; en bredare handled bär 38 mm naturligt.</p>
 
-<KlockrummetCTA
-  variant="budget"
-  klockrummetUrl="https://klockrummet.se/klockor/damklockor/?utm_source=klocka.com&utm_medium=inline&utm_campaign=damur"
-  ctaCopy="Se damklockor hos Klockrummet"
+<ProductGrid
+  filter={{ source: "klockrummet", gender: ["dam", "unisex"] }}
+  limit={4}
   placement="damur-budget"
 />
 
