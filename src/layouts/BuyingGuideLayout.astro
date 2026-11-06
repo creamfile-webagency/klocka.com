@@ -30,7 +30,7 @@ export interface BuyingGuideMeta {
   heroIntro: string;
   /** Price range string, e.g. "10 000 – 150 000 kr" */
   priceRange?: string;
-  /** Affiliate CTAs for Bucket A */
+  /** Affiliate CTAs shown at bottom of page */
   affiliateCtas?: AffiliateCta[];
   /** JSON-LD Article schema override */
   articleSchema?: Record<string, unknown>;
@@ -169,51 +169,17 @@ const schema: Record<string, unknown>[] = [
       )}
     </header>
 
-    <!-- Affiliate CTAs: Bucket A -->
-    {showDisclosure && <AffiliateDisclosure />}
-    {affiliateCtas.length > 0 && (
-      <section class="cta-section" aria-label="Köpguide">
-        <div class="affiliate-cta">
-          <div class="affiliate-label">Köp {brand} i Sverige</div>
-          <div class="cta-grid">
-            {affiliateCtas.map(({ label, href, partner, rel }) => (
-              <a
-                href={href}
-                class="btn btn-primary"
-                target="_blank"
-                rel={rel ?? 'noopener nofollow'}
-                aria-label={`${label} — öppnas i ny flik`}
-                data-partner={partner}
-                data-brand={brand}
-              >
-                {label}
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
-                </svg>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-    )}
-
-
     <!-- Article body -->
     <article class="guide-body prose">
       <slot />
-      {officialUrl && (
-        <p class="official-link">
-          <span class="price-label">Officiell webbplats för {brandData?.name}:</span>
-          <a href={officialUrl} target="_blank" rel="noopener" data-official-brand={brandData?.slug}>{officialHost} <span aria-hidden="true">↗</span></a>
-        </p>
-      )}
     </article>
 
-    <!-- Bottom CTA (repeat) -->
-    {affiliateCtas.length > 0 && (
-      <section class="cta-section cta-section--bottom" aria-label="Köplänkar">
+    <!-- Bottom CTA: affiliate links + official website, all external exits in one place -->
+    {(affiliateCtas.length > 0 || officialUrl) && (
+      <section class="cta-section cta-section--bottom" aria-label={`Köpa ${brand}`}>
         <div class="affiliate-cta">
-          <div class="affiliate-label">Hitta din {brand}</div>
+          {showDisclosure && <AffiliateDisclosure />}
+          <div class="affiliate-label">Köpa {brand}</div>
           <div class="cta-grid">
             {affiliateCtas.map(({ label, href, partner, rel }) => (
               <a href={href} class="btn btn-primary" target="_blank" rel={rel ?? 'noopener nofollow'} data-partner={partner} data-brand={brand}>
@@ -221,6 +187,12 @@ const schema: Record<string, unknown>[] = [
               </a>
             ))}
           </div>
+          {officialUrl && (
+            <p class="official-link">
+              <span class="price-label">Officiell webbplats:</span>
+              <a href={officialUrl} target="_blank" rel="noopener" data-official-brand={brandData?.slug}>{officialHost} <span aria-hidden="true">↗</span></a>
+            </p>
+          )}
         </div>
       </section>
     )}
@@ -317,9 +289,7 @@ document.querySelectorAll('.cta-section a[data-partner]').forEach(link => {
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-2);
-    margin: var(--space-8) 0 0;
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--color-border);
+    margin: var(--space-4) 0 0;
     font-size: var(--text-sm);
   }
   .official-link a { font-weight: 600; color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }

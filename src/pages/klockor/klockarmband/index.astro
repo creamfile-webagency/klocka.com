@@ -22,6 +22,27 @@ import ProductGrid from '@/components/ProductGrid.astro';
   dateModified="2026-10-23"
 >
 
+<ProductGrid
+  filter={{ source: "klockrummet", strap: "mesh" }}
+  limit={4}
+  placement="klockarmband-mesh"
+  heading="Klockor med mesharmband"
+/>
+
+<ProductGrid
+  filter={{ source: "klockrummet", strap: "nato" }}
+  limit={4}
+  placement="klockarmband-nato"
+  heading="Klockor med nato-armband"
+/>
+
+<ProductGrid
+  filter={{ source: "klockrummet", strap: "läder" }}
+  limit={4}
+  placement="klockarmband-lader"
+  heading="Klockor med läderarmband"
+/>
+
 <h2>Mäta din klocka</h2>
 
 <p>Det enda mått som spelar roll när du väljer nytt armband är <strong>ansatsbredden</strong> — bredden på hålet mellan de två hornen (lugsen) på boetten där armbandet fäster. Den mäts i millimeter och kallas också fjäderstiftsmått eller lug width.</p>
@@ -62,27 +83,6 @@ import ProductGrid from '@/components/ProductGrid.astro';
 <p>Med normal daglig användning håller ett läderarmband ett till tre år. Svett, fukt och UV-ljus bryter ner läder snabbare. Bär du klockan till vardags på sommaren, eller tränar med den på, förkortare det liv avsevärt. Förvara armbandet torrt och borstat från smuts, och det håller längre. Byte kostar 100–400 kr beroende på kvalitet.</p>
 
 <p><strong>Var köper man bra klockarmband i Sverige?</strong></p>
-<p>Lösa armband hittar du hos urmakare och klockbutiker. Vill du ha en ny klocka med en viss armbandstyp finns exempel nedan.</p>
-
-<ProductGrid
-  filter={{ source: "klockrummet", strap: "mesh" }}
-  limit={4}
-  placement="klockarmband-mesh"
-  heading="Klockor med mesharmband"
-/>
-
-<ProductGrid
-  filter={{ source: "klockrummet", strap: "nato" }}
-  limit={4}
-  placement="klockarmband-nato"
-  heading="Klockor med nato-armband"
-/>
-
-<ProductGrid
-  filter={{ source: "klockrummet", strap: "läder" }}
-  limit={4}
-  placement="klockarmband-lader"
-  heading="Klockor med läderarmband"
-/>
+<p>Lösa armband hittar du hos urmakare och klockbutiker. Vill du ha en ny klocka med en viss armbandstyp hittar du ett urval ovan på sidan.</p>
 
 </BuyingGuideLayout>
