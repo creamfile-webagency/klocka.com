@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-  # schedule:                            # Aktiveras efter Board-godkännande av KLF-4
-  #   - cron: '30 4 * * *'              # 05:30 svensk vintertid (04:30 UTC)
+  schedule:
+    - cron: '30 4 * * *'              # 05:30 svensk vintertid (04:30 UTC)
 
 jobs:
   build:
