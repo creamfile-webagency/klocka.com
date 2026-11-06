@@ -31,6 +31,13 @@ import ProductGrid from '@/components/ProductGrid.astro';
   dateModified="2026-10-23"
 >
 
+<ProductGrid
+  filter={{ source: "klockrummet", gender: ["herr", "unisex"] }}
+  limit={4}
+  placement="herrur-budget"
+  heading="Prisvärda herrklockor från Klockrummet"
+/>
+
 <h2>Vad ska du tänka på när du väljer herrklocka?</h2>
 
 <p>Tre faktorer avgör vilket herrur som passar dig: <strong>ändamål</strong>, <strong>boettstorlek</strong> och <strong>urverk</strong>.</p>
@@ -61,12 +68,6 @@ import ProductGrid from '@/components/ProductGrid.astro';
 <h2>Prisklasser för herrklockor</h2>
 
 <table> <thead> <tr> <th>Prisklass</th> <th>Vad du får</th> </tr> </thead> <tbody> <tr> <td>500 – 2 000 kr</td> <td>Pålitligt kvartsur. <a href="/klockmarken/casio/">Casio</a> F-91W är en kult-klassiker. Seiko 5-serien erbjuder automatisk rörelse i denna klass.</td> </tr> <tr> <td>2 000 – 8 000 kr</td> <td>Bättre material, safirglas börjar dyka upp. Tissot PRX och Seiko Presage är starka alternativ.</td> </tr> <tr> <td>8 000 – 25 000 kr</td> <td>Schweizisk kvalitet, garanterad precision. <a href="/klockmarken/longines/">Longines</a> HydroConquest och Mido Ocean Star.</td> </tr> <tr> <td>25 000 – 80 000 kr</td> <td>Premiumsegmentet. <a href="/klockmarken/omega/">Omega</a> Seamaster och Speedmaster Moonwatch. <a href="/klockmarken/tag-heuer/">TAG Heuer</a> Carrera.</td> </tr> <tr> <td>80 000+ kr</td> <td>Statusklockor och investeringar. Rolex Submariner, Patek Philippe Calatrava.</td> </tr> </tbody> </table>
-
-<ProductGrid
-  filter={{ source: "klockrummet", gender: ["herr", "unisex"] }}
-  limit={4}
-  placement="herrur-budget"
-/>
 
 <h2>Populära märken för herrklockor</h2>
 
