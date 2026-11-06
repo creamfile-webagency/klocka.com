@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "generate:og": "node --experimental-strip-types scripts/og-images.mjs",
+    "generate:og-tools": "node scripts/og-tools.mjs",
     "check:tz": "node --experimental-strip-types scripts/check-tz.mjs"
   },
   "dependencies": {
