@@ -6,12 +6,20 @@ const howToSteps = [
   { name: 'Starta', text: 'Klicka på Starta direkt när du lägger ner ägget i vattnet.' },
   { name: 'Vänta på larmet', text: 'Klockan larmar när tiden är ute — ta upp ägget och lägg det i kallt vatten om du vill stoppa tillagningen.' },
 ];
+const faqItems = [
+  { question: 'Räknas koktiden från kallt vatten eller kokande vatten?', answer: 'Förinställningarna gäller ägg som läggs i redan kokande vatten. Startar du från kallt vatten, lägg till ca 2 minuter.' },
+  { question: 'Kan jag använda äggklockan som vanlig kökstimer?', answer: 'Ja — ange din önskade tid manuellt i tidsfälten och klicka på Start.' },
+  { question: 'Vad händer om ägget kokar för länge?', answer: 'Överkokta ägg får en grå-grön ring runt gulan. Det är ofarligt men påverkar konsistensen. Häll kallvatten direkt för att stoppa kokningen.' },
+  { question: 'Fungerar timern i bakgrunden?', answer: 'Ja, tidmätningen fortsätter i bakgrunden, men håll fliken aktiv med ljud på för att larmet ska höras.' },
+  { question: 'Hur stora ägg gäller tiderna för?', answer: 'Förinställningarna är baserade på ägg i normalstorlek (M). Stora ägg (L) kan behöva 30–60 sekunder extra.' },
+];
 ---
 <ToolLayout
   slug="aggklocka"
   title="Äggklocka online — Gratis kökstimer | Klocka.com"
-  description="Gratis äggklocka och kökstimer online. Välj äggtyp eller ange tid och starta — fungerar direkt i webbläsaren."
+  description="Äggklocka online — välj löskokt, mellankokt eller hårdkokt, eller ange valfri tid och kör som kökstimer. Larmet hörs när timern nått noll. Gratis."
   howToSteps={howToSteps}
+  faqItems={faqItems}
 >
   <p slot="intro">Tryck på äggtyp, tryck Start — och du vet exakt när äggen är klara. Klockan räknar ner och larmar.</p>
 
@@ -81,24 +89,81 @@ const howToSteps = [
   </div>
 
   <Fragment slot="content">
-    <h2>Om äggklockan</h2>
+    <h2>Hur länge ska ägget koka?</h2>
     <p>
-      Äggklockan är kanske det mest klassiska exemplet på en nedräkningstimer — enkel, konkret och omedelbart
-      användbar. Skillnaden mellan ett perfekt löskokt ägg och ett hårdkokt handlar om bara några minuter,
-      och det är precis den typen av precision en bra kökstimer ger dig. Klocka.coms äggklocka erbjuder
-      snabbval för de vanligaste koktiderna men låter dig också ange exakt hur många minuter du vill ha.
+      Koktiden beror på äggstorlek, om det kommer rakt ur kylen och hur stort kastrullsutrymme du har.
+      Tiderna nedan gäller för medelstora ägg (M) lagda i redan kokande vatten och kan behöva justeras
+      med 30–60 sekunder beroende på din spis och dina preferenser.
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>Kokning</th><th>Tid (fr. kokande vatten)</th><th>Resultat</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Löskokt</td><td>ca 4 minuter</td><td>Vitan koagulerad, gulan flytande</td></tr>
+        <tr><td>Mellankokt</td><td>ca 6 minuter</td><td>Vitan fast, gulan krämig</td></tr>
+        <tr><td>Hårdkokt</td><td>ca 10 minuter</td><td>Helt genomkokt</td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      Bästa resultatet får du om du tar ut ägget ur kylen 5–10 minuter innan kokning och lägger det
+      försiktigt i det kokande vattnet med en sked. Ha en skål med kallt vatten redo — lägg direkt ner
+      ägget när timern larmar för att stoppa tillagningen och underlätta skalning.
+    </p>
+
+    <h2>Äggklockan som kökstimer</h2>
+    <p>
+      Verktyget fungerar utmärkt som kökstimer för allt i köket. Ange din önskade tid manuellt och starta.
+      Vanliga användningsfall:
+    </p>
+    <ul>
+      <li><strong>Pasta:</strong> 8–12 minuter beroende på sort (se förpackningen).</li>
+      <li><strong>Ris:</strong> varierar med ristyp och tillvägagångssätt.</li>
+      <li><strong>Grönsaker i ångkorg:</strong> 5–8 minuter beroende på grönsak och önskad konsistens.</li>
+      <li><strong>Bakat bröd eller kakor:</strong> ange exakt baktid från receptet.</li>
+      <li><strong>Kött i ugn:</strong> starta timern för att inte missa tagningstiden.</li>
+    </ul>
+
+    <h2>Tips för perfekta ägg</h2>
+    <ul>
+      <li>Ta ut äggen ur kylen 5–10 minuter innan kokning för jämnare värmedistribution.</li>
+      <li>Lägg försiktigt ner ägget med en sked — undviker sprickor och kokvattenstänk.</li>
+      <li>Ha isvatten redo: lägg ägget direkt i kallt vatten när larmet går för att stoppa kokningen och göra det lättare att skala.</li>
+      <li>Äldre ägg (nära bäst-före) skalar lättare än nyfärska ägg — spara nyfärska till löskokta.</li>
+      <li>Starta timern i exakt samma ögonblick som du lägger ner ägget — inte när vattnet kokar igen.</li>
+    </ul>
+
+    <h2>Varför skiljer sig koktiderna åt?</h2>
+    <p>
+      Koktiden påverkas av flera faktorer: äggstorlek, kylskåpstemperatur, höjd över havet (lägre lufttryck
+      = lägre kokpunkt = längre koktid) och hur mycket vatten du kokar. Förinställningarna i klockan är bra
+      riktmärken, men skriv gärna ner hur din spis och dina ägg beter sig första gångerna. Inom ett par försök
+      vet du exakt hur lång tid just ditt favoritägg tar med just din spis.
     </p>
     <p>
-      Som tumregel gäller för ägg (medelstora, rakt ur kylen, lagda i redan kokande vatten):
-      löskokt ca 4 minuter, mellankokt ca 6 minuter och hårdkokt ca 10 minuter.
-      Vill du ha ett mjukkokt ägg med fast vit men halvflytande gula, sikta på 7 minuter.
-      Kom ihåg att lägga ner ägget försiktigt med en sked för att undvika sprickor.
+      Höjdskillnaden spelar sällan roll i Sverige, men om du befinner dig i en stad på hög höjd kan du
+      behöva lägga till 30–60 sekunder extra. Vid normala förhållanden på låg höjd gäller standardtiderna.
     </p>
-    <p>
-      Äggklockan fungerar lika bra som en generell kökstimer. Pasta, ris, grönsaker i ångkorg eller
-      kaffebryggning — ange önskad tid och starta. Larmet aktiveras via webbläsarens Web Audio API, utan
-      att du behöver ladda ner en app eller skapa ett konto.
-    </p>
+
+    <h2>Vanliga frågor om äggklockan</h2>
+    <dl class="faq">
+      <dt>Räknas koktiden från kallt vatten eller kokande vatten?</dt>
+      <dd>Förinställningarna gäller ägg lagda i redan kokande vatten. Startar du från kallt vatten, lägg till ca 2 minuter.</dd>
+
+      <dt>Kan jag använda äggklockan som vanlig kökstimer?</dt>
+      <dd>Ja — ange din önskade tid manuellt i tidsfälten och klicka på Start.</dd>
+
+      <dt>Vad händer om ägget kokar för länge?</dt>
+      <dd>Överkokta ägg får en grå-grön ring runt gulan. Det är ofarligt men påverkar konsistensen. Häll kallvatten direkt för att stoppa kokningen.</dd>
+
+      <dt>Fungerar timern i bakgrunden?</dt>
+      <dd>Ja, tidmätningen fortsätter i bakgrunden, men håll fliken aktiv med ljud på för att larmet ska höras.</dd>
+
+      <dt>Hur stora ägg gäller tiderna för?</dt>
+      <dd>Förinställningarna är baserade på ägg i normalstorlek (M). Stora ägg (L) kan behöva 30–60 sekunder extra.</dd>
+    </dl>
   </Fragment>
 </ToolLayout>
 

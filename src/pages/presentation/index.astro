@@ -7,12 +7,20 @@ const howToSteps = [
   { name: 'Övervaka', text: 'Klockan byter färg vid 80 % förbrukad tid (gul) och blinkar rött i sista 10 sekunderna.' },
   { name: 'Pausa vid behov', text: 'Tryck Pausa om frågor eller avbrott förlänger sessionen. Återstående tid sparas.' },
 ];
+const faqItems = [
+  { question: 'Kan jag visa klockan på projektorduken?', answer: 'Ja — öppna klockan i en webbläsarflik och dela den fliken vid skärmdelning i Zoom, Teams eller liknande. Vid fysisk presentation, ställ din bärbar dator där talaren kan se den.' },
+  { question: 'Kan jag pausa klockan under presentationen?', answer: 'Ja — klicka på Pausa för att frysa återstående tid, till exempel under frågor eller tekniska avbrott.' },
+  { question: 'Vad händer när timern nått noll?', answer: 'Timern stannar vid noll och spelar ett larm. Klicka på Avfärda för att stänga av det.' },
+  { question: 'Fungerar klockan utan internet efter laddning?', answer: 'Ja — när sidan väl har laddats fungerar timern utan nätanslutning.' },
+  { question: 'Kan jag ange längre tider som 90 minuter?', answer: 'Ja — använd timmarfältet för presentationer längre än 60 minuter.' },
+];
 ---
 <ToolLayout
   slug="presentation"
   title="Presentationsklocka online — Håll koll på din tid | Klocka.com"
-  description="Gratis presentationsklocka för föreläsningar och tal. Se hur mycket tid du har kvar på scen."
+  description="Presentationsklocka online — stor tydlig nedräkning som hjälper talare att hålla tid under föreläsningar och tal. Gratis, ingen nedladdning."
   howToSteps={howToSteps}
+  faqItems={faqItems}
 >
   <p slot="intro">En presentationsklocka håller koll på din tid framför publiken. Välj hur länge du har — och fokusera på presentationen, inte klockan.</p>
 
@@ -66,24 +74,72 @@ const howToSteps = [
   </div>
 
   <Fragment slot="content">
-    <h2>Om presentationsklockan</h2>
+    <h2>Vad är en presentationsklocka?</h2>
     <p>
-      Att hålla sig inom sin tilldelade tid är en av de svåraste delarna av en presentation. Utan en synlig timer
-      är det lätt att lägga för lång tid på de inledande bilderna och stressa igenom slutet — eller tvärtom.
-      En presentationsklocka ger dig en konstant visuell signal om hur lång tid du har kvar, så att du kan
-      anpassa tempot längs vägen.
+      En presentationsklocka visar talaren hur mycket tid som återstår av sin tilldelade taltid. Den skiljer
+      sig från en vanlig timer genom att visa på en stor, läsbar display — synlig även på avstånd eller i
+      ett hörn av skärmen. Istället för att glänsa på sin klocka under ett tal kan talaren fokusera på
+      budskapet och låta displayen sköta tidsövervakningen.
     </p>
     <p>
-      Klocka.coms presentationsklocka visar återstående tid med tydlig typografi avsedd att synas på ett bord
-      eller i ett hörn av skärmen. Färgen ändras gradvis — grön när det är gott om tid, gul i mitten av
-      presentationen och röd när du närmar dig slutet. På så sätt får du en intuitiv känsla för tid utan att
-      behöva läsa av siffror.
+      Klocka.coms presentationsklocka ändrar färg i takt med att tiden förbrukas — grön när det är gott om tid,
+      gul mitt i presentationen och röd när det är dags att avrunda. Du behöver inte läsa av siffror för att
+      förstå var du befinner dig tidsmässigt.
     </p>
+
+    <h2>Vanliga användningsfall</h2>
+    <ul>
+      <li><strong>Konferenstal och TEDx-stil:</strong> Håll dig exakt inom tilldelad tid och undvik att bli avskuren av arrangören.</li>
+      <li><strong>Föreläsningar och lektioner:</strong> Dela upp ett längre pass i logiska block och glöm aldrig avslutningsdiskussionen.</li>
+      <li><strong>Jobbintervjuer med tidsgräns:</strong> Strukturera ditt svar inom givna ramar.</li>
+      <li><strong>Pitchevents och affärspresentationer:</strong> Precis timing imponerar på investerare och jury.</li>
+      <li><strong>Toastmasters och stå-upp:</strong> Träna på att fylla exakt rätt tid — varken för kort eller för lång.</li>
+      <li><strong>Videoinspelningar och podcasts:</strong> Håll segmentlängderna jämna utan att titta på en separat klocka.</li>
+    </ul>
+
+    <h2>Så här placerar du klockan under ett framförande</h2>
+    <ul>
+      <li>Öppna klockan i en separat webbläsarflik och dela den fliken vid skärmdelning — presentationen syns för publiken, klockan för dig.</li>
+      <li>Vid fysisk presentation: ställ den bärbara datorn i talarstolens hörn med displayen vänd mot dig.</li>
+      <li>För stora lokaler: anslut en extra skärm (vänd mot scenen) och öppna klockan i helskärmsläge.</li>
+      <li>Sätt alltid en buffert — sikta på att bli klar 1 minut tidigt för att ge plats åt frågor.</li>
+    </ul>
+
+    <h2>Tips för att hålla tid</h2>
+    <ul>
+      <li>Öva med klockan aktiverad innan det riktiga framträdandet — hitta vilka delar som tar för lång tid.</li>
+      <li>Notera i ditt manus var du bör vara vid halva tiden — en naturlig kontrollpunkt.</li>
+      <li>Skär inte ner Q&amp;A — ange en tid som inkluderar frågestunden från start.</li>
+      <li>En avslutning som kommer lite tidigt är bättre än en presentation som drar ut på tiden.</li>
+      <li>Öva i realtid: kör igenom hela presentationen med klockan igång minst en gång innan framträdandet.</li>
+      <li>Håll ögonkontakt med publiken — inte med klockan. Lär dig att läsa av färgändringen med ett snabbt sidoblick.</li>
+    </ul>
+
+    <h2>Presentationsteknik och tid</h2>
     <p>
-      Verktyget passar lika bra för konferenstal och TED-liknande framträdanden som för klassrumsföredrag,
-      podcastinspelningar och videomanus. Öppna det i en flik eller ett separat fönster bredvid ditt
-      presentationsprogram och du har alltid koll på klockan.
+      Tidshållning är ett av de tydligaste tecknen på en välförberedd talare. Arrangörer och publik noterar
+      när en talare respekterar sin tilldelade tid. Det signalerar respekt för åhörarna och visar att
+      presentationen är genomtänkt. Oavsett om du talar fem minuter eller en timme — en presentationsklocka
+      hjälper dig att leverera budskapet med rätt tempo.
     </p>
+
+    <h2>Vanliga frågor om presentationsklockan</h2>
+    <dl class="faq">
+      <dt>Kan jag visa klockan på projektorduken?</dt>
+      <dd>Ja — öppna klockan i en webbläsarflik och dela den fliken vid skärmdelning i Zoom, Teams eller liknande. Vid fysisk presentation, ställ din bärbara dator där talaren kan se den.</dd>
+
+      <dt>Kan jag pausa klockan under presentationen?</dt>
+      <dd>Ja — klicka på Pausa för att frysa återstående tid, till exempel under frågor eller tekniska avbrott.</dd>
+
+      <dt>Vad händer när timern nått noll?</dt>
+      <dd>Timern stannar vid noll och spelar ett larm. Klicka på Avfärda för att stänga av det.</dd>
+
+      <dt>Fungerar klockan utan internet efter laddning?</dt>
+      <dd>Ja — när sidan väl har laddats fungerar timern helt utan nätanslutning.</dd>
+
+      <dt>Kan jag ange längre tider som 90 minuter?</dt>
+      <dd>Ja — använd timmarfältet för presentationer längre än 60 minuter.</dd>
+    </dl>
   </Fragment>
 </ToolLayout>
 

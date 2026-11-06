@@ -7,12 +7,21 @@ const howToSteps = [
   { name: 'Varv', text: 'Klicka på Varv eller tryck L för att spara mellantider — klockan fortsätter löpa.' },
   { name: 'Återställ', text: 'Klicka på Återställ eller tryck Esc för att nollställa och radera alla varvtider.' },
 ];
+
+const faqItems = [
+  { question: 'Fungerar stoppuret på mobilen?', answer: 'Ja — stoppuret fungerar i alla moderna webbläsare på iOS och Android. Öppna sidan i Chrome eller Safari och använd det precis som på datorn.' },
+  { question: 'Fortsätter stoppuret räkna om jag byter flik?', answer: 'Ja, mätningen löper vidare i bakgrunden. Displayen uppdateras igen när du är tillbaka på sidan.' },
+  { question: 'Hur sparar jag varvtiderna?', answer: 'Varvtiderna visas i listan men sparas inte automatiskt. Anteckna dem eller ta en skärmbild innan du trycker Återställ.' },
+  { question: 'Kan jag använda tangentbordet?', answer: 'Ja — Space startar eller pausar, L sparar varvtid (klockan fortsätter ticka), Esc återställer och raderar alla varvtider.' },
+  { question: 'Hur lång tid kan stoppuret mäta?', answer: 'Det finns ingen praktisk övre gräns. Stoppuret räknar timmar, minuter och sekunder så länge sidan är öppen.' },
+];
 ---
 <ToolLayout
   slug="stoppur"
   title="Stoppur online — Tidtagning i webbläsaren | Klocka.com"
-  description="Gratis online stoppur med varvtider. Starta, pausa och återställ — fungerar direkt i webbläsaren."
+  description="Stoppur online med varvtider — mät förfluten tid till millisekund, pausa och återuppta fritt. Gratis, ingen app, fungerar i alla webbläsare."
   howToSteps={howToSteps}
+  faqItems={faqItems}
 >
   <p slot="intro">Kör stoppuret direkt — tryck Start, Varvtid eller Återställ. Mäter till millisekund, sparar varvtider. Ingen app krävs.</p>
 
@@ -44,35 +53,71 @@ const howToSteps = [
   </div>
 
   <Fragment slot="content">
-    <h2>Om stoppuret</h2>
+    <h2>Vad är ett stoppur och när behöver du det?</h2>
     <p>
-      Ett stoppur är det enklaste och mest direkta sättet att mäta förfluten tid. Det används överallt — från
-      idrottsevenemang och kökstidurar till produktivitetstester och vetenskapliga experiment. Med Klocka.coms
-      onlinestoppur behöver du inte ladda ner någon app. Öppna sidan, tryck på Starta och mätningen börjar direkt.
+      Ett stoppur mäter förfluten tid från det ögonblick du trycker start. Till skillnad från en nedräkningstimer
+      — som räknar ned mot noll — räknar stoppuret upp från noll och slutar inte av sig självt. Det används när
+      du vill se exakt hur lång tid något tar: ett lopp, en träningsövning, ett matlagningsmoment eller ett möte.
     </p>
     <p>
-      Varvtidsfunktionen gör det möjligt att notera delsträckor utan att stoppa klockan. Det är praktiskt om du
-      springer ett lopp och vill jämföra hur lång tid varje kilometerpassage tog, eller om du arbetar med ett projekt
-      och vill bryta ner det i mätbara etapper.
-    </p>
-    <p>
-      Stoppuret fungerar i alla moderna webbläsare på dator och mobil. Tidmätningen sker med
-      <code>performance.now()</code> för hög precision, och sidan kräver ingen inloggning eller kontoregistrering.
+      Med Klocka.coms onlinestoppur behöver du inte ladda ner något. Öppna sidan, tryck på Starta och mätningen
+      börjar omedelbart. Stoppuret mäter till millisekund och klarar allt från snabba sprinter till maraton.
     </p>
 
-    <h3>Kortkommandon</h3>
+    <h2>Vanliga användningsfall</h2>
+    <ul>
+      <li><strong>Löpning och träning:</strong> Mät hur lång tid ett intervall eller ett lopp tar. Spara varvtider för varje kilometer eller övning.</li>
+      <li><strong>Simning och cykling:</strong> Håll koll på tid per banlängd eller etapp utan att behöva ta fram telefonen.</li>
+      <li><strong>Matlagning:</strong> När du behöver mäta upp (snarare än ned) — t.ex. hur länge en sås har puttat eller hur länge deg har jäst.</li>
+      <li><strong>Produktivitet:</strong> Mät hur lång tid en uppgift faktiskt tar för att lära dig estimera bättre framåt.</li>
+      <li><strong>Spel och quiz:</strong> Starta vid fråga ett och stoppa vid sista svaret för att mäta rondlängder.</li>
+      <li><strong>Vetenskap och projekt:</strong> Tidtagning av experiment, reaktionstider eller prestandajämförelser.</li>
+    </ul>
+
+    <h2>Hur du använder varvtider</h2>
+    <p>
+      Varvtidsfunktionen låter dig spara delsträckor utan att stoppuret stannar. Tryck <strong>Varv</strong>
+      (eller <kbd>L</kbd>) när du vill markera en punkt — klockan fortsätter ticka. Listan visar både
+      delsträckstiden (tid sedan förra varvet) och totaltiden. Det gör det enkelt att jämföra om du springer
+      snabbare eller långsammare i slutet av ett lopp.
+    </p>
+    <p>
+      Varvtiderna finns kvar under hela sessionen och raderas när du trycker Återställ eller laddar om sidan.
+      Vill du spara dem? Anteckna eller ta en skärmbild innan du återställer.
+    </p>
+
+    <h2>Tangentbordsgenvägar</h2>
     <ul>
       <li><kbd>Space</kbd> — starta eller pausa stoppuret</li>
       <li><kbd>L</kbd> — spara varvtid (klockan fortsätter ticka)</li>
       <li><kbd>Esc</kbd> — återställ och rensa alla varvtider</li>
     </ul>
 
-    <h3>Varvtider och delsträckor</h3>
-    <p>
-      Varje gång du trycker <strong>Varv</strong> sparas både delsträckstiden (tid sedan förra varvet) och
-      totaltiden. Listan visas direkt under klockan med det senaste varvet överst. Varvtiderna sparas under
-      hela sessionen och försvinner när du återställer eller laddar om sidan.
-    </p>
+    <h2>Tips för bästa resultat</h2>
+    <ul>
+      <li>Använd tangentbordsgenvägar för att starta och markera varv utan att lyfta blicken.</li>
+      <li>Jämför delsträckstiderna — de visar om du håller jämn fart eller tappar tempo i slutet.</li>
+      <li>Håll webbläsarfliken aktiv om du behöver se displayen i realtid under en aktivitet.</li>
+      <li>På mobil: öppna sidan i Safari eller Chrome för full funktionalitet.</li>
+    </ul>
+
+    <h2>Vanliga frågor om stoppuret</h2>
+    <dl class="faq">
+      <dt>Fungerar stoppuret på mobilen?</dt>
+      <dd>Ja — stoppuret fungerar i alla moderna webbläsare på iOS och Android. Öppna sidan i Chrome eller Safari och använd det precis som på datorn.</dd>
+
+      <dt>Fortsätter stoppuret räkna om jag byter flik?</dt>
+      <dd>Ja, mätningen löper vidare i bakgrunden. Displayen uppdateras igen när du är tillbaka på sidan.</dd>
+
+      <dt>Hur sparar jag varvtiderna?</dt>
+      <dd>Varvtiderna visas i listan men sparas inte automatiskt. Anteckna dem eller ta en skärmbild innan du trycker Återställ.</dd>
+
+      <dt>Kan jag använda tangentbordet?</dt>
+      <dd>Ja — Space startar eller pausar, L sparar varvtid (klockan fortsätter ticka), Esc återställer och raderar alla varvtider.</dd>
+
+      <dt>Hur lång tid kan stoppuret mäta?</dt>
+      <dd>Det finns ingen praktisk övre gräns. Stoppuret räknar timmar, minuter och sekunder så länge sidan är öppen.</dd>
+    </dl>
   </Fragment>
 </ToolLayout>
 
