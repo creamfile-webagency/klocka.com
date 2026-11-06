@@ -85,13 +85,13 @@ export const countries: CountryData[] = [
     neighbours: ['kanada', 'mexiko', 'japan'],
     content: `USA sträcker sig över sex tidszoner, från Eastern Time vid Atlantkusten till Hawaii-Aleutian Time i Stilla havet. Den vanligaste tidszonen är Eastern Time (ET), som gäller New York, Washington D.C., Miami och Boston. Central Time (CT) täcker Chicago och Houston, Mountain Time (MT) gäller Denver och Phoenix, och Pacific Time (PT) används av Los Angeles och Seattle.
 
-Tidsskillnaden mellan Sverige och USA:s östkust är alltid exakt sex timmar – Sverige ligger före. Eftersom båda länderna tillämpar sommartid, om än med en veckas förskjutning på hösten, kvarstår sextimarsskillnaden under hela kalenderåret för Eastern Time. Det innebär att klockan 12:00 i Stockholm alltid är 06:00 i New York.
+Tidsskillnaden mellan Sverige och USA:s östkust är normalt 6 timmar – Sverige ligger före. Båda länderna tillämpar sommartid, men USA byter redan andra söndagen i mars medan EU byter sista söndagen – ca tre veckor senare. Det ger en period varje mars när skillnaden mot Eastern Time är 5 timmar (New York EDT/UTC−4, Stockholm CET/UTC+1). På hösten gäller det omvända: EU byter tillbaka sista söndagen i oktober, USA inte förrän första söndagen i november – ytterligare ca en vecka med 5 timmars skillnad. Under resten av kalenderåret (ca 47 av 52 veckor) är skillnaden 6 timmar.
 
-USA observerar Daylight Saving Time från andra söndagen i mars till första söndagen i november. Undantagen är delstaten Arizona (utom Navajo Nation) och Hawaii, som behåller sina fasta UTC-förskjutningar året om. För den som vill ringa affärskontakter i New York är tidsfönstret klockan 15:00–23:00 svensk tid – östkustens kontorstid 09:00–17:00 EST/EDT sammanfaller med europeisk eftermiddag och tidig kväll.`,
+USA observerar Daylight Saving Time från andra söndagen i mars till första söndagen i november. Undantagen är delstaten Arizona (utom Navajo Nation) och Hawaii, som behåller sina fasta UTC-förskjutningar året om. För den som vill ringa affärskontakter i New York är tidsfönstret normalt klockan 15:00–23:00 svensk tid – östkustens kontorstid 09:00–17:00 EST/EDT sammanfaller med europeisk eftermiddag och tidig kväll.`,
     faq: [
       {
         q: 'Hur stor är tidsskillnaden mellan Sverige och USA?',
-        a: 'Det beror på tidszonen. Östkusten (New York) ligger alltid 6 timmar efter Sverige. Centralzonen (Chicago) 7 timmar, Bergsregionen (Denver) 8 timmar och Västkusten (Los Angeles) 9 timmar. Skillnaden är stabil året om tack vare att båda länderna tillämpar sommartid.',
+        a: 'Det beror på tidszonen. Östkusten (New York) ligger normalt 6 timmar efter Sverige, men 5 timmar under ca tre veckor i mars och ca en vecka i november (övergångsveckor då USA och EU byter sommartid på olika datum). Centralzonen (Chicago) normalt 7 timmar, Bergsregionen (Denver) 8 timmar och Västkusten (Los Angeles) 9 timmar – med samma ±1-timmes övergångsvariationer.',
       },
       {
         q: 'Observerar USA sommartid?',
@@ -103,7 +103,7 @@ USA observerar Daylight Saving Time från andra söndagen i mars till första s�
       },
       {
         q: 'Vad är bästa tid att ringa till USA från Sverige?',
-        a: 'Till östkusten (New York): klockan 15:00–23:00 svensk tid. Till västkusten (Los Angeles): klockan 18:00–02:00 svensk tid.',
+        a: 'Till östkusten (New York): normalt klockan 15:00–23:00 svensk tid (6h skillnad). Under övergångsveckorna i mars och november: 14:00–22:00 (5h skillnad). Till västkusten (Los Angeles): normalt klockan 18:00–02:00 svensk tid.',
       },
     ],
     title: 'Tid i USA — Klockan i New York just nu | Klocka.com',
@@ -606,13 +606,13 @@ Brasilien är Sydamerikas ekonomiska motor, och São Paulo är den absolut domin
     neighbours: ['usa', 'mexiko', 'japan'],
     content: `Kanada sträcker sig över sex tidszoner, från Newfoundland i öst med den ovanliga halvtimmesförskjutningen (NST, UTC−3:30) till Pacific Time i väst (PST, UTC−8). Den folkrikaste zonen är Eastern Time (EST/EDT), som gäller Toronto, Ottawa, Montreal och Quebec City.
 
-Tidsskillnaden mot Sverige är konstant för Eastern Time: 6 timmar, Sverige före, precis som för USA:s östkust. Kanada tillämpar sommartid på samma schema som USA (andra söndagen i mars till första söndagen i november), med undantag för Saskatchewan, som håller CST (UTC−6) permanent.
+Tidsskillnaden mot Sverige är normalt 6 timmar för Eastern Time (Toronto), precis som för USA:s östkust. Kanada tillämpar sommartid på samma schema som USA (andra söndagen i mars till första söndagen i november). Eftersom EU byter sommartid ca tre veckor senare (sista söndagen i mars) uppstår en period varje vår och höst när skillnaden är 5 timmar i stället för 6. På hösten byter EU tillbaka sista söndagen i oktober, Kanada inte förrän i november – ytterligare ca en vecka med 5 timmars skillnad. Saskatchewan är undantaget och håller CST (UTC−6) permanent utan sommartid.
 
-Kanadas affärsliv är koncentrerat till Toronto och Montreal i öst, samt Vancouver i väst. Kontorstid är normalt 09:00–17:00 ET. Från Sverige innebär det 15:00–23:00 – sen eftermiddag i Sverige ger bra överlapp med torontokontorens öppettider. Vancouver på Stillahavsktiden är 9 timmar efter Sverige (vintertid), vilket kräver sena samtal från Stockholm om man vill nå BC-baserade kontor under deras arbetstid.`,
+Kanadas affärsliv är koncentrerat till Toronto och Montreal i öst, samt Vancouver i väst. Kontorstid är normalt 09:00–17:00 ET. Från Sverige innebär det normalt 15:00–23:00 – sen eftermiddag i Sverige ger bra överlapp med torontokontorens öppettider. Vancouver på Stillahavsktiden är 9 timmar efter Sverige (vintertid), vilket kräver sena samtal från Stockholm om man vill nå BC-baserade kontor under deras arbetstid.`,
     faq: [
       {
         q: 'Hur stor tidsskillnad är det mellan Sverige och Kanada?',
-        a: 'Beror på zon. Toronto/Ottawa (EST/EDT) är alltid 6 timmar efter Sverige. Vancouver (PST/PDT) 9 timmar efter, Winnipeg (CST/CDT) 7 timmar och Halifax (AST/ADT) 5 timmar.',
+        a: 'Beror på zon. Toronto/Ottawa (EST/EDT) är normalt 6 timmar efter Sverige, men 5 timmar under ca tre veckor i mars och ca en vecka i november (då USA/Kanada och EU byter sommartid på olika datum). Vancouver (PST/PDT) normalt 9 timmar, Winnipeg (CST/CDT) 7 timmar och Halifax (AST/ADT) 5 timmar.',
       },
       {
         q: 'Observerar Kanada sommartid?',
@@ -624,7 +624,7 @@ Kanadas affärsliv är koncentrerat till Toronto och Montreal i öst, samt Vanco
       },
       {
         q: 'Vad är bästa tid att ringa till Toronto från Sverige?',
-        a: 'Kontorstid i Toronto är 09:00–17:00 EST/EDT, vilket är 15:00–23:00 i Sverige (alltid, tack vare parallell DST). Sen eftermiddag i Sverige passar bra.',
+        a: 'Kontorstid i Toronto är 09:00–17:00 EST/EDT, vilket normalt är 15:00–23:00 i Sverige (6h skillnad). Under övergångsveckorna i mars och november är det 14:00–22:00 (5h skillnad). Sen eftermiddag i Sverige passar bra.',
       },
     ],
     title: 'Tid i Kanada — Klockan i Toronto just nu | Klocka.com',
@@ -750,31 +750,31 @@ Mexikanska kontor håller öppet 09:00–18:00 CST, vilket från Sverige innebä
     zones: [
       {
         iana: 'Africa/Cairo',
-        label: 'Östeuropeisk tid (EET, UTC+2)',
+        label: 'Östeuropeisk tid (EET/EEST, UTC+2/3)',
         cities: ['Kairo', 'Alexandria', 'Giza', 'Luxor', 'Sharm el-Sheikh'],
       },
     ],
     dst: {
-      observes: false,
-      rule: 'Egypten avskaffade sommartid 2011 och håller permanent EET (UTC+2).',
+      observes: true,
+      rule: 'Sista fredagen i april (UTC+2 → UTC+3/EEST) till sista torsdagen i oktober (UTC+3 → UTC+2/EET). Schemat återinfördes 2023 efter avskaffandet 2011.',
     },
     officeHours: { start: 9, end: 17 },
     neighbours: ['turkiet', 'marocko', 'sydafrika'],
-    content: `Egypten använder Eastern European Time (EET), UTC+2, utan sommartid. Landet avskaffade klockbyten 2011, och håller nu permanent UTC+2 hela året. Det förenklar kommunikation och undviker förvirringen som säsongsanpassningar kan orsaka.
+    content: `Egypten använder Eastern European Time (EET), UTC+2, på vintern och Eastern European Summer Time (EEST), UTC+3, på sommaren. Landet återinförde sommartid 2023 efter att ha avskaffat det 2011. Klockorna ställs fram till UTC+3 sista fredagen i april och tillbaka till UTC+2 sista torsdagen i oktober.
 
-Tidsskillnaden mot Sverige är noll timmar under sommartid (CEST, UTC+2) – klockan i Stockholm och Kairo är identiska! Under vintertid (CET, UTC+1) är Egypten 1 timme före Sverige. Klockan 12:00 i Stockholm vintertid är 13:00 i Kairo.
+Tidsskillnaden mot Sverige är i regel alltid 1 timme – Egypten är före. Vintertid: EET (UTC+2) vs CET (UTC+1) = 1 timme. Sommartid: EEST (UTC+3) vs CEST (UTC+2) = 1 timme. Notera att Egyptens övergångsdatum skiljer sig från EU:s: Sverige byter till sommartid sista söndagen i mars, Egypten i slutet av april. Under dessa ca fyra veckor i april är båda UTC+2 och skillnaden tillfälligt 0 timmar. I slutet av oktober ger omvänd överlappning ca fyra dagar med 2 timmars skillnad.
 
-Egypten är ett viktigt turistland, och Sharm el-Sheikh och Hurghada är populära resmål för svenska turister. Kairo är Afrikas folkrikaste stad och ett ekonomiskt nav. Kontorstid är normalt 09:00–17:00 EET, måndag–torsdag och lördag (fredag är vilodag i den islamiska veckan). Från Sverige sommartid är kontorstider identiska med EET – inga omräkningar behövs. Vintertid innebär att Egypten öppnar en timme "tidigt" relativt Sverige.
+Egypten är ett viktigt turistland, och Sharm el-Sheikh och Hurghada är populära resmål för svenska turister. Kairo är Afrikas folkrikaste stad och ett ekonomiskt nav. Kontorstid är normalt 09:00–17:00 EET/EEST, måndag–torsdag och lördag (fredag är vilodag i den islamiska veckan). Tidsskillnaden mot Sverige är genomgående runt 1 timme, vilket förenklar kommunikation och reseplanering.
 
-EET (UTC+2) är en av de vanligaste tidszonerna runt Medelhavet och Östeuropa: Grekland, Finland, Ukraina, Israel och Sydafrika delar alla UTC+2. Under den egyptiska sommaren är soluppgången extremt tidig i Kairo – utan sommartid sker den redan klockan 05:00 på sommarmorgonen, men klockorna ändras aldrig.`,
+EET (UTC+2) delas av Östeuropeiska länder som Grekland, Ukraina och Israel – dessa byter sommartid på EU:s schema. Sydafrika håller permanent UTC+2 utan sommartid. Turkiet avskaffade sin sommartid 2016 och håller permanent UTC+3.`,
     faq: [
       {
         q: 'Hur stor tidsskillnad är det mellan Sverige och Egypten?',
-        a: 'Egypten (UTC+2) är 0 timmar olika Sverige sommartid (CEST, UTC+2) och 1 timme före Sverige vintertid (CET, UTC+1).',
+        a: 'Egypten (EET/EEST, UTC+2/3) är i regel alltid 1 timme före Sverige. Vintertid: EET (UTC+2) vs CET (UTC+1) = 1 timme. Sommartid: EEST (UTC+3) vs CEST (UTC+2) = 1 timme. Under övergångsveckor i april (båda UTC+2) och sent oktober (Egypten UTC+3, Sverige UTC+1) kan skillnaden kortvarigt avvika.',
       },
       {
         q: 'Har Egypten sommartid?',
-        a: 'Nej. Egypten avskaffade sommartid 2011 och använder permanent EET (UTC+2).',
+        a: 'Ja. Egypten återinförde sommartid 2023: UTC+3 (EEST) från sista fredagen i april till sista torsdagen i oktober. Landet avskaffade sommartid 2011 och observerade det inte 2011–2022.',
       },
       {
         q: 'Vilken dag är helgdag i Egypten?',
@@ -782,12 +782,12 @@ EET (UTC+2) är en av de vanligaste tidszonerna runt Medelhavet och Östeuropa: 
       },
       {
         q: 'Vad är bästa tid att ringa till Kairo från Sverige?',
-        a: 'Kontorstid är 09:00–17:00 EET. Under sommartid är det exakt samma klockslag som i Sverige. Under vintertid: 08:00–16:00 i Sverige för att nå Kairo 09:00–17:00.',
+        a: 'Kontorstid är 09:00–17:00 EET/EEST. Egypten är normalt 1 timme före Sverige – ring 08:00–16:00 i Sverige för att nå Kairo 09:00–17:00, oavsett årstid.',
       },
     ],
     title: 'Tid i Egypten — Klockan i Kairo just nu | Klocka.com',
     description:
-      'Vad är klockan i Egypten just nu? Kairo-tid live. Tidsskillnad Sverige–Egypten: 0h sommartid, +1h vintertid.',
+      'Vad är klockan i Egypten just nu? Kairo-tid live. Tidsskillnad Sverige–Egypten: +1h (EET UTC+2 vintertid, EEST UTC+3 sommartid).',
   },
 
   {
@@ -849,45 +849,45 @@ Greklands grannländer Turkiet och Egypten använder UTC+2 respektive UTC+3 perm
     zones: [
       {
         iana: 'Africa/Casablanca',
-        label: 'Marockansk tid (WET+1, UTC+1)',
+        label: 'Marockansk tid (UTC+1 / UTC+0 Ramadan)',
         cities: ['Casablanca', 'Rabat', 'Marrakech', 'Fès', 'Agadir', 'Tanger'],
       },
     ],
     dst: {
-      observes: false,
+      observes: true,
       rule:
-        'Marocko håller permanent UTC+1 sedan 2018. Tidigare observerade landet säsongsanpassad sommartid plus avbrott under Ramadan.',
+        'Marocko håller UTC+1 merparten av året men återgår till UTC+0 (WET) varje år under Ramadan (islamisk fastemånad, datum varierar med månkalendern). År 2026: ca 14 februari–21 mars. Under Ramadan är Sverige (CET, UTC+1) 1 timme före Marocko.',
     },
     officeHours: { start: 9, end: 18 },
     neighbours: ['spanien', 'frankrike', 'egypten'],
-    content: `Marocko höll länge ett ovanligt sommartidsschema med avbrott under Ramadan, men sedan 2018 håller landet permanent UTC+1 (Western European Time +1 timme, eller informellt kallat "Marockansk tid"). Det innebär inga säsongsändringar och ett stabilt klockslag hela året.
+    content: `Marocko håller UTC+1 under merparten av året men återgår till UTC+0 (WET) varje år under Ramadan, den islamiska fastemånaden. Ramadan varar ca en månad och rör sig bakåt ca 11 dagar per år enligt månkalendern. År 2026 är Ramadan ca 14 februari–21 mars. Utanför Ramadan är Marocko permanent på UTC+1.
 
-Tidsskillnaden mot Sverige är 1 timme under vintertid (CET, UTC+1) – de har samma tid! Under sommartid (CEST, UTC+2) är Sverige 1 timme före Marocko. Det är med andra ord en minimal skillnad som sällan vållar problem. Klockan 12:00 i Stockholm vintertid är 12:00 i Casablanca; sommartid är den 11:00 i Marocko.
+Tidsskillnaden mot Sverige är 0 timmar under vintertid (båda UTC+1) – exakt samma tid! Under sommartid (CEST, UTC+2) är Sverige 1 timme före Marocko. Under Ramadan (UTC+0) är Sverige 1 timme före. Klockan 12:00 i Stockholm vintertid är 12:00 i Casablanca; sommartid är den 11:00 i Marocko.
 
-Marocko lockar allt fler svenska turister med städer som Marrakech, Fès och stränder vid Agadir. Tanger nära Gibraltarsundet är också populärt. Kontorstid i Marocko är typiskt 09:00–18:00, måndag–fredag. Fredag är officiellt en kort arbetsdag med bön. Kontakten med marockanska affärspartners är enkel tack vare den nära tidszonen.
+Marocko lockar allt fler svenska turister med städer som Marrakech, Fès och stränder vid Agadir. Tanger nära Gibraltarsundet är också populärt. Kontorstid i Marocko är typiskt 09:00–18:00, måndag–fredag. Fredag är officiellt en kort arbetsdag med bön. Under Ramadan är arbetstiderna kortare och förskjutna. Kontakten med marockanska affärspartners är enkel tack vare den nära tidszonen.
 
-Marocko är det enda afrikanska landet som håller UTC+1 permanent. Grannlandet Algeriet använder också UTC+1 (CET) sedan 1977, men de delar alltså samma klockslag som Marocko. Spaniens enklaver Ceuta och Melilla på marockansk mark följer spansk CET/CEST – de byter sommartid – vilket skapar en unik situation med tre tidsregimer på marockankt territorium.`,
+Grannlandet Algeriet använder UTC+1 (CET) permanent. Spaniens enklaver Ceuta och Melilla på marockansk mark följer spansk CET/CEST – de byter sommartid – vilket skapar en unik situation med flera tidsregimer på marockanskt territorium.`,
     faq: [
       {
         q: 'Hur stor tidsskillnad är det mellan Sverige och Marocko?',
-        a: 'Marocko (UTC+1) och Sverige är i samma tidszon vintertid (CET, UTC+1). Under sommartid (CEST, UTC+2) är Sverige 1 timme före Marocko.',
+        a: 'Utanför Ramadan: Marocko (UTC+1) och Sverige är i samma tidszon vintertid (CET, UTC+1); under sommartid (CEST, UTC+2) är Sverige 1 timme före. Under Ramadan (Marocko UTC+0) är Sverige 1 timme före.',
       },
       {
         q: 'Har Marocko sommartid?',
-        a: 'Nej. Marocko höll permanent UTC+1 sedan 2018 och avskaffade säsongsmässiga klockbyten. Tidigare hade landet ett komplext schema med Ramadan-avbrott.',
+        a: 'Inte på EU:s vis, men Marocko återgår till UTC+0 (WET) varje år under Ramadan (ca en månad, datum rör sig per månkalendern). Utanför Ramadan är landet på UTC+1.',
       },
       {
         q: 'Vilken tidszon är Marrakech och Casablanca?',
-        a: 'Hela Marocko, inklusive Casablanca, Marrakech, Rabat och Fès, använder UTC+1 permanent.',
+        a: 'Hela Marocko, inklusive Casablanca, Marrakech, Rabat och Fès, använder UTC+1 utanför Ramadan och UTC+0 under Ramadan.',
       },
       {
         q: 'Vad är bästa tid att ringa till Casablanca från Sverige?',
-        a: 'Under vintertid är Marocko och Sverige i samma tidszon – ring under vanlig kontorstid. Under sommartid: ring 10:00–19:00 i Sverige för att nå Casablanca 09:00–18:00.',
+        a: 'Utanför Ramadan på vintertid: Marocko och Sverige är i samma tidszon – ring 09:00–18:00. Sommartid: ring 10:00–19:00 i Sverige för att nå Casablanca 09:00–18:00. Under Ramadan (UTC+0): ring 10:00–19:00 i Sverige (CET) för att nå Casablanca 09:00–18:00.',
       },
     ],
     title: 'Tid i Marocko — Klockan i Casablanca just nu | Klocka.com',
     description:
-      'Vad är klockan i Marocko just nu? Casablanca-tid live. Tidsskillnad Sverige–Marocko: 0h vintertid, +1h sommartid.',
+      'Vad är klockan i Marocko just nu? Casablanca-tid live. Tidsskillnad Sverige–Marocko: 0h vintertid, +1h sommartid (UTC+0 under Ramadan).',
   },
 
   {
