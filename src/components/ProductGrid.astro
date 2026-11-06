@@ -244,4 +244,12 @@ const sectionHeading = heading ?? `Klockor från ${merchant}`;
   .product-card__link {
     width: 100%;
   }
+
+  /* Knappen ligger inuti .prose i guiderna; .prose a ger annars blå text på blå knapp. */
+  .product-grid a.product-card__link,
+  .product-grid a.product-card__link:hover,
+  .product-grid a.product-card__link:visited {
+    color: #fff;
+    text-decoration: none;
+  }
 </style>

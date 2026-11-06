@@ -25,9 +25,9 @@ function parsePrice(value: string): number {
 
 function productUrl(value: string, placement: string): string {
   const url = new URL(value);
-  for (const key of [...url.searchParams.keys()]) {
-    if (key.toLowerCase().startsWith('utm_')) url.searchParams.delete(key);
-  }
+  // Feedens länkar har Google Shopping-parametrar, ibland dubbelkodade ("amp;utm_…").
+  // Klockrummets produkt-URL:er behöver inga parametrar, så vi börjar om från en ren query.
+  url.search = '';
   url.searchParams.set('utm_source', 'klocka.com');
   url.searchParams.set('utm_medium', 'referral');
   url.searchParams.set('utm_campaign', 'produktfeed');
