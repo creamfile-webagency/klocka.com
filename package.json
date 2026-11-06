@@ -10,7 +10,8 @@
     "astro": "astro",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "generate:og": "node --experimental-strip-types scripts/og-images.mjs"
+    "generate:og": "node --experimental-strip-types scripts/og-images.mjs",
+    "check:tz": "node --experimental-strip-types scripts/check-tz.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
