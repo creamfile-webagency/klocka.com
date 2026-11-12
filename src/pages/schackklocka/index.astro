@@ -2,7 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 
 const title = 'Schackklocka online — Fischer & Bronstein | Klocka.com';
-const description = 'Gratis schackklocka online med Fischer och Bronstein tillägg. Klicka på din timer för att byta spelare. Fungerar på mobil och dator.';
+const description = 'Schackklocka online med Fischer och Bronstein tillägg — klicka på din timer för att byta spelare. Tidsbegränsat schackparti på dator och mobil. Gratis.';
 
 const schema = [
   {
@@ -30,6 +30,17 @@ const schema = [
       { '@type': 'HowToStep', position: 2, name: 'Välj tillägg', text: 'Välj Fischer, Bronstein eller inget tillägg och ange antal sekunder.' },
       { '@type': 'HowToStep', position: 3, name: 'Starta', text: 'Tryck på Starta eller Enter. Klockan börjar räkna ner för Spelare 1.' },
       { '@type': 'HowToStep', position: 4, name: 'Byt spelare', text: 'Klicka på din timer (eller tryck Space) efter varje drag för att växla.' },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Vad är Fischer-tillägg i schack?', acceptedAnswer: { '@type': 'Answer', text: 'Fischer-tillägg innebär att ett fast antal sekunder läggs till i början av varje spelares tur. Det gör att snabba drag kan öka spelarens totala tid och förhindrar flaggning vid öppningsförberedda positioner.' } },
+      { '@type': 'Question', name: 'Vad är skillnaden mellan Fischer och Bronstein?', acceptedAnswer: { '@type': 'Answer', text: 'Med Fischer läggs tillägget till i början av turen, oavsett hur snabbt draget gjordes. Med Bronstein läggs tillägget till efter draget, men maximalt den tid spelaren faktiskt använde — spelarens totaltid kan aldrig öka.' } },
+      { '@type': 'Question', name: 'Vilka tidskontroller är vanliga i schack?', acceptedAnswer: { '@type': 'Answer', text: 'Bullet: 1–2 minuter per spelare. Blitz: 3–5 minuter. Rapid: 10–25 minuter. Klassiskt: 90 minuter eller mer. Fischer-tillägg på 1–5 sekunder är vanligt i blitz och rapid.' } },
+      { '@type': 'Question', name: 'Kan jag använda schackklockan på mobilen?', acceptedAnswer: { '@type': 'Answer', text: 'Ja — klockan fungerar i alla moderna webbläsare på mobil och surfplatta. Båda spelarens knappar är anpassade för pekskärm.' } },
+      { '@type': 'Question', name: 'Vad händer när en spelare tar slut på tid?', acceptedAnswer: { '@type': 'Answer', text: 'Spelarens timer stannar vid 00:00 och en visuell indikation visas. Enligt schackregler förloras partiet på tid om motspelaren har pjäser kvar att mata.' } },
     ],
   },
 ];
@@ -132,54 +143,86 @@ const schema = [
     <!-- Prose + desktop sidebar -->
     <div class="content-with-sidebar">
       <article class="tool-content prose">
-        <h2>Spela schack med klocka online</h2>
-      <p>
-        En schackklocka är ett viktigt verktyg i tidsbegränsade schackpartier. Den hanterar varje spelares
-        tilldelade tid och säkerställer rättvist och spännande spel. Klocka.coms schackklocka har två timers
-        — en för varje spelare — som räknar ner oberoende och växlar när en spelare avslutar sitt drag.
-      </p>
+        <h2>Vad är en schackklocka och varför används den?</h2>
+        <p>
+          En schackklocka håller reda på hur lång tid varje spelare förbrukar under ett parti. Den har två timers
+          — en per spelare — som bara räknar ner när det är just den spelarens tur. När du gör ett drag klickar
+          du på din knapp och startar motståndarens klocka. Det skapar ett rättvist och spänningsfyllt spel där
+          ingen kan vinna tid på att sitta stilla.
+        </p>
+        <p>
+          I turneringsschack är klockan obligatorisk. Men även i casual-spel tillför tidsgränser spelglädje och
+          håller partierna på en rimlig längd. Med Klocka.coms onlineklocka kan du spela när som helst, utan att
+          äga en fysisk klocka.
+        </p>
 
-      <h3>Grundläggande funktion</h3>
-      <ul>
-        <li>Varje spelare börjar med samma starttid (standardinställning: 10 minuter).</li>
-        <li>När det är en spelares tur räknar deras timer ned.</li>
-        <li>Klicka på din timer (eller tryck <kbd>Space</kbd>) efter varje drag för att byta spelare.</li>
-        <li>Spelet fortsätter tills en spelares tid tar slut — förlust på tid.</li>
-      </ul>
+        <h2>Tidskontroller — hur lång tid per spelare?</h2>
+        <p>
+          Schackklockans inställning kallas tidskontroll. Vanliga format:
+        </p>
+        <ul>
+          <li><strong>Bullet:</strong> 1–2 minuter per spelare. Extremt snabbt, kräver omedelbart beslutsfattande.</li>
+          <li><strong>Blitz:</strong> 3–5 minuter per spelare. Populärt online och på klubbar.</li>
+          <li><strong>Rapid:</strong> 10–25 minuter per spelare. Bra balans mellan djuptänk och tempo.</li>
+          <li><strong>Klassiskt:</strong> 90 minuter eller mer per spelare. Används i officiella turneringar.</li>
+        </ul>
+        <p>
+          Nybörjare rekommenderas att starta med rapid (15–20 minuter) för att hinna tänka utan att stressa.
+        </p>
 
-      <h3>Modeller för tilläggstid</h3>
-      <h4>1. Fischer-tillägg</h4>
-      <p>
-        Uppkallat efter Bobby Fischer. Ett fast tillägg (t.ex. 5 sekunder) läggs till <strong>i början av varje
-        spelares tur</strong>. Snabba drag kan öka den totala tillgängliga tiden.
-        Standard i de flesta officiella turneringar i dag.
-      </p>
-      <h4>2. Bronstein-tillägg (fördröjning)</h4>
-      <p>
-        Uppkallat efter David Bronstein. Tillägget läggs till <strong>efter att draget är klart</strong>,
-        men maximalt den tid spelaren faktiskt förbrukade. Spelarens totala tid kan aldrig öka utöver
-        starttiden — till skillnad från Fischer-tillägget.
-      </p>
+        <h2>Fischer- och Bronstein-tillägg förklarat</h2>
+        <h3>Fischer-tillägg</h3>
+        <p>
+          Uppkallat efter Bobby Fischer. Ett fast antal sekunder läggs till <strong>i början av varje spelares
+          tur</strong>. Om tillägget är 5 sekunder och du har 1:20 kvar, börjar din tur med 1:25. Snabba drag
+          kan alltså bygga upp tid. Fischer-tillägg är standard i de flesta moderna turneringar.
+        </p>
+        <h3>Bronstein-tillägg</h3>
+        <p>
+          Uppkallat efter David Bronstein. Tillägget läggs till <strong>efter att draget är klart</strong>,
+          men aldrig mer än den tid spelaren faktiskt använde. Om du gör ett drag på 2 sekunder och tillägget är
+          5 sekunder, får du bara 2 sekunder tillbaka. Din totaltid kan aldrig öka utöver starttiden.
+        </p>
 
-      <h3>Kortkommandon</h3>
-      <ul>
-        <li><kbd>Space</kbd> — byt aktiv spelare (avslutar ditt drag)</li>
-        <li><kbd>Enter</kbd> — starta eller pausa</li>
-        <li><kbd>Esc</kbd> — återställ klockan</li>
-      </ul>
+        <h2>Kortkommandon</h2>
+        <ul>
+          <li><kbd>Space</kbd> — byt aktiv spelare (avslutar ditt drag)</li>
+          <li><kbd>Enter</kbd> — starta eller pausa</li>
+          <li><kbd>Esc</kbd> — återställ klockan</li>
+        </ul>
 
-      <h3>Visuella och ljudmässiga indikationer</h3>
-      <ul>
-        <li>Den aktiva spelarens ruta markeras i grönt.</li>
-        <li>Under 30 sekunder kvar blinkar timern i rött.</li>
-        <li>Ett kort pip-ljud spelas när timern passerar 30-sekundergränsen.</li>
-      </ul>
+        <h2>Visuella och ljudliga signaler</h2>
+        <ul>
+          <li>Den aktiva spelarens ruta markeras i grönt.</li>
+          <li>Under 30 sekunder kvar blinkar timern i rött.</li>
+          <li>Ett pip-ljud spelas när timern passerar 30-sekundergränsen.</li>
+        </ul>
 
-      <p>
-        Redo att spela ett riktigt parti?
-        <a href="https://coolaspel.se/schack/" target="_blank" rel="noopener">Spela schack online på Coolaspel</a>
-        — ett gratis schackspel direkt i webbläsaren.
-      </p>
+        <h2>Tips för bättre partihantering</h2>
+        <ul>
+          <li>Öva blitz för att träna snabbt beslutsfattande — men lär dig spela utan tidpressbesvär i rapid first.</li>
+          <li>Klicka på klockan med samma hand du lyfter pjäsen för att träna på turnerings-redo reflexer.</li>
+          <li>Kom ihåg att klicka på klockan — glömda knapptryck ger motspelaren fri tid.</li>
+          <li>Redo för ett riktigt parti? <a href="https://coolaspel.se/schack/" target="_blank" rel="noopener">Spela schack online på Coolaspel</a>.</li>
+        </ul>
+
+        <h2>Vanliga frågor om schackklockan</h2>
+        <dl class="faq">
+          <dt>Vad är Fischer-tillägg i schack?</dt>
+          <dd>Fischer-tillägg innebär att ett fast antal sekunder läggs till i början av varje spelares tur. Snabba drag kan öka spelarens totala tid och förhindrar flaggning i förberedda öppningar.</dd>
+
+          <dt>Vad är skillnaden mellan Fischer och Bronstein?</dt>
+          <dd>Med Fischer läggs tillägget till i början av turen, oavsett draghastighet. Med Bronstein läggs tillägget till efter draget, men aldrig mer än den tid spelaren faktiskt använde — din totaltid kan aldrig öka.</dd>
+
+          <dt>Vilka tidskontroller är vanliga i schack?</dt>
+          <dd>Bullet: 1–2 min. Blitz: 3–5 min. Rapid: 10–25 min. Klassiskt: 90 min eller mer per spelare. Fischer-tillägg på 1–5 sekunder kombineras ofta med blitz och rapid.</dd>
+
+          <dt>Kan jag använda schackklockan på mobilen?</dt>
+          <dd>Ja — klockan fungerar i alla moderna webbläsare på mobil och surfplatta. Båda spelarens knappar är anpassade för pekskärm.</dd>
+
+          <dt>Vad händer när en spelare tar slut på tid?</dt>
+          <dd>Spelarens timer stannar vid 00:00. Enligt schackregler förloras partiet på tid om motspelaren har tillräckligt med material för att mata.</dd>
+        </dl>
       </article>
 
     </div>

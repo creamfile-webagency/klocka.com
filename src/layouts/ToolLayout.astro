@@ -17,13 +17,15 @@ export interface ToolMeta {
   description: string;
   /** HowTo steps for JSON-LD */
   howToSteps?: { name: string; text: string }[];
+  /** FAQ items for FAQPage JSON-LD */
+  faqItems?: { question: string; answer: string }[];
   /** Optional OG image override */
   ogImage?: string;
 }
 
 interface Props extends ToolMeta {}
 
-const { title, description, howToSteps, ogImage } = Astro.props;
+const { title, description, howToSteps, faqItems, ogImage } = Astro.props;
 
 const schemas: Record<string, unknown>[] = [
   {
@@ -50,6 +52,18 @@ if (howToSteps?.length) {
       position: i + 1,
       name: s.name,
       text: s.text,
+    })),
+  });
+}
+
+if (faqItems?.length) {
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
     })),
   });
 }
