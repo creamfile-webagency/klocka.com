@@ -1035,6 +1035,57 @@ SAST (UTC+2) gäller hela Sydafrika inklusive Lesotho och Eswatini (Swaziland), 
     description:
       'Vad är klockan i Sydafrika just nu? Johannesburg-tid live. Tidsskillnad Sverige–Sydafrika: 0h sommartid, +1h vintertid.',
   },
+
+  {
+    slug: 'kina',
+    name: 'Kina',
+    capital: 'Beijing',
+    primaryZone: 'Asia/Shanghai',
+    city: 'Beijing',
+    zones: [
+      {
+        iana: 'Asia/Shanghai',
+        label: 'China Standard Time (CST, UTC+8)',
+        cities: ['Beijing', 'Shanghai', 'Shenzhen', 'Guangzhou', 'Chengdu'],
+      },
+    ],
+    dst: {
+      observes: false,
+      rule: 'Kina avskaffade sommartid 1991 och håller sig på UTC+8 hela året utan klockbyten.',
+    },
+    officeHours: { start: 9, end: 18 },
+    neighbours: ['japan', 'sydkorea', 'singapore'],
+    content: `Kina är ett av världens få länder med en enda officiell tidszon trots sin enorma geografiska bredd. China Standard Time (CST) är UTC+8 och gäller för hela fastlandskina — från den östliga kusten vid Shanghai till de västra provinserna Xinjiang och Tibet. Trots att landet sträcker sig över fem naturliga tidszoner används CST överallt av myndigheter och företag.
+
+Tidsskillnaden mot Sverige varierar med den svenska sommartiden: 7 timmar under vintertid (CET, UTC+1) och 6 timmar under sommartid (CEST, UTC+2). Kina ligger alltid före Sverige. Om klockan är 12:00 i Stockholm vintertid är den 19:00 i Beijing; sommartid är den 18:00. Kina tillämpar inte sommartid och har inte gjort det sedan 1991 — CST (UTC+8) gäller hela året.
+
+Bästa tid att ringa till Kina från Sverige är tidigt på morgonen svensk tid. Klockan 07:00–09:00 i Sverige under vintertid motsvarar 14:00–16:00 i Beijing — mitt i eftermiddagen. Sommartid är samma klockslag 13:00–15:00 i Kina. Städer som Shanghai, Shenzhen och Guangzhou är centrala för handel, medan Beijing är politiskt och kulturellt nav. Trots att Xinjiang och Tibet officiellt använder CST kan lokalbor i västra Kina följa en informell "Xinjiang-tid" baserad på solljus (UTC+6).`,
+    faq: [
+      {
+        q: 'Vad är Kinas tidszon?',
+        a: 'Kina använder China Standard Time (CST), UTC+8, för hela landet.',
+      },
+      {
+        q: 'Vilken tidsskillnad är det mellan Sverige och Kina?',
+        a: 'Sverige ligger 7 timmar efter Kina vintertid (CET, UTC+1) och 6 timmar efter sommartid (CEST, UTC+2).',
+      },
+      {
+        q: 'Har Kina bara en tidszon?',
+        a: 'Ja. Hela fastlandskina — inklusive Tibet och Xinjiang — använder officiellt en enda tidszon, UTC+8.',
+      },
+      {
+        q: 'Observerar Kina sommartid?',
+        a: 'Nej. Kina avskaffade sommartid 1991 och håller sig på UTC+8 hela året.',
+      },
+      {
+        q: 'Vad är bästa tid att ringa till Beijing från Sverige?',
+        a: 'Kontorstid i Beijing är 09:00–18:00 CST. Från Sverige vintertid är det 02:00–11:00 och sommartid 03:00–12:00. Bäst är att ringa klockan 07:00–09:00 i Sverige, då Beijing har 14:00–16:00.',
+      },
+    ],
+    title: 'Tid i Kina — Klockan i Beijing just nu | Klocka.com',
+    description:
+      'Vad är klockan i Kina just nu? Beijing-tid live. Tidsskillnad Sverige–Kina: +7h vintertid, +6h sommartid.',
+  },
 ];
 
 export function getCountryBySlug(slug: string): CountryData | undefined {

@@ -26,6 +26,23 @@
 
 ---
 
+## Baslinje deploy 6/11 — per sidtyp (CRE-8511)
+
+> **Datakälla:** W44-baslinjen (veckan som slutade 2026-11-01) nedbruten per sidtyp.
+> Per-sida GSC-data (28 dagar) hämtas vid uppföljning 2026-12-04 i rapporten Sidor/Indexering.
+> Uppföljning sker 4 veckor efter deploy, dvs. ca 2026-12-04.
+
+| Sidtyp | Exempelsidor | Klick/v (W44) | Visningar/v (W44) | Avg pos | Notering |
+|--------|-------------|--------------|------------------|---------|---------|
+| **Verktyg** | /interval/, /stoppur/, /pomodoro/, /nedrakning/, /presentation/, /aggklocka/, /schackklocka/ | ≥6 (interval ensam) | ~200 (uppskattad) | ~5–20 | /interval/ toppade med 6 kl, pos 5.0. Övriga verktyg: minimal trafik pre-deploy. |
+| **Tid** | /tid/spanien/, /tid/usa/, /tid/kina/ m.fl. | 0 | ~1 100 (spanien 749) | ~10–30 | Hög exponering, noll klick — CTR-problem. Titlar och metabeskrivningar åtgärdade i CRE-8510. |
+| **Märken** | /klockmarken/rolex/, /klockmarken/james-son/, /klockmarken/philippe-banks/ | <1 | ~100 (uppskattad) | >30 | Låg trafik; james-son och philippe-banks indexerade 6/11. |
+| **Guider/Klockor** | /klockor/billiga-klockor/, /klockor/klocka-present/, /klockor/klockarmband/ | <1 | ~150 (uppskattad) | >30 | Indexerade 6/11; förväntas växa med inlänkar. |
+
+**Följ upp 2026-12-04:** klick, visningar och position per sidtyp — jämför mot denna baslinje.
+
+---
+
 ## Epic 6 — Page Speed (CRE-7693)
 
 **Target:** 95+ Performance (mobile) on all pages.  
