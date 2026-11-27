@@ -6,7 +6,7 @@ User-agent: GPTBot
 Allow: /
 
 User-agent: ClaudeBot
-Allow: /
+Disallow: /
 
 User-agent: PerplexityBot
 Allow: /
@@ -15,7 +15,10 @@ User-agent: Google-Extended
 Allow: /
 
 User-agent: CCBot
-Allow: /
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
 
 User-agent: anthropic-ai
 Allow: /
